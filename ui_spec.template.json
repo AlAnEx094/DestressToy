@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "project_name": "string",
+    "screen_type": "landing",
+    "goal": "collect leads",
+    "style": "premium minimal",
+    "responsive_priority": "desktop-first"
+  },
+  "layout": {
+    "max_width": "1280px",
+    "grid_type": "12-column",
+    "section_spacing": "large",
+    "container_padding": {
+      "desktop": "32px",
+      "tablet": "24px",
+      "mobile": "16px"
+    }
+  },
+  "theme": {
+    "background": "light",
+    "surface_style": "flat",
+    "border_radius": "medium",
+    "shadow_style": "soft",
+    "contrast_level": "medium-high"
+  },
+  "typography": {
+    "headline_style": "large bold sans-serif",
+    "subheadline_style": "medium regular sans-serif",
+    "body_style": "regular readable",
+    "button_style": "medium semibold"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "order": 1,
+      "layout_type": "two-column",
+      "content": {
+        "headline": true,
+        "subheadline": true,
+        "primary_cta": true,
+        "secondary_cta": false,
+        "proof_points": 3,
+        "visual": "product-ui-preview"
+      },
+      "visual_rules": {
+        "headline_width": "medium",
+        "cta_alignment": "left",
+        "visual_emphasis": "high",
+        "spacing_density": "balanced"
+      }
+    },
+    {
+      "id": "features",
+      "order": 2,
+      "layout_type": "3-card-grid",
+      "content": {
+        "section_title": true,
+        "cards": 3
+      },
+      "visual_rules": {
+        "card_style": "clean bordered",
+        "icon_usage": "minimal",
+        "spacing_density": "medium"
+      }
+    },
+    {
+      "id": "cta",
+      "order": 3,
+      "layout_type": "centered-banner",
+      "content": {
+        "headline": true,
+        "button": true
+      },
+      "visual_rules": {
+        "contrast": "high",
+        "padding": "generous"
+      }
+    }
+  ],
+  "components": {
+    "buttons": {
+      "primary": "filled",
+      "secondary": "ghost"
+    },
+    "cards": {
+      "radius": "16px",
+      "border": "subtle",
+      "shadow": "low"
+    },
+    "navbar": {
+      "sticky": false,
+      "cta_in_header": true
+    }
+  },
+  "responsive_rules": {
+    "hero_columns_to_stack_at": "tablet",
+    "grid_collapse": {
+      "desktop": 3,
+      "tablet": 2,
+      "mobile": 1
+    }
+  },
+  "forbidden_deviations": [
+    "Do not add extra sections",
+    "Do not replace the hero with centered layout unless specified",
+    "Do not introduce illustration style not present in reference",
+    "Do not add a secondary CTA if absent in reference"
+  ]
+}
