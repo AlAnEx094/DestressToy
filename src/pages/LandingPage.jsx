@@ -801,7 +801,7 @@ export default function LandingPage() {
 
               <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
                 <img
-                  src="/images/cta/cta-main.webp"
+                  src="/images/cta/cta-hero.webp"
                   alt="Бренд-объект на столе"
                   className="w-full h-[220px] object-cover rounded-lg"
                   loading="lazy"
