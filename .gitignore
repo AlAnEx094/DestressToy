@@ -7,3 +7,4 @@ artifacts/screenshots
 .playwright-cli/
 CODEX_EXECUTOR_PROMPT.md
 ORCHESTRATOR_SYSTEM_PROMPT.md
+.vercel

@@ -617,7 +617,7 @@ export default function LandingPage() {
 
             <div className="order-1 md:order-2 overflow-hidden rounded-xl">
               <img
-                src="/images/welkome%20kit.png"
+                src="/images/welcome-kit.webp"
                 alt="Бренд-объект DeStressToys в составе корпоративного welcome kit"
                 className="w-full object-cover min-h-[260px] md:min-h-[420px] rounded-xl"
                 loading="lazy"
