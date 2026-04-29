@@ -262,8 +262,22 @@ export default function LandingPage() {
     }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    try {
+      await fetch('https://n8n.destresstoys.ru/webhook/new-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formValues.name,
+          company: formValues.company,
+          email: formValues.email,
+          description: formValues.task,
+        }),
+      })
+    } catch {
+      // fire-and-forget — don't block success UX on network errors
+    }
     setIsSubmitted(true)
   }
 
