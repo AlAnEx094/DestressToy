@@ -293,8 +293,11 @@ export default function LandingPage() {
       >
         <Container className="relative">
           <div className="flex h-16 items-center justify-between gap-6">
-            <a href="#hero">
-              <img src="/favicon.svg" alt="DeStressToys" className="h-8 w-8" />
+            <a
+              href="#hero"
+              className="text-xl font-bold text-white tracking-tight"
+            >
+              DS
             </a>
 
             <nav className="hidden items-center gap-10 md:flex">
