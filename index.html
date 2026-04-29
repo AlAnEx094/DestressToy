@@ -24,9 +24,106 @@
     <meta property="og:url" content="https://destresstoys.ru/" />
     <link rel="canonical" href="https://destresstoys.ru/" />
                                                                                 
-    <style>body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}</style>                                     
-  </head>  
+    <style>body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}</style>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "DeStressToys",
+      "url": "https://destresstoys.ru",
+      "logo": "https://destresstoys.ru/favicon.svg",
+      "description": "Кастомные мягкие антистресс бренд-объекты под логотип компании. Тираж от 50 штук, производство 3–5 недель, концепт бесплатно.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "hello@destresstoys.ru",
+        "areaServed": ["RU", "KZ", "BY"],
+        "availableLanguage": "Russian"
+      },
+      "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Какой минимальный тираж?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "От 50 штук. Для крупных тиражей (500+) доступны дополнительные скидки."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Из чего делают объекты?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Мягкий пенополиуретан с бархатистым покрытием. Сертификат ЕС, безопасен для взрослых и детей от 3 лет."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Сколько занимает производство?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "3–5 недель от утверждения финального концепта. Срочные заказы обсуждаются индивидуально."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Сколько стоит?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Стоимость зависит от формы, тиража и сложности. Концепт и расчёт цены — бесплатно, после заявки."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Можно ли получить образец перед тиражом?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Да, производим тестовый образец. Стоимость образца засчитывается в тираж при подтверждении заказа."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Кастомные антистресс бренд-объекты",
+      "provider": {
+        "@type": "Organization",
+        "name": "DeStressToys"
+      },
+      "description": "Производство мягких антистресс объектов кастомной формы под логотип и бренд компании. Welcome kit, корпоративные подарки, event-мерч.",
+      "areaServed": ["RU", "KZ", "BY"],
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "RUB",
+        "description": "Стоимость зависит от формы, тиража и сложности. Концепт бесплатно."
+      }
+    }
+    </script>
+    <!-- /Structured Data -->
+    <!-- Yandex.Metrika -->
+    <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+      ym(108979976,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+    </script>
+    <!-- /Yandex.Metrika -->
+  </head>
   <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/108979976" style="position:absolute;left:-9999px;" alt="" /></div></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

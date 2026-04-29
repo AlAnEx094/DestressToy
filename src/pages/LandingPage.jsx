@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 const navLinks = [
@@ -253,6 +253,24 @@ export default function LandingPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const utmRef = useRef({})
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+    const utm = {}
+    utmKeys.forEach((key) => {
+      const val = params.get(key)
+      if (val) utm[key] = val
+    })
+    if (Object.keys(utm).length > 0) {
+      utmRef.current = utm
+      sessionStorage.setItem('utm', JSON.stringify(utm))
+    } else {
+      const stored = sessionStorage.getItem('utm')
+      if (stored) utmRef.current = JSON.parse(stored)
+    }
+  }, [])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
@@ -273,6 +291,7 @@ export default function LandingPage() {
           company: formValues.company,
           email: formValues.email,
           description: formValues.task,
+          ...utmRef.current,
         }),
       })
     } catch {
