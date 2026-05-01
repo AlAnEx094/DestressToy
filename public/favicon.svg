@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">  
-    <rect width="32" height="32" rx="6" fill="#151716"/>
-    <text x="16" y="22" font-family="Inter,sans-serif" font-weight="700"        
-          font-size="15" fill="#ff6a3d" text-anchor="middle">DS</text>
-  </svg> 
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#151716"/>
+  <image href="/logo-bear.png" x="2" y="2" width="28" height="28"/>
+</svg>

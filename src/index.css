@@ -16,3 +16,28 @@ body {
 .marquee-track:hover {
   animation-play-state: paused;
 }
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes hero-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.97); }
+}
+@keyframes badge-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-slide-enter { animation: hero-fade-in 0.7s ease forwards; }
+.hero-slide-exit  { animation: hero-fade-out 0.5s ease forwards; }
+.hero-badge-in    { animation: badge-in 0.5s ease 0.3s both; }
+
+@keyframes stageFLoat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+@keyframes stageGlow {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -52%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%, -52%) scale(1.12); }
+}

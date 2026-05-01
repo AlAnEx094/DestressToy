@@ -1,5 +1,51 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+
+const stageItems = [
+  { src: '/images/hero-stage/duck.png',  alt: 'Маскот Goosely',       size: 178, x: 60, y: 22, z: 1, delay: '0s',   float: '3.8s' },
+  { src: '/images/hero-stage/cat.png',   alt: 'Котик Profit Industry', size: 165, x: 1,  y: 30, z: 2, delay: '0.6s', float: '4.4s' },
+  { src: '/images/hero-stage/bear.png',  alt: 'Медведь DeStressToys',  size: 252, x: 24, y: 18, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/hero-stage/ball.png',  alt: 'Мяч ЕвроХим',          size: 200, x: 54, y: 54, z: 2, delay: '0.9s', float: '3.5s' },
+  { src: '/images/hero-stage/drop.png',  alt: 'Капля',                 size: 158, x: 3,  y: 61, z: 1, delay: '1.2s', float: '4.8s' },
+]
+
+function ProductStage() {
+  return (
+    <div className="relative w-full h-full select-none" aria-hidden="true">
+      {/* Coral glow behind center bear */}
+      <div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 340, height: 340,
+          left: '50%', top: '50%',
+          transform: 'translate(-50%, -52%)',
+          background: 'radial-gradient(circle, rgba(255,106,61,0.18) 0%, transparent 70%)',
+          animation: 'stageGlow 4s ease-in-out infinite',
+        }}
+      />
+
+      {stageItems.map((item) => (
+        <img
+          key={item.src}
+          src={item.src}
+          alt={item.alt}
+          draggable={false}
+          style={{
+            position: 'absolute',
+            width: item.size,
+            left: `${item.x}%`,
+            top: `${item.y}%`,
+            zIndex: item.z,
+            transform: 'translateY(0px)',
+            animation: `stageFLoat ${item.float} ease-in-out infinite`,
+            animationDelay: item.delay,
+            filter: 'drop-shadow(0 28px 36px rgba(0,0,0,0.5))',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
 
 const navLinks = [
   { label: 'Продукт', href: '#comparison' },
@@ -202,6 +248,27 @@ const formDefaults = {
   company: '',
   email: '',
   task: '',
+  quantity: '',
+  phone: '',
+  reference: '',
+  assetDelivery: '',
+}
+
+const assetDeliveryOptions = [
+  { value: 'telegram', label: 'Прикреплю в Telegram' },
+  { value: 'email_reply', label: 'Отправлю ответом на письмо' },
+  { value: 'link', label: 'Есть ссылка' },
+]
+
+const METRIKA_ID = 108979976
+const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
+
+function trackEvent(eventName, params = {}) {
+  if (typeof window === 'undefined') return
+
+  window.ym?.(METRIKA_ID, 'reachGoal', eventName, params)
+  window.gtag?.('event', eventName, params)
+  window.dataLayer?.push({ event: eventName, ...params })
 }
 
 function Container({ children, className = '' }) {
@@ -268,7 +335,13 @@ export default function LandingPage() {
       sessionStorage.setItem('utm', JSON.stringify(utm))
     } else {
       const stored = sessionStorage.getItem('utm')
-      if (stored) utmRef.current = JSON.parse(stored)
+      if (stored) {
+        try {
+          utmRef.current = JSON.parse(stored)
+        } catch {
+          sessionStorage.removeItem('utm')
+        }
+      }
     }
   }, [])
 
@@ -282,22 +355,51 @@ export default function LandingPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const payload = {
+      name: formValues.name,
+      company: formValues.company,
+      email: formValues.email,
+      description: formValues.task,
+      quantity: formValues.quantity,
+      phone: formValues.phone,
+      reference: formValues.reference,
+      has_assets: Boolean(formValues.assetDelivery || formValues.reference),
+      asset_delivery: formValues.assetDelivery,
+      lead_source: 'form',
+      ...utmRef.current,
+    }
+
+    trackEvent('lead_form_submit', {
+      lead_source: 'form',
+      has_phone: Boolean(formValues.phone),
+      has_quantity: Boolean(formValues.quantity),
+      has_reference: Boolean(formValues.reference),
+      has_assets: Boolean(formValues.assetDelivery || formValues.reference),
+      asset_delivery: formValues.assetDelivery,
+      ...utmRef.current,
+    })
+
     try {
       await fetch('https://n8n.destresstoys.ru/webhook/new-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formValues.name,
-          company: formValues.company,
-          email: formValues.email,
-          description: formValues.task,
-          ...utmRef.current,
-        }),
+        body: JSON.stringify(payload),
       })
     } catch {
       // fire-and-forget — don't block success UX on network errors
     }
+    trackEvent('lead_form_success', {
+      lead_source: 'form',
+      ...utmRef.current,
+    })
     setIsSubmitted(true)
+  }
+
+  const handleMessengerClick = (channel) => {
+    trackEvent(`messenger_${channel}_click`, {
+      lead_source: channel,
+      ...utmRef.current,
+    })
   }
 
   const handleFaqToggle = (index) => {
@@ -314,9 +416,10 @@ export default function LandingPage() {
           <div className="flex h-16 items-center justify-between gap-6">
             <a
               href="#hero"
-              className="text-xl font-bold text-white tracking-tight"
+              className="flex items-center gap-2.5"
             >
-              DS
+              <img src="/logo-bear.png" alt="DeStressToys" className="h-9 w-auto" />
+              <span className="text-xl font-bold text-white tracking-tight">DeStressToys</span>
             </a>
 
             <nav className="hidden items-center gap-10 md:flex">
@@ -408,15 +511,16 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="hidden md:block w-full overflow-hidden rounded-2xl md:min-h-[600px] lg:min-h-[680px]">
-              <video
-                src="/videos/hero-squish.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-full object-cover"
-              />
+            {/* Mobile toy strip */}
+            <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
+              <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
+              <img src="/images/hero-stage/cat.png"  alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/hero-stage/bear.png" alt="" className="w-36 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/hero-stage/duck.png" alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+            </div>
+
+            <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
+              <ProductStage />
             </div>
           </div>
         </Container>
@@ -893,10 +997,22 @@ export default function LandingPage() {
                     />
                   </label>
 
-                  <div>
-                    <label htmlFor="telegram" className="block text-sm font-medium text-[#7c847d] mb-1.5">Telegram</label>
-                    <input id="telegram" name="telegram" type="text" placeholder="@username"
-                      className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                  <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
+                    <p className="text-sm font-medium text-white">Быстрее в мессенджере</p>
+                    <p className="mt-1 text-sm leading-6 text-[#7c847d]">
+                      Можно не вводить ник — напишите напрямую, а мы продолжим диалог там.
+                    </p>
+                    <div className="mt-4">
+                      <a
+                        href={TELEGRAM_CTA_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => handleMessengerClick('telegram')}
+                        className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+                      >
+                        Написать в Telegram
+                      </a>
+                    </div>
                   </div>
 
                   <label className="block">
@@ -916,19 +1032,52 @@ export default function LandingPage() {
                   <details className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
                     <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Дополнительно</summary>
                     <div className="mt-4 grid grid-cols-2 gap-4">
+                      <fieldset className="col-span-2">
+                        <legend className="block text-sm font-medium text-[#7c847d] mb-2">
+                          Есть логотип, брендбук или референсы?
+                        </legend>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {assetDeliveryOptions.map((option) => (
+                            <label
+                              key={option.value}
+                              className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors hover:border-white/25"
+                            >
+                              <input
+                                type="radio"
+                                name="assetDelivery"
+                                value={option.value}
+                                checked={formValues.assetDelivery === option.value}
+                                onChange={handleInputChange}
+                                className="h-4 w-4 border-white/20 accent-[#ff6a3d]"
+                              />
+                              <span>{option.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                        <p className="mt-2 text-xs leading-5 text-[#7c847d]">
+                          Файлы удобнее отправить в мессенджере или ответом на письмо после заявки.
+                        </p>
+                      </fieldset>
+
                       <div>
                         <label htmlFor="quantity" className="block text-sm font-medium text-[#7c847d] mb-1.5">Примерный тираж</label>
                         <input id="quantity" name="quantity" type="text" placeholder="200 / 500 / 1000"
+                          value={formValues.quantity}
+                          onChange={handleInputChange}
                           className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
                       </div>
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-[#7c847d] mb-1.5">Телефон</label>
                         <input id="phone" name="phone" type="tel" placeholder="+7"
+                          value={formValues.phone}
+                          onChange={handleInputChange}
                           className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
                       </div>
                       <div className="col-span-2">
                         <label htmlFor="reference" className="block text-sm font-medium text-[#7c847d] mb-1.5">Ссылка / референс</label>
                         <input id="reference" name="reference" type="url" placeholder="Figma, Drive, сайт"
+                          value={formValues.reference}
+                          onChange={handleInputChange}
                           className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
                       </div>
                     </div>
