@@ -631,7 +631,9 @@ export default function LandingPage() {
                 key={item.label}
                 className="overflow-hidden rounded-xl border border-[#e5e0d8] bg-white"
               >
-                <img src={item.image} alt={item.alt} className="w-full aspect-[4/3] object-cover" loading="lazy" />
+                <div className="w-full aspect-[4/3] bg-[#f4efe8] flex items-center justify-center p-4">
+                  <img src={item.image} alt={item.alt} className="w-full h-full object-contain" loading="lazy" />
+                </div>
                 <div className="p-4 md:p-6">
                   <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
                     {item.label}
@@ -678,11 +680,11 @@ export default function LandingPage() {
               </PrimaryButton>
             </div>
 
-            <div className="order-1 md:order-2 overflow-hidden rounded-xl">
+            <div className="order-1 md:order-2 overflow-hidden rounded-xl bg-[#ebe5dd] min-h-[260px] md:min-h-[420px] flex items-center justify-center p-6 md:p-10">
               <img
                 src="/images/showcase_shelf.webp"
                 alt="Линейка кастомных антистресс бренд-объектов DeStressToys — варианты для корпоративного welcome kit"
-                className="w-full object-cover min-h-[260px] md:min-h-[420px] rounded-xl"
+                className="w-full max-h-[380px] object-contain"
                 loading="lazy"
               />
             </div>
