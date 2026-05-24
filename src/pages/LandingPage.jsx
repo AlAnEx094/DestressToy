@@ -2,11 +2,11 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 const stageItems = [
-  { src: '/images/hero-stage/duck.png',  alt: 'Маскот Goosely',       size: 178, x: 60, y: 22, z: 1, delay: '0s',   float: '3.8s' },
-  { src: '/images/hero-stage/cat.png',   alt: 'Котик Profit Industry', size: 165, x: 1,  y: 30, z: 2, delay: '0.6s', float: '4.4s' },
-  { src: '/images/hero-stage/bear.png',  alt: 'Медведь DeStressToys',  size: 252, x: 24, y: 18, z: 3, delay: '0.2s', float: '4.0s' },
-  { src: '/images/hero-stage/ball.png',  alt: 'Мяч ЕвроХим',          size: 200, x: 54, y: 54, z: 2, delay: '0.9s', float: '3.5s' },
-  { src: '/images/hero-stage/drop.png',  alt: 'Капля',                 size: 158, x: 3,  y: 61, z: 1, delay: '1.2s', float: '4.8s' },
+  { src: '/images/hero-stage/dinosaur.webp', alt: 'Кастомный антистресс динозавр — мягкий бренд-объект для welcome kit',             size: 178, x: 60, y: 22, z: 1, delay: '0s',   float: '3.8s' },
+  { src: '/images/hero-stage/cat.webp',      alt: 'Антистресс кот-маскот с логотипом клиента — корпоративный мерч',                   size: 165, x: 1,  y: 30, z: 2, delay: '0.6s', float: '4.4s' },
+  { src: '/images/hero-stage/bear.webp',     alt: 'Кастомный антистресс медведь с логотипом — пример бренд-объекта DeStressToys',     size: 252, x: 24, y: 18, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/hero-stage/robot.webp',    alt: 'Антистресс робот с фирменным логотипом — пример корпоративного бренд-объекта',    size: 200, x: 54, y: 54, z: 2, delay: '0.9s', float: '3.5s' },
+  { src: '/images/hero-stage/drop.webp',     alt: 'Мягкая антистресс капля — кастомная форма бренд-объекта под логотип',             size: 158, x: 3,  y: 61, z: 1, delay: '1.2s', float: '4.8s' },
 ]
 
 function ProductStage() {
@@ -68,38 +68,38 @@ const whyCards = [
   {
     number: '01',
     title: 'Тактильный контакт',
-    body: 'Физический объект активирует несколько органов чувств одновременно — запоминаемость в разы выше, чем у визуального мерча.',
+    body: 'Когда объект берут в руки, мозг запоминает его иначе, чем картинку в письме. Физический контакт формирует более устойчивую ассоциацию с брендом.',
   },
   {
     number: '02',
     title: 'Эмоциональная связь',
-    body: 'Мягкость и форма вашего бренда создают положительную ассоциацию каждый раз, когда объект берут в руки.',
+    body: 'Каждый раз, когда сотрудник или клиент берёт объект в руки, бренд получает касание — без push-уведомлений и без бюджета на показы.',
   },
   {
     number: '03',
     title: 'Долгий эффект',
-    body: 'Бренд-объект остаётся на столе неделями. Среднее время жизни — в 8 раз дольше стандартного промо-предмета.',
+    body: 'Бренд-объект остаётся на рабочем столе неделями. Шоколад съеден, ручка потеряна — объект всё ещё работает.',
   },
 ]
 
 const galleryItems = [
-  { label: 'Лого-форма · наборы для новых сотрудников', title: 'Логотип как объект', body: 'Для наборов для новых сотрудников и клиентских подарков, где важно быстро связать объект с брендом.', image: '/images/gallery/logo-1.webp', alt: 'Мягкий бренд-объект в форме логотипа' },
-  { label: 'Символ · мероприятия и стенды', title: 'Символ или знак компании', body: 'Для мероприятий и стендов, где нужен заметный и понятный объект для короткого контакта.', image: '/images/gallery/logo-2.webp', alt: 'Мягкий бренд-объект в форме корпоративного символа' },
-  { label: 'Абстракция · маркетинговые кампании', title: 'Абстрактная форма кампании', body: 'Для маркетинговых кампаний, когда нужен образ, связанный с идеей или продуктом.', image: '/images/gallery/logo-3.webp', alt: 'Абстрактный мягкий бренд-объект' },
-  { label: 'Маскот · отправки для клиентов', title: 'Корпоративный маскот', body: 'Для отправок клиентам и партнёрам, где нужен более живой и узнаваемый образ.', image: '/images/gallery/logo-4.webp', alt: 'Мягкий бренд-объект маскот' },
-  { label: 'Сложный силуэт · специальные запуски', title: 'Сложная скульптурная форма', body: 'Для специальных запусков, когда форма должна выглядеть необычно, но оставаться удобной в производстве.', image: '/images/gallery/logo-5.webp', alt: 'Скульптурный мягкий объект' },
+  { label: 'Маскот · welcome kit и подарки', title: 'Белый медведь', body: 'Нейтральная форма под нанесение логотипа. Хорошо читается в фирменных цветах и в нейтральных — подходит для welcome kit и клиентских подарков.', image: '/images/gallery/white_bear.webp', alt: 'Белый медведь-маскот с брендингом клиента — антистресс для welcome kit' },
+  { label: 'Символ · мероприятия и стенды', title: 'Осьминог-маскот', body: 'Узнаваемая форма с высокой тактильностью. Легко ассоциируется с брендом — для event-стендов и раздатки на мероприятиях.', image: '/images/gallery/octopus.webp', alt: 'Синий осьминог-маскот с логотипом — пример кастомного антистресса для события' },
+  { label: 'Промо · выставки и рассылки', title: 'Смайл-персонаж', body: 'Позитивный образ для промо-акций и рассылок. Физическое вложение стабильно увеличивает процент открытий — в отличие от писем без вложения.', image: '/images/gallery/orange_smile.webp', alt: 'Оранжевый смайл-персонаж с логотипом — корпоративный антистресс для промо-акции' },
+  { label: 'Маскот · отправки для клиентов', title: 'Кот-единорог', body: 'Для отправок клиентам и партнёрам — живой, узнаваемый персонаж с уникальным характером. Высокая вовлечённость аудитории.', image: '/images/gallery/cat_rog.webp', alt: 'Кот-единорог с брендингом клиента — кастомный мягкий антистресс бренд-объект' },
+  { label: 'Кастомная форма · спецзапуски', title: 'Арбуз-персонаж', body: 'Для специальных кампаний, когда нужна нестандартная форма, которая запоминается с первого взгляда.', image: '/images/gallery/watermelon.webp', alt: 'Антистресс арбуз нестандартной формы — кастомный бренд-объект с логотипом' },
 ]
 
 const processSteps = [
   {
     number: '01',
     title: 'Заявка',
-    body: 'Заполните форму — опишите задачу, бренд и контекст использования.',
+    body: 'Заполните короткую форму — опишите задачу и бренд. Занимает 2–3 минуты.',
   },
   {
     number: '02',
     title: 'Концепт',
-    body: 'В течение 1 рабочего дня пришлём концепт формы с рендером и описанием.',
+    body: 'В течение 1 рабочего дня пришлём визуальный концепт формы — рендер и описание материалов. Бесплатно.',
   },
   {
     number: '03',
@@ -122,7 +122,7 @@ const useCases = [
       </svg>
     ),
     title: 'Event и выставки',
-    body: 'Раздаточный материал, который не выбрасывают. Логотип-антистресс остаётся на столе после мероприятия.',
+    body: 'Раздатка, которую не выбрасывают на выходе. Объект уходит домой или на рабочий стол — и продолжает работать после события.',
   },
   {
     icon: (
@@ -133,7 +133,7 @@ const useCases = [
       </svg>
     ),
     title: 'Welcome kit',
-    body: 'Первый физический предмет бренда в руках нового сотрудника или клиента. Формирует принадлежность.',
+    body: 'Единственный предмет из набора, который остаётся на столе через месяц. Формирует принадлежность с первого дня.',
   },
   {
     icon: (
@@ -151,64 +151,7 @@ const useCases = [
       </svg>
     ),
     title: 'Промо-рассылки',
-    body: 'Вкладыш в почтовую рассылку, который открывают и держат в руках. CTR таких рассылок выше на 40%.',
-  },
-]
-
-const trustBrands = [
-  {
-    name: 'Atmos',
-    logo: (
-      <svg viewBox="0 0 96 28" className="h-6 w-auto" fill="none">
-        <path d="M4 8h10M4 14h7M4 20h10" stroke="#151716" strokeWidth="1.8" strokeLinecap="round"/>
-        <text x="21" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="700" fontSize="13" fill="#151716" letterSpacing="1.5">ATMOS</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Forma',
-    logo: (
-      <svg viewBox="0 0 82 28" className="h-6 w-auto" fill="none">
-        <rect x="3" y="6" width="14" height="16" rx="3.5" stroke="#151716" strokeWidth="1.8"/>
-        <text x="22" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="400" fontSize="13" fontStyle="italic" fill="#151716">forma</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Vertex',
-    logo: (
-      <svg viewBox="0 0 106 28" className="h-6 w-auto" fill="none">
-        <path d="M3 20L10 8l7 12" stroke="#151716" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <text x="26" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="600" fontSize="13" fill="#151716" letterSpacing="1">VERTEX</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Nord',
-    logo: (
-      <svg viewBox="0 0 72 28" className="h-6 w-auto" fill="none">
-        <path d="M5 22V6l10 16V6" stroke="#151716" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <text x="22" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="800" fontSize="13" fill="#151716">Nord</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Pulse',
-    logo: (
-      <svg viewBox="0 0 98 28" className="h-6 w-auto" fill="none">
-        <path d="M3 14H7L9 7L12 21L14.5 14L16.5 18H20" stroke="#151716" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <text x="26" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="500" fontSize="13" fill="#151716" letterSpacing="1.5">PULSE</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Kite',
-    logo: (
-      <svg viewBox="0 0 72 28" className="h-6 w-auto" fill="none">
-        <path d="M10 4L18 14L10 24L2 14Z" stroke="#151716" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <text x="25" y="19" fontFamily="Inter,system-ui,sans-serif" fontWeight="700" fontSize="13" fill="#151716">Kite</text>
-      </svg>
-    ),
+    body: 'Вкладыш в почтовую рассылку, который открывают и держат в руках. Физические вложения стабильно увеличивают процент открытий.',
   },
 ]
 
@@ -223,7 +166,7 @@ const faqItems = [
   },
   {
     q: 'Сколько занимает производство?',
-    a: '3–5 недель от утверждения финального концепта. Срочные заказы обсуждаются индивидуально.',
+    a: '3–5 недель от утверждения. Если нужно к конкретной дате — напишите в заявке, рассмотрим возможности.',
   },
   {
     q: 'Какие форматы кастомизации доступны?',
@@ -239,7 +182,7 @@ const faqItems = [
   },
   {
     q: 'Можно ли получить образец перед тиражом?',
-    a: 'Да, производим тестовый образец. Стоимость образца засчитывается в тираж при подтверждении заказа.',
+    a: 'Да. Производим тестовый образец — вы оцениваете форму, материал и цвет вживую. Стоимость образца засчитывается в тираж при заказе.',
   },
 ]
 
@@ -418,7 +361,7 @@ export default function LandingPage() {
               href="#hero"
               className="flex items-center gap-2.5"
             >
-              <img src="/logo-bear.png" alt="DeStressToys" className="h-9 w-auto" />
+              <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
               <span className="text-xl font-bold text-white tracking-tight">DeStressToys</span>
             </a>
 
@@ -436,7 +379,7 @@ export default function LandingPage() {
 
             <div className="hidden md:block">
               <PrimaryButton href="#final_cta" className="px-5 py-2.5 text-sm">
-                Запросить концепт
+                Получить концепт бесплатно
               </PrimaryButton>
             </div>
 
@@ -477,7 +420,7 @@ export default function LandingPage() {
                   className="mt-2 w-full"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Запросить концепт
+                  Получить концепт бесплатно
                 </PrimaryButton>
               </nav>
             </div>
@@ -489,19 +432,19 @@ export default function LandingPage() {
         <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
           <div className="grid w-full items-stretch gap-10 md:grid-cols-[1.2fr_0.95fr] md:gap-16">
             <div className="flex flex-col justify-center">
-              <SectionLabel>Кастомные бренд-объекты для компаний</SectionLabel>
+              <SectionLabel>Мягкий кастомный мерч для корпоративных брендов</SectionLabel>
               <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] text-white">
-                Бренд-объект, который не теряется среди обычного мерча
+                Кастомный антистресс с логотипом вашего бренда — мерч, к которому возвращаются снова
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Мягкие объекты кастомной формы — логотип, маскот или символ бренда.
-                Тактильный предмет, который остаётся в руках и на столе.
+                Мягкий пенополиуретан с бархатистым покрытием. Форма — логотип, маскот или любой символ бренда.
+                Лежит на столе, попадает в руки снова и снова.
               </p>
 
               <div className="mt-8 md:mt-10">
-                <PrimaryButton href="#final_cta">Запросить концепт</PrimaryButton>
+                <PrimaryButton href="#final_cta">Получить концепт бесплатно</PrimaryButton>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  {['Форма под любой бренд', 'Тираж от 50 штук', 'Производство под ключ'].map((p, i) => (
+                  {['Любая форма: логотип, маскот, символ', 'Тираж от 50 шт', 'Концепт бесплатно за 1 день'].map((p, i) => (
                     <span key={i} className="text-sm text-[#7c847d] flex items-center gap-2">
                       {i > 0 && <span className="w-1 h-1 rounded-full bg-[#7c847d] inline-block" />}
                       {p}
@@ -514,9 +457,9 @@ export default function LandingPage() {
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/hero-stage/cat.png"  alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/hero-stage/bear.png" alt="" className="w-36 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/hero-stage/duck.png" alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+              <img src="/images/hero-stage/cat.webp"      alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/hero-stage/bear.webp"     alt="" className="w-36 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/hero-stage/dinosaur.webp" alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
             </div>
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
@@ -531,7 +474,7 @@ export default function LandingPage() {
           <SectionLabel>Сравнение</SectionLabel>
           <div className="max-w-[820px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Обычные сувениры редко дают повторный контакт с брендом
+              Обычный мерч используют один раз. Бренд-объект остаётся на виду.
             </h2>
             <p className="mt-6 text-lg leading-8 text-[#7c847d]">
               Шоколад заканчивается, ручка теряется, блокнот не всегда под рукой.
@@ -584,9 +527,9 @@ export default function LandingPage() {
                 className="rounded-xl border border-[#e5e0d8] bg-white p-5"
               >
                 <h3 className="text-sm font-semibold text-[#151716]">{row.label}</h3>
-                <div className="mt-3 grid grid-cols-3 gap-2">
-                  {[0, 2, 4].map((origIdx) => (
-                    <div key={`${row.label}-${origIdx}`} className="flex flex-col items-center gap-1.5 text-center">
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  {[0, 4].map((origIdx) => (
+                    <div key={`${row.label}-${origIdx}`} className={`flex flex-col items-center gap-1.5 text-center rounded-lg p-2 ${origIdx === 4 ? 'bg-[#ff6a3d]/8' : 'bg-[#f4efe8]'}`}>
                       <span className="text-[10px] uppercase tracking-wider text-[#7c847d]">
                         {comparisonCols[origIdx + 1]}
                       </span>
@@ -606,8 +549,7 @@ export default function LandingPage() {
 
           <div className="mt-8 rounded-xl bg-[#ebe5dd] p-6 text-base text-[#7c847d]">
             <span className="font-bold text-[#ff6a3d]">Вывод:</span> бренд-объект
-            чаще остаётся в поле зрения и даёт повторный физический контакт с
-            брендом.
+            остаётся на столе неделями — каждый раз это контакт с вашим брендом без дополнительных вложений.
           </div>
         </Container>
       </section>
@@ -617,7 +559,7 @@ export default function LandingPage() {
           <SectionLabel>Почему это работает</SectionLabel>
           <div className="max-w-[760px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Тактильный контакт работает там, где визуальный — нет
+              Физический предмет запоминается иначе, чем картинка или письмо
             </h2>
           </div>
 
@@ -649,8 +591,7 @@ export default function LandingPage() {
                 Приятно держать. Сложно отложить.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Мягкий пенополиуретан с бархатистым покрытием. Объект пружинит и
-                возвращает форму — руки тянутся к нему снова и снова.
+                Мягкий пенополиуретан с бархатистым покрытием. Объект пружинит, возвращает форму и не теряет вид — руки тянутся к нему снова и снова.
               </p>
               <ul className="mt-8 space-y-3 text-sm leading-6 text-[#7c847d]">
                 {[
@@ -668,8 +609,8 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
-              <img src="/images/texture/texture-1.webp" alt="Текстура поверхности бренд-объекта" className="w-full h-full object-cover rounded-xl" loading="lazy" />
-              <img src="/images/texture/texture-2.webp" alt="Материал мягкого объекта крупным планом" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/texture-1.webp" alt="Мягкая текстура антистресс-наполнителя — ощущение бренд-объекта DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/texture-2.webp" alt="Материал кастомного антистресса крупным планом — качество производства DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
             </div>
           </div>
         </Container>
@@ -680,7 +621,7 @@ export default function LandingPage() {
           <SectionLabel>Примеры</SectionLabel>
           <div className="max-w-[680px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Реализованные бренд-объекты
+              Примеры: что уже делают другие компании
             </h2>
           </div>
 
@@ -712,12 +653,11 @@ export default function LandingPage() {
             <div className="order-2 md:order-1 max-w-[520px]">
               <SectionLabel>Welcome Kit</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-                Стать частью welcome kit — и остаться на столе
+                Первый физический предмет бренда в руках нового сотрудника
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Бренд-объект в составе корпоративного набора — первое физическое
-                впечатление нового сотрудника или клиента. Формирует принадлежность
-                с первого дня.
+                Welcome kit задаёт тон отношения к компании. Бренд-объект — это единственный предмет из набора,
+                который остаётся на столе через месяц.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -734,14 +674,14 @@ export default function LandingPage() {
               </div>
 
               <PrimaryButton href="#final_cta" className="mt-8">
-                Запросить концепт
+                Получить концепт бесплатно
               </PrimaryButton>
             </div>
 
             <div className="order-1 md:order-2 overflow-hidden rounded-xl">
               <img
-                src="/images/welcome-kit.webp"
-                alt="Бренд-объект DeStressToys в составе корпоративного welcome kit"
+                src="/images/showcase_shelf.webp"
+                alt="Линейка кастомных антистресс бренд-объектов DeStressToys — варианты для корпоративного welcome kit"
                 className="w-full object-cover min-h-[260px] md:min-h-[420px] rounded-xl"
                 loading="lazy"
               />
@@ -784,11 +724,11 @@ export default function LandingPage() {
           <SectionLabel>Где используют</SectionLabel>
           <div className="max-w-[720px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Подходит для любой точки контакта с брендом
+              Четыре задачи, которые уже решают с бренд-объектом
             </h2>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-4">
             {useCases.map((item) => (
               <article
                 key={item.title}
@@ -811,22 +751,18 @@ export default function LandingPage() {
         <Container>
           <SectionLabel>Доверие</SectionLabel>
           <p className="text-sm uppercase tracking-[0.08em] text-[#7c847d]">
-            Бренды, которые уже сделали свой объект
+            Работаем с компаниями из IT, ретейла, FMCG и финтеха
           </p>
 
-          <div className="relative mt-6 overflow-hidden">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#ebe5dd] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#ebe5dd] to-transparent" />
-            <div className="marquee-track flex w-max gap-4">
-              {[...trustBrands, ...trustBrands].map((brand, i) => (
-                <div
-                  key={`${brand.name}-${i}`}
-                  className="flex h-16 w-44 shrink-0 items-center justify-center rounded-[12px] bg-white px-4 opacity-75 transition-opacity hover:opacity-100"
-                >
-                  {brand.logo}
-                </div>
-              ))}
-            </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {['IT и SaaS', 'FMCG', 'Ретейл', 'Финтех', 'HR и EdTech', 'Производство'].map((sector) => (
+              <span
+                key={sector}
+                className="rounded-[8px] border border-[#d0c9bf] bg-white px-4 py-2 text-sm font-medium text-[#151716]"
+              >
+                {sector}
+              </span>
+            ))}
           </div>
 
           <div className="mt-10 flex justify-center">
@@ -837,17 +773,18 @@ export default function LandingPage() {
                 бренда.»
               </p>
               <p className="mt-4 text-sm text-[#7c847d]">
-                Алёна М., Head of Marketing, Placeholder Company
+                Алёна М., Head of Marketing, IT-компания (Москва)
               </p>
             </article>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-4 md:gap-6 xl:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-4 md:gap-6 xl:grid-cols-5">
             {[
               { title: 'Минимальный тираж', value: 'от 50 шт.' },
               { title: 'Концепт бесплатно', value: 'без предоплаты' },
               { title: 'Срок производства', value: '3–5 недель' },
               { title: 'Правки до утверждения', value: 'бесплатно' },
+              { title: 'Доставка', value: 'РФ и СНГ' },
             ].map((item) => (
               <div key={item.title}>
                 <p className="text-sm text-[#7c847d]">{item.title}</p>
@@ -905,7 +842,7 @@ export default function LandingPage() {
             <div className="max-w-[420px]">
               <SectionLabel>Запрос концепта</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Запросить концепт под ваш бренд
+                Получите концепт под ваш бренд — бесплатно за 1 рабочий день
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
                 Опишите задачу — пришлём концепт бесплатно в течение 1 рабочего дня.
@@ -925,7 +862,7 @@ export default function LandingPage() {
               <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
                 <img
                   src="/images/cta/cta-hero.webp"
-                  alt="Бренд-объект на столе"
+                  alt="Антистресс бренд-объект с логотипом на рабочем столе — корпоративный подарок партнёру"
                   className="w-full h-[220px] object-cover rounded-lg"
                   loading="lazy"
                 />
@@ -933,7 +870,7 @@ export default function LandingPage() {
               <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-5 text-sm leading-7 text-[#7c847d]">
                 После заявки вы получите:
                 <ul className="mt-3 space-y-2">
-                  {['Предварительный визуальный концепт', 'Ориентир по тиражу и стоимости', 'Понимание, подходит ли формат под ваш бренд'].map(i => (
+                  {['Визуальный концепт формы — рендер и описание материалов', 'Расчёт стоимости под ваш тираж', 'Ответы на вопросы по формату и срокам'].map(i => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff6a3d] shrink-0" />
                       {i}
@@ -952,6 +889,8 @@ export default function LandingPage() {
                   <p className="text-base leading-7 text-[#7c847d]">
                     Мы получили ваши данные и подготовим концепт под задачу
                     {formValues.company ? ` для ${formValues.company}` : ''}.
+                    Ответ придёт на {formValues.email || 'указанный email'} — или напишите напрямую в{' '}
+                    <a href={TELEGRAM_CTA_URL} target="_blank" rel="noreferrer" className="text-[#ff6a3d] underline">Telegram</a>.
                   </p>
                 </div>
               ) : (
@@ -1000,7 +939,7 @@ export default function LandingPage() {
                   <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
                     <p className="text-sm font-medium text-white">Быстрее в мессенджере</p>
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Можно не вводить ник — напишите напрямую, а мы продолжим диалог там.
+                      Отвечаем в течение нескольких часов.
                     </p>
                     <div className="mt-4">
                       <a

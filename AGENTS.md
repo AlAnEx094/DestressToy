@@ -26,6 +26,22 @@ Before starting project work, read:
 - Codex-specific skills and agents live in `~/.codex/skills` and `~/.codex/agents`.
 - Keep Obsidian notes concise: facts, decisions, changed files, unresolved questions, current status, next step.
 
+## Self-Learning: Playbook Updates
+After resolving any non-trivial issue (debugging, a workaround, a surprising failure), append an entry to:
+`/home/sozidatel_04/Obsidian/CodexMemory/Projects/werker_landing/08_PLAYBOOK.md`
+
+Use this format:
+```
+#### Short title
+**Когда:** trigger
+**Подход:** what works
+**Подводные камни:** what breaks
+**Итог:** ✅/⚠️/❌ + date
+```
+
+Add to the matching section: CODEX / N8N / VERCEL / ВИЗУАЛ / PAL / AIRTABLE / ПАМЯТЬ.
+Skip for trivial one-liner changes.
+
 ## Project Constraints
 - Stack: React 18, Tailwind CSS v3, Vite, React Router v6.
 - Entry: `src/App.jsx`; pages: `src/pages/LandingPage.jsx`, `src/pages/PrivacyPage.jsx`.
