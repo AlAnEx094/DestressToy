@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const stageItems = [
   { src: '/images/hero-stage/dinosaur.webp', alt: 'Кастомный антистресс динозавр — мягкий бренд-объект для welcome kit',             size: 178, x: 60, y: 22, z: 1, delay: '0s',   float: '3.8s' },
   { src: '/images/hero-stage/cat.webp',      alt: 'Антистресс кот-маскот с логотипом клиента — корпоративный мерч',                   size: 165, x: 1,  y: 30, z: 2, delay: '0.6s', float: '4.4s' },
-  { src: '/images/hero-stage/bear.webp',     alt: 'Кастомный антистресс медведь с логотипом — пример бренд-объекта DeStressToys',     size: 252, x: 24, y: 18, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/hero-stage/bear.webp',     alt: 'Кастомный антистресс медведь с логотипом — пример бренд-объекта DeStressToys',     size: 252, x: 24, y: 30, z: 3, delay: '0.2s', float: '4.0s' },
   { src: '/images/hero-stage/robot.webp',    alt: 'Антистресс робот с фирменным логотипом — пример корпоративного бренд-объекта',    size: 200, x: 54, y: 54, z: 2, delay: '0.9s', float: '3.5s' },
   { src: '/images/hero-stage/drop.webp',     alt: 'Мягкая антистресс капля — кастомная форма бренд-объекта под логотип',             size: 158, x: 3,  y: 61, z: 1, delay: '1.2s', float: '4.8s' },
 ]
@@ -457,9 +457,9 @@ export default function LandingPage() {
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/hero-stage/cat.webp"      alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/hero-stage/bear.webp"     alt="" className="w-36 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/hero-stage/dinosaur.webp" alt="" className="w-24 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+              <img src="/images/hero-stage/cat.webp"      alt="" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/hero-stage/bear.webp"     alt="" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/hero-stage/dinosaur.webp" alt="" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
             </div>
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
@@ -476,7 +476,7 @@ export default function LandingPage() {
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
               Обычный мерч используют один раз. Бренд-объект остаётся на виду.
             </h2>
-            <p className="mt-6 text-lg leading-8 text-[#7c847d]">
+            <p className="mt-6 text-lg leading-8 text-[#5a6060]">
               Шоколад заканчивается, ручка теряется, блокнот не всегда под рукой.
               Бренд-объект выигрывает тем, что к нему возвращаются.
             </p>
@@ -484,7 +484,7 @@ export default function LandingPage() {
 
           <div className="mt-10 hidden overflow-hidden rounded-xl border border-[#e5e0d8] bg-white md:block">
             <table className="w-full border-collapse">
-              <thead className="bg-[#ebe5dd] text-xs uppercase tracking-wider text-[#7c847d]">
+              <thead className="bg-[#ebe5dd] text-xs uppercase tracking-wider text-[#5a6060]">
                 <tr>
                   {comparisonCols.map((col, index) => (
                     <th
@@ -505,7 +505,7 @@ export default function LandingPage() {
                     {row.values.map((value, index) => (
                       <td
                         key={`${row.label}-${index}`}
-                        className={`px-5 py-4 text-sm ${index === row.values.length - 1 ? 'bg-[#ff6a3d]/8' : 'text-[#7c847d]'}`}
+                        className={`px-5 py-4 text-sm ${index === row.values.length - 1 ? 'bg-[#ff6a3d]/8' : 'text-[#5a6060]'}`}
                       >
                         {index === row.values.length - 1 ? (
                           <span className="inline-flex items-center rounded-full bg-[#ff6a3d] px-3 py-0.5 text-xs font-bold text-white">
@@ -530,7 +530,7 @@ export default function LandingPage() {
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   {[0, 4].map((origIdx) => (
                     <div key={`${row.label}-${origIdx}`} className={`flex flex-col items-center gap-1.5 text-center rounded-lg p-2 ${origIdx === 4 ? 'bg-[#ff6a3d]/8' : 'bg-[#f4efe8]'}`}>
-                      <span className="text-[10px] uppercase tracking-wider text-[#7c847d]">
+                      <span className="text-[10px] uppercase tracking-wider text-[#5a6060]">
                         {comparisonCols[origIdx + 1]}
                       </span>
                       {origIdx === 4 ? (
@@ -538,7 +538,7 @@ export default function LandingPage() {
                           {row.values[origIdx]}
                         </span>
                       ) : (
-                        <span className="text-sm text-[#7c847d]">{row.values[origIdx]}</span>
+                        <span className="text-sm text-[#5a6060]">{row.values[origIdx]}</span>
                       )}
                     </div>
                   ))}
@@ -547,7 +547,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-8 rounded-xl bg-[#ebe5dd] p-6 text-base text-[#7c847d]">
+          <div className="mt-8 rounded-xl bg-[#ebe5dd] p-6 text-base text-[#5a6060]">
             <span className="font-bold text-[#ff6a3d]">Вывод:</span> бренд-объект
             остаётся на столе неделями — каждый раз это контакт с вашим брендом без дополнительных вложений.
           </div>
@@ -575,7 +575,7 @@ export default function LandingPage() {
                 <h3 className="mt-6 text-2xl font-semibold leading-8 text-[#151716]">
                   {card.title}
                 </h3>
-                <p className="mt-4 text-base leading-7 text-[#7c847d]">{card.body}</p>
+                <p className="mt-4 text-base leading-7 text-[#5a6060]">{card.body}</p>
               </article>
             ))}
           </div>
@@ -637,7 +637,7 @@ export default function LandingPage() {
                     {item.label}
                   </p>
                   <h3 className="text-base md:text-xl font-bold text-[#151716]">{item.title}</h3>
-                  <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#7c847d]">
+                  <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#5a6060]">
                     {item.body}
                   </p>
                 </div>
@@ -655,7 +655,7 @@ export default function LandingPage() {
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
                 Первый физический предмет бренда в руках нового сотрудника
               </h2>
-              <p className="mt-6 text-lg leading-8 text-[#7c847d]">
+              <p className="mt-6 text-lg leading-8 text-[#5a6060]">
                 Welcome kit задаёт тон отношения к компании. Бренд-объект — это единственный предмет из набора,
                 который остаётся на столе через месяц.
               </p>
@@ -665,7 +665,7 @@ export default function LandingPage() {
                   (tag) => (
                     <span
                       key={tag}
-                      className="rounded px-3.5 py-1.5 text-sm text-[#7c847d] ring-1 ring-inset ring-[#d0c9bf]"
+                      className="rounded px-3.5 py-1.5 text-sm text-[#5a6060] ring-1 ring-inset ring-[#d0c9bf]"
                     >
                       {tag}
                     </span>
@@ -740,7 +740,7 @@ export default function LandingPage() {
                 <h3 className="mt-4 text-base md:text-2xl font-semibold leading-6 md:leading-8 text-[#151716]">
                   {item.title}
                 </h3>
-                <p className="mt-2 md:mt-4 text-sm md:text-base leading-6 md:leading-7 text-[#7c847d]">{item.body}</p>
+                <p className="mt-2 md:mt-4 text-sm md:text-base leading-6 md:leading-7 text-[#5a6060]">{item.body}</p>
               </article>
             ))}
           </div>
@@ -750,7 +750,7 @@ export default function LandingPage() {
       <section id="trust" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Доверие</SectionLabel>
-          <p className="text-sm uppercase tracking-[0.08em] text-[#7c847d]">
+          <p className="text-sm uppercase tracking-[0.08em] text-[#5a6060]">
             Работаем с компаниями из IT, ретейла, FMCG и финтеха
           </p>
 
@@ -767,14 +767,17 @@ export default function LandingPage() {
 
           <div className="mt-10 flex justify-center">
             <article className="max-w-[720px] rounded-[12px] border border-[#e5e0d8] bg-white p-8 md:p-10">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#ff6a3d] mb-4">Кейс</p>
               <p className="text-base md:text-xl leading-7 md:leading-8 text-[#151716]">
-                «Раньше мы дарили ручки и блокноты. После того как сделали фигуру
-                нашего маскота — клиенты сами присылают фото с ним. Это стало частью
-                бренда.»
+                IT-компания заменила ручки и блокноты в welcome kit на маскота своего бренда.
+                Сотрудники сами фотографировались с ним и выкладывали в Stories — без просьб со стороны HR.
+                Объект остался на столах через полгода.
               </p>
-              <p className="mt-4 text-sm text-[#7c847d]">
-                Алёна М., Head of Marketing, IT-компания (Москва)
-              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {['IT-сектор, Москва', 'Welcome kit', '200 шт.'].map((tag) => (
+                  <span key={tag} className="rounded-md bg-[#f4efe8] px-3 py-1 text-xs font-medium text-[#5a6060]">{tag}</span>
+                ))}
+              </div>
             </article>
           </div>
 
@@ -787,7 +790,7 @@ export default function LandingPage() {
               { title: 'Доставка', value: 'РФ и СНГ' },
             ].map((item) => (
               <div key={item.title}>
-                <p className="text-sm text-[#7c847d]">{item.title}</p>
+                <p className="text-sm text-[#5a6060]">{item.title}</p>
                 <p className="mt-2 text-2xl font-semibold text-[#151716]">{item.value}</p>
               </div>
             ))}
@@ -824,7 +827,7 @@ export default function LandingPage() {
                     </button>
 
                     {isOpen ? (
-                      <p className="mt-4 max-w-[620px] text-base leading-7 text-[#7c847d]">
+                      <p className="mt-4 max-w-[620px] text-base leading-7 text-[#5a6060]">
                         {item.a}
                       </p>
                     ) : null}
@@ -970,7 +973,7 @@ export default function LandingPage() {
 
                   <details className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
                     <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Дополнительно</summary>
-                    <div className="mt-4 grid grid-cols-2 gap-4">
+                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <fieldset className="col-span-2">
                         <legend className="block text-sm font-medium text-[#7c847d] mb-2">
                           Есть логотип, брендбук или референсы?
