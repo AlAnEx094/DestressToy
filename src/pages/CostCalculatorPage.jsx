@@ -83,7 +83,7 @@ function NumberInput({ label, value, suffix, step = 1, onChange }) {
           type="number"
           step={step}
           value={value}
-          onChange={(event) => onChange(getNumber(event.target.value))}
+          onChange={(event) => onChange(event.target.value)}
           className="min-h-11 w-full bg-transparent font-mono text-sm text-white outline-none"
         />
         <span className="ml-3 shrink-0 text-xs text-neutral-500">{suffix}</span>
@@ -106,11 +106,25 @@ export default function CostCalculatorPage() {
   const [searchParams] = useSearchParams()
   const dealId = searchParams.get('dealId') || ''
   const [values, setValues] = useState(defaults)
+  const [moneyInputs, setMoneyInputs] = useState({
+    moldUsd: String(defaults.moldUsd),
+    printSetupUsd: String(defaults.printSetupUsd),
+    chinaDeliveryUsd: String(defaults.chinaDeliveryUsd),
+    sampleUsd: String(defaults.sampleUsd),
+  })
   const [copied, setCopied] = useState('')
 
   const update = (key, value) => {
     setValues((current) => ({ ...current, [key]: value }))
     setCopied('')
+  }
+
+  const updateMoneyInput = (key, value) => {
+    const normalized = value.replace(',', '.')
+    if (!/^\d*\.?\d*$/.test(normalized)) return
+
+    setMoneyInputs((current) => ({ ...current, [key]: normalized }))
+    update(key, normalized === '' ? 0 : getNumber(normalized))
   }
 
   const result = useMemo(() => {
@@ -226,10 +240,10 @@ export default function CostCalculatorPage() {
               <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={5000} step={50} onChange={(value) => update('quantity', value)} />
               <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={20} max={500} step={10} onChange={(value) => update('weightGram', value)} />
               <Field label="Упаковка" value={values.packUsd} suffix=" $/шт" min={0} max={2} step={0.05} onChange={(value) => update('packUsd', value)} />
-              <NumberInput label="Форма / оснастка" value={values.moldUsd} suffix="$" onChange={(value) => update('moldUsd', value)} />
-              <NumberInput label="Печать / подготовка" value={values.printSetupUsd} suffix="$" onChange={(value) => update('printSetupUsd', value)} />
-              <NumberInput label="Доставка по Китаю" value={values.chinaDeliveryUsd} suffix="$" onChange={(value) => update('chinaDeliveryUsd', value)} />
-              <NumberInput label="Образец / sample" value={values.sampleUsd} suffix="$" onChange={(value) => update('sampleUsd', value)} />
+              <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix="$" onChange={(value) => updateMoneyInput('moldUsd', value)} />
+              <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix="$" onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
+              <NumberInput label="Доставка по Китаю" value={moneyInputs.chinaDeliveryUsd} suffix="$" onChange={(value) => updateMoneyInput('chinaDeliveryUsd', value)} />
+              <NumberInput label="Образец / sample" value={moneyInputs.sampleUsd} suffix="$" onChange={(value) => updateMoneyInput('sampleUsd', value)} />
             </div>
           </div>
 
