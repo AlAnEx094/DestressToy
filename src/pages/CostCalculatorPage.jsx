@@ -106,11 +106,11 @@ export default function CostCalculatorPage() {
   const [searchParams] = useSearchParams()
   const dealId = searchParams.get('dealId') || ''
   const [values, setValues] = useState(defaults)
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState('')
 
   const update = (key, value) => {
     setValues((current) => ({ ...current, [key]: value }))
-    setCopied(false)
+    setCopied('')
   }
 
   const result = useMemo(() => {
@@ -165,7 +165,7 @@ export default function CostCalculatorPage() {
     }
   }, [values])
 
-  const summaryText = [
+  const crmText = [
     dealId ? `Сделка: ${dealId}` : null,
     `Тираж: ${values.quantity} шт.`,
     `EXW: ${formatUsd(values.exwUsd)} / шт.`,
@@ -178,9 +178,24 @@ export default function CostCalculatorPage() {
     `Маржа: ${Math.round(result.marginPct)}%`,
   ].filter(Boolean).join('\n')
 
-  const copySummary = async () => {
-    await navigator.clipboard.writeText(summaryText)
-    setCopied(true)
+  const clientText = [
+    'Добрый день!',
+    '',
+    'Подготовили предварительный расчёт по вашему брендированному антистрессу.',
+    '',
+    `Тираж: ${values.quantity} шт.`,
+    `Ориентировочная стоимость: ${formatRub(result.priceRub)} / шт.`,
+    `Итого за партию: ${formatRub(result.totalPriceRub)}.`,
+    '',
+    'В стоимость включены производство, базовая упаковка, логистика и подготовка партии к передаче.',
+    'Финальная цена может уточняться после утверждения макета, материала, способа нанесения и точных параметров поставщика.',
+    '',
+    'Если такой порядок цены подходит, следующим шагом зафиксируем детали: форму, размер, цвет, нанесение логотипа, упаковку и сроки производства.',
+  ].join('\n')
+
+  const copyText = async (type, text) => {
+    await navigator.clipboard.writeText(text)
+    setCopied(type)
   }
 
   const marginColor = result.marginPct >= 50 ? 'bg-emerald-400' : result.marginPct >= 35 ? 'bg-lime-300' : result.marginPct >= 25 ? 'bg-amber-400' : 'bg-red-400'
@@ -264,7 +279,7 @@ export default function CostCalculatorPage() {
           ) : null}
         </section>
 
-        <section className="mt-4 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="mt-4 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900">
             <div className="border-b border-neutral-800 px-5 py-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Структура себестоимости / шт</div>
             <div>
@@ -280,19 +295,36 @@ export default function CostCalculatorPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
-            <div className="font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Текст для CRM / клиента</div>
-            <pre className="mt-4 whitespace-pre-wrap rounded-md bg-neutral-950 p-4 font-mono text-xs leading-5 text-neutral-300">{summaryText}</pre>
-            <button
-              type="button"
-              onClick={copySummary}
-              className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-lime-300 px-5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-lime-200"
-            >
-              {copied ? 'Скопировано' : 'Скопировать расчёт'}
-            </button>
-            <p className="mt-3 text-xs leading-5 text-neutral-500">
-              Следующий этап: вставить расчёт в Airtable и отправить клиенту КП. Автосохранение в CRM лучше подключить отдельным n8n webhook.
-            </p>
+          <div className="grid gap-4">
+            <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
+              <div className="font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Текст для CRM</div>
+              <pre className="mt-4 whitespace-pre-wrap rounded-md bg-neutral-950 p-4 font-mono text-xs leading-5 text-neutral-300">{crmText}</pre>
+              <button
+                type="button"
+                onClick={() => copyText('crm', crmText)}
+                className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md border border-neutral-700 px-5 text-sm font-semibold text-white transition-colors hover:border-neutral-500 hover:bg-neutral-800"
+              >
+                {copied === 'crm' ? 'CRM-текст скопирован' : 'Скопировать для CRM'}
+              </button>
+              <p className="mt-3 text-xs leading-5 text-neutral-500">
+                Внутренний текст содержит себестоимость, прибыль и маржу. Клиенту его отправлять не нужно.
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-lime-300/60 bg-lime-300/10 p-5">
+              <div className="font-mono text-xs uppercase tracking-[0.12em] text-lime-300">Текст для клиента</div>
+              <pre className="mt-4 whitespace-pre-wrap rounded-md bg-neutral-950 p-4 text-sm leading-6 text-neutral-200">{clientText}</pre>
+              <button
+                type="button"
+                onClick={() => copyText('client', clientText)}
+                className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-lime-300 px-5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-lime-200"
+              >
+                {copied === 'client' ? 'Клиентский текст скопирован' : 'Скопировать для клиента'}
+              </button>
+              <p className="mt-3 text-xs leading-5 text-neutral-500">
+                Этот текст не раскрывает маржу и внутреннюю себестоимость.
+              </p>
+            </div>
           </div>
         </section>
       </div>
