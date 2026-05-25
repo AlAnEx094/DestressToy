@@ -48,10 +48,10 @@ function ProductStage() {
 }
 
 const navLinks = [
-  { label: 'Продукт', href: '#comparison' },
   { label: 'Примеры', href: '#gallery' },
+  { label: 'Цены', href: '#pricing' },
   { label: 'Процесс', href: '#process' },
-  { label: 'О нас', href: '#trust' },
+  { label: 'Отзывы', href: '#reviews' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -110,26 +110,34 @@ const galleryItems = [
   { label: 'Маскот · инновации', title: 'Космонавт', body: 'Аккуратный футуристичный маскот для технологичных продуктов, конференций и подарков команде или партнёрам.', image: '/images/gallery/cosmo.webp', alt: 'Космонавт-маскот — кастомный корпоративный антистресс для технологичного бренда и конференций' },
 ]
 
+const pricingTiers = [
+  { qty: 'от 200 шт', price: '1 250 ₽', perUnit: 'за штуку' },
+  { qty: 'от 500 шт', price: '850 ₽', perUnit: 'за штуку' },
+  { qty: 'от 1 000 шт', price: '700 ₽', perUnit: 'за штуку' },
+  { qty: 'от 1 500 шт', price: '650 ₽', perUnit: 'за штуку' },
+  { qty: 'от 2 000 шт', price: '600 ₽', perUnit: 'за штуку' },
+]
+
 const processSteps = [
   {
     number: '01',
-    title: 'Заявка',
-    body: 'Заполните короткую форму — опишите задачу и бренд. Занимает 2–3 минуты.',
+    title: 'Заявка и концепт',
+    body: 'Заполните форму — опишите задачу и бренд. Визуальный концепт формы пришлём за 2 часа. Бесплатно.',
   },
   {
     number: '02',
-    title: 'Концепт',
-    body: 'В течение 1 рабочего дня пришлём визуальный концепт формы — рендер и описание материалов. Бесплатно.',
+    title: 'Образец',
+    body: 'После согласования концепта изготавливаем физический образец. Срок — 10 дней (авиадоставка). Стоимость образца засчитывается в тираж.',
   },
   {
     number: '03',
-    title: 'Согласование',
-    body: 'Утвердим детали: форма, размер, цвет, тираж. Внесём правки бесплатно.',
+    title: 'Тираж',
+    body: 'После одобрения образца и заключения договора запускаем производство. Срок — 15 дней на нашей фабрике.',
   },
   {
     number: '04',
-    title: 'Производство',
-    body: 'Изготовим и доставим. Срок производства — 3–5 недель от утверждения.',
+    title: 'Доставка',
+    body: 'Доставка из Китая в Россию: 25–30 дней. Итого от заявки до тиража в ваших руках — около 7 недель.',
   },
 ]
 
@@ -175,10 +183,37 @@ const useCases = [
   },
 ]
 
+const reviews = [
+  {
+    name: 'Алексей К.',
+    role: 'HR-директор, ретейл-компания',
+    city: 'Москва',
+    text: 'Заказали 300 штук для welcome kit. Производство заняло 4 недели, всё пришло в срок. Сотрудники сами начали фотографировать и выкладывать — без какого-либо подогрева с нашей стороны.',
+    qty: '300 шт',
+    type: 'Welcome kit',
+  },
+  {
+    name: 'Марина В.',
+    role: 'Маркетолог, SaaS-компания',
+    city: 'Санкт-Петербург',
+    text: 'Нужен был маскот для стенда на конференции. Концепт сделали за день, согласовали за два, уложились в 3 недели производства. Расхватали прямо со стенда — не успела сфотографироваться.',
+    qty: '150 шт',
+    type: 'Event-раздатка',
+  },
+  {
+    name: 'Дмитрий О.',
+    role: 'Основатель, digital-агентство',
+    city: 'Екатеринбург',
+    text: 'Хотели нестандартный подарок клиентам на 8 лет компании вместо ежедневников. Несколько клиентов написали сами, что объект стоит на столе. Это и есть цель.',
+    qty: '100 шт',
+    type: 'Подарки клиентам',
+  },
+]
+
 const faqItems = [
   {
     q: 'Какой минимальный тираж?',
-    a: 'От 50 штук. Для крупных тиражей (500+) доступны дополнительные скидки.',
+    a: 'От 200 штук. Для крупных тиражей (500+) доступны дополнительные скидки.',
   },
   {
     q: 'Из чего делают объекты?',
@@ -198,11 +233,15 @@ const faqItems = [
   },
   {
     q: 'Сколько стоит?',
-    a: 'Стоимость зависит от формы, тиража и сложности. Концепт и расчёт цены — бесплатно, после заявки.',
+    a: 'Ориентировочные цены: от 1 250 ₽/шт при тираже 200 шт, от 800 ₽/шт при 500 шт, от 700 ₽/шт при 1 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
   },
   {
     q: 'Можно ли получить образец перед тиражом?',
-    a: 'Да. Производим тестовый образец — вы оцениваете форму, материал и цвет вживую. Стоимость образца засчитывается в тираж при заказе.',
+    a: 'Да. Производим тестовый образец — вы оцениваете форму, материал и цвет вживую. Срок — 10 дней (авиадоставка). Стоимость образца засчитывается в тираж при заказе.',
+  },
+  {
+    q: 'Где производятся игрушки?',
+    a: 'На нашей фабрике в Китае. Китайские производители специализируются на PU foam-игрушках — это их основная компетенция, а не побочный продукт. Именно это позволяет нам делать тираж от 200 штук по цене от 800 ₽/шт и выдерживать срок 15 дней. Мы контролируем производство напрямую: принимаем образец, согласуем качество — и только после этого запускаем тираж.',
   },
 ]
 
@@ -225,6 +264,7 @@ const assetDeliveryOptions = [
 
 const METRIKA_ID = 108979976
 const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
+const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL || 'https://wa.me/79000000000'
 
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
@@ -398,8 +438,8 @@ export default function LandingPage() {
             </nav>
 
             <div className="hidden md:block">
-              <PrimaryButton href="#final_cta" className="px-5 py-2.5 text-sm">
-                Получить концепт бесплатно
+              <PrimaryButton href="#pricing" className="px-5 py-2.5 text-sm">
+                Рассчитать стоимость
               </PrimaryButton>
             </div>
 
@@ -436,11 +476,11 @@ export default function LandingPage() {
                   </a>
                 ))}
                 <PrimaryButton
-                  href="#final_cta"
+                  href="#pricing"
                   className="mt-2 w-full"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Получить концепт бесплатно
+                  Рассчитать стоимость
                 </PrimaryButton>
               </nav>
             </div>
@@ -452,19 +492,38 @@ export default function LandingPage() {
         <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
           <div className="grid w-full items-stretch gap-10 md:grid-cols-[1.2fr_0.95fr] md:gap-16">
             <div className="flex flex-col justify-center">
-              <SectionLabel>Мягкий кастомный мерч для корпоративных брендов</SectionLabel>
+              <SectionLabel>Кастомный мерч · тираж от 200 шт</SectionLabel>
               <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] text-white">
-                Кастомный антистресс с логотипом вашего бренда — мерч, к которому возвращаются снова
+                Мягкие игрушки и маскоты на заказ для вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Мягкий пенополиуретан с бархатистым покрытием. Форма — логотип, маскот или любой символ бренда.
-                Лежит на столе, попадает в руки снова и снова.
+                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Мягкий пенополиуретан с бархатистым покрытием. Тираж от 200 шт — от 1 250 ₽/шт.
               </p>
 
               <div className="mt-8 md:mt-10">
-                <PrimaryButton href="#final_cta">Получить концепт бесплатно</PrimaryButton>
+                <div className="flex flex-wrap gap-3">
+                  <PrimaryButton href="#pricing">Рассчитать стоимость</PrimaryButton>
+                  <a
+                    href={TELEGRAM_CTA_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => handleMessengerClick('telegram')}
+                    className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
+                  >
+                    Написать в Telegram
+                  </a>
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => handleMessengerClick('whatsapp')}
+                    className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
+                  >
+                    Написать в WhatsApp
+                  </a>
+                </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  {['Любая форма: логотип, маскот, символ', 'Тираж от 50 шт', 'Концепт бесплатно за 1 день'].map((p, i) => (
+                  {['Тираж от 200 шт', 'Концепт за 2 часа', 'Образец за 10 дней'].map((p, i) => (
                     <span key={i} className="text-sm text-[#7c847d] flex items-center gap-2">
                       {i > 0 && <span className="w-1 h-1 rounded-full bg-[#7c847d] inline-block" />}
                       {p}
@@ -484,6 +543,299 @@ export default function LandingPage() {
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
               <ProductStage />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="gallery" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Примеры</SectionLabel>
+          <div className="max-w-[680px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+              Примеры: что уже делают другие компании
+            </h2>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {galleryItems.map((item) => (
+              <article
+                key={item.label}
+                className="overflow-hidden rounded-xl border border-[#e5e0d8] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]"
+              >
+                <div className="w-full aspect-[5/4] bg-[#f4efe8]">
+                  <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                </div>
+                <div className="p-4 md:p-6">
+                  <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                    {item.label}
+                  </p>
+                  <h3 className="text-base md:text-xl font-bold text-[#151716]">{item.title}</h3>
+                  <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#5a6060]">
+                    {item.body}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="pricing" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Стоимость</SectionLabel>
+          <div className="max-w-[720px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
+              Примерные цены на тираж
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#7c847d]">
+              Точная стоимость зависит от формы и сложности. Цены указаны для стандартных форм.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5 md:gap-5">
+            {pricingTiers.map((tier) => (
+              <div
+                key={tier.qty}
+                className={`rounded-xl border p-5 text-center relative ${tier.qty === 'от 500 шт' ? 'border-[#ff6a3d] bg-white/10' : 'border-white/10 bg-white/5'}`}
+              >
+                {tier.qty === 'от 500 шт' && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ff6a3d] px-3 py-0.5 text-xs font-bold text-white whitespace-nowrap">
+                    Популярный
+                  </span>
+                )}
+                <p className="text-sm text-[#7c847d]">{tier.qty}</p>
+                <p className="mt-2 text-[2rem] font-bold leading-none text-[#ff6a3d]">{tier.price}</p>
+                <p className="mt-1 text-xs text-[#7c847d]">{tier.perUnit}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-5 text-sm text-[#7c847d]">
+            Стоимость образца (sample) — от 5 000 ₽. Засчитывается в тираж при заказе.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <PrimaryButton href="#final_cta">Рассчитать точную стоимость</PrimaryButton>
+            <a
+              href={TELEGRAM_CTA_URL}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => handleMessengerClick('telegram')}
+              className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
+            >
+              Спросить в Telegram
+            </a>
+          </div>
+        </Container>
+      </section>
+
+      <section id="use_cases" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Где используют</SectionLabel>
+          <div className="max-w-[720px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+              Четыре задачи, которые уже решают с бренд-объектом
+            </h2>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-4">
+            {useCases.map((item) => (
+              <article
+                key={item.title}
+                className="rounded-[12px] border border-[#e5e0d8] bg-white p-5 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
+              >
+                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-[10px] md:rounded-[12px] bg-[#ebe5dd] text-[#151716] ring-1 ring-inset ring-[#d0c9bf]">
+                  {item.icon}
+                </div>
+                <h3 className="mt-4 text-base md:text-2xl font-semibold leading-6 md:leading-8 text-[#151716]">
+                  {item.title}
+                </h3>
+                <p className="mt-2 md:mt-4 text-sm md:text-base leading-6 md:leading-7 text-[#5a6060]">{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="process" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Процесс</SectionLabel>
+          <div className="max-w-[620px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
+              От заявки до готового объекта
+            </h2>
+          </div>
+
+          <div className="relative mt-8 md:mt-10">
+            <div className="grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-6">
+              {processSteps.map((step) => (
+                <article key={step.number} className="relative min-w-0">
+                  <p className="text-[1.75rem] lg:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
+                    {step.number}
+                  </p>
+                  <h3 className="mt-3 text-base lg:text-2xl font-semibold leading-6 lg:leading-8 text-white">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[#7c847d] lg:max-w-[260px] lg:text-base lg:leading-7">
+                    {step.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="welcome_box" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+        <Container>
+          <div className="grid items-center gap-8 md:gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
+            <div className="order-2 md:order-1 max-w-[520px]">
+              <SectionLabel>Welcome Kit</SectionLabel>
+              <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+                Первый физический предмет бренда в руках нового сотрудника
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-[#5a6060]">
+                Welcome kit задаёт тон отношения к компании. Бренд-объект — это единственный предмет из набора,
+                который остаётся на столе через месяц.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {['Welcome kit', 'Промонаборы', 'Event-пакеты', 'Подарки партнёрам'].map(
+                  (tag) => (
+                    <span
+                      key={tag}
+                      className="rounded px-3.5 py-1.5 text-sm text-[#5a6060] ring-1 ring-inset ring-[#d0c9bf]"
+                    >
+                      {tag}
+                    </span>
+                  ),
+                )}
+              </div>
+
+              <PrimaryButton href="#pricing" className="mt-8">
+                Рассчитать стоимость
+              </PrimaryButton>
+            </div>
+
+            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] flex items-center justify-center">
+              <img
+                src="/images/showcase_shelf.webp"
+                alt="Линейка кастомных антистресс бренд-объектов DeStressToys — варианты для корпоративного welcome kit"
+                className="w-full max-h-[420px] rounded-xl object-contain"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="reviews" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Отзывы</SectionLabel>
+          <div className="max-w-[680px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+              Что говорят клиенты
+            </h2>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {reviews.map((review) => (
+              <article key={review.name} className="rounded-xl border border-[#e5e0d8] bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]">
+                <p className="text-[#ff6a3d] text-base">★★★★★</p>
+                <p className="mt-3 text-base leading-7 text-[#151716]">«{review.text}»</p>
+                <div className="mt-5 pt-4 border-t border-[#e5e0d8]">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-sm font-bold text-[#ff6a3d]">
+                      {review.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-[#151716]">{review.name}</p>
+                      <p className="text-sm text-[#7c847d]">{review.role} · {review.city}</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.qty}</span>
+                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.type}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="trust" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Доверие</SectionLabel>
+          <p className="text-sm uppercase tracking-[0.08em] text-[#5a6060]">
+            Работаем с компаниями из IT, ретейла, FMCG и финтеха
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            {['IT и SaaS', 'FMCG', 'Ретейл', 'Финтех', 'HR и EdTech', 'Производство'].map((sector) => (
+              <span
+                key={sector}
+                className="rounded-[8px] border border-[#d0c9bf] bg-white px-4 py-2 text-sm font-medium text-[#151716]"
+              >
+                {sector}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-4 md:gap-6 xl:grid-cols-5">
+            {[
+              { title: 'Минимальный тираж', value: 'от 200 шт.' },
+              { title: 'Концепт', value: 'за 2 часа' },
+              { title: 'Образец', value: '10 дней' },
+              { title: 'Производство тиража', value: '15 дней' },
+              { title: 'На рынке', value: 'более 2 лет' },
+            ].map((item) => (
+              <div key={item.title}>
+                <p className="text-sm text-[#5a6060]">{item.title}</p>
+                <p className="mt-2 text-2xl font-semibold text-[#151716]">{item.value}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="faq" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+        <Container>
+          <div className="mx-auto max-w-[720px]">
+            <SectionLabel>FAQ</SectionLabel>
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
+              Частые вопросы
+            </h2>
+
+            <div className="mt-8 border-t border-white/10">
+              {faqItems.map((item, index) => {
+                const isOpen = openFaqIndex === index
+
+                return (
+                  <div key={item.q} className="border-b border-white/10 py-5">
+                    <button
+                      type="button"
+                      className="flex w-full items-start justify-between gap-6 text-left"
+                      aria-expanded={isOpen}
+                      onClick={() => handleFaqToggle(index)}
+                    >
+                      <span className="text-base md:text-lg font-semibold leading-6 md:leading-7 text-white">
+                        {item.q}
+                      </span>
+                      <span className="text-2xl leading-none text-[#ff6a3d]">
+                        {isOpen ? '−' : '+'}
+                      </span>
+                    </button>
+
+                    {isOpen ? (
+                      <p className="mt-4 max-w-[620px] text-base leading-7 text-[#7c847d]">
+                        {item.a}
+                      </p>
+                    ) : null}
+                  </div>
+                )
+              })}
             </div>
           </div>
         </Container>
@@ -597,7 +949,7 @@ export default function LandingPage() {
             {whyCards.map((card) => (
               <article
                 key={card.number}
-                className="bg-white border border-[#e5e0d8] rounded-xl p-5 md:p-8"
+                className="bg-white border border-[#e5e0d8] rounded-xl p-5 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
               >
                 <p className="text-[2rem] md:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
                   {card.number}
@@ -646,241 +998,16 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="gallery" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Примеры</SectionLabel>
-          <div className="max-w-[680px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Примеры: что уже делают другие компании
-            </h2>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {galleryItems.map((item) => (
-              <article
-                key={item.label}
-                className="overflow-hidden rounded-xl border border-[#e5e0d8] bg-white"
-              >
-                <div className="w-full aspect-[5/4] bg-[#f4efe8]">
-                  <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
-                </div>
-                <div className="p-4 md:p-6">
-                  <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
-                    {item.label}
-                  </p>
-                  <h3 className="text-base md:text-xl font-bold text-[#151716]">{item.title}</h3>
-                  <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#5a6060]">
-                    {item.body}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section id="welcome_box" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <div className="grid items-center gap-8 md:gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
-            <div className="order-2 md:order-1 max-w-[520px]">
-              <SectionLabel>Welcome Kit</SectionLabel>
-              <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-                Первый физический предмет бренда в руках нового сотрудника
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-[#5a6060]">
-                Welcome kit задаёт тон отношения к компании. Бренд-объект — это единственный предмет из набора,
-                который остаётся на столе через месяц.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {['Welcome kit', 'Промонаборы', 'Event-пакеты', 'Подарки партнёрам'].map(
-                  (tag) => (
-                    <span
-                      key={tag}
-                      className="rounded px-3.5 py-1.5 text-sm text-[#5a6060] ring-1 ring-inset ring-[#d0c9bf]"
-                    >
-                      {tag}
-                    </span>
-                  ),
-                )}
-              </div>
-
-              <PrimaryButton href="#final_cta" className="mt-8">
-                Получить концепт бесплатно
-              </PrimaryButton>
-            </div>
-
-            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] flex items-center justify-center">
-              <img
-                src="/images/showcase_shelf.webp"
-                alt="Линейка кастомных антистресс бренд-объектов DeStressToys — варианты для корпоративного welcome kit"
-                className="w-full max-h-[420px] rounded-xl object-contain"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="process" className="bg-[#151716] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Процесс</SectionLabel>
-          <div className="max-w-[620px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-              От заявки до готового объекта
-            </h2>
-          </div>
-
-          <div className="relative mt-8 md:mt-10">
-            <div className="grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-6">
-              {processSteps.map((step) => (
-                <article key={step.number} className="relative min-w-0">
-                  <p className="text-[1.75rem] lg:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
-                    {step.number}
-                  </p>
-                  <h3 className="mt-3 text-base lg:text-2xl font-semibold leading-6 lg:leading-8 text-white">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-[#7c847d] lg:max-w-[260px] lg:text-base lg:leading-7">
-                    {step.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="use_cases" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Где используют</SectionLabel>
-          <div className="max-w-[720px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Четыре задачи, которые уже решают с бренд-объектом
-            </h2>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-4">
-            {useCases.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-[12px] border border-[#e5e0d8] bg-white p-5 md:p-8"
-              >
-                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-[10px] md:rounded-[12px] bg-[#ebe5dd] text-[#151716] ring-1 ring-inset ring-[#d0c9bf]">
-                  {item.icon}
-                </div>
-                <h3 className="mt-4 text-base md:text-2xl font-semibold leading-6 md:leading-8 text-[#151716]">
-                  {item.title}
-                </h3>
-                <p className="mt-2 md:mt-4 text-sm md:text-base leading-6 md:leading-7 text-[#5a6060]">{item.body}</p>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section id="trust" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Доверие</SectionLabel>
-          <p className="text-sm uppercase tracking-[0.08em] text-[#5a6060]">
-            Работаем с компаниями из IT, ретейла, FMCG и финтеха
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            {['IT и SaaS', 'FMCG', 'Ретейл', 'Финтех', 'HR и EdTech', 'Производство'].map((sector) => (
-              <span
-                key={sector}
-                className="rounded-[8px] border border-[#d0c9bf] bg-white px-4 py-2 text-sm font-medium text-[#151716]"
-              >
-                {sector}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-10 flex justify-center">
-            <article className="max-w-[720px] rounded-[12px] border border-[#e5e0d8] bg-white p-8 md:p-10">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#ff6a3d] mb-4">Кейс</p>
-              <p className="text-base md:text-xl leading-7 md:leading-8 text-[#151716]">
-                IT-компания заменила ручки и блокноты в welcome kit на маскота своего бренда.
-                Сотрудники сами фотографировались с ним и выкладывали в Stories — без просьб со стороны HR.
-                Объект остался на столах через полгода.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                {['IT-сектор, Москва', 'Welcome kit', '200 шт.'].map((tag) => (
-                  <span key={tag} className="rounded-md bg-[#f4efe8] px-3 py-1 text-xs font-medium text-[#5a6060]">{tag}</span>
-                ))}
-              </div>
-            </article>
-          </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-4 md:gap-6 xl:grid-cols-5">
-            {[
-              { title: 'Минимальный тираж', value: 'от 50 шт.' },
-              { title: 'Концепт бесплатно', value: 'без предоплаты' },
-              { title: 'Срок производства', value: '3–5 недель' },
-              { title: 'Правки до утверждения', value: 'бесплатно' },
-              { title: 'Доставка', value: 'РФ и СНГ' },
-            ].map((item) => (
-              <div key={item.title}>
-                <p className="text-sm text-[#5a6060]">{item.title}</p>
-                <p className="mt-2 text-2xl font-semibold text-[#151716]">{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section id="faq" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <div className="mx-auto max-w-[720px]">
-            <SectionLabel>FAQ</SectionLabel>
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Частые вопросы
-            </h2>
-
-            <div className="mt-8 border-t border-[#d0c9bf]">
-              {faqItems.map((item, index) => {
-                const isOpen = openFaqIndex === index
-
-                return (
-                  <div key={item.q} className="border-b border-[#d0c9bf] py-5">
-                    <button
-                      type="button"
-                      className="flex w-full items-start justify-between gap-6 text-left"
-                      aria-expanded={isOpen}
-                      onClick={() => handleFaqToggle(index)}
-                    >
-                      <span className="text-base md:text-lg font-semibold leading-6 md:leading-7 text-[#151716]">
-                        {item.q}
-                      </span>
-                      <span className="text-2xl leading-none text-[#ff6a3d]">
-                        {isOpen ? '−' : '+'}
-                      </span>
-                    </button>
-
-                    {isOpen ? (
-                      <p className="mt-4 max-w-[620px] text-base leading-7 text-[#5a6060]">
-                        {item.a}
-                      </p>
-                    ) : null}
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </Container>
-      </section>
-
       <section id="final_cta" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <div className="grid gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
             <div className="max-w-[420px]">
-              <SectionLabel>Запрос концепта</SectionLabel>
+              <SectionLabel>Связаться</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Получите концепт под ваш бренд — бесплатно за 1 рабочий день
+                Рассчитайте стоимость под ваш тираж
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Опишите задачу — пришлём концепт бесплатно в течение 1 рабочего дня.
+                Укажите тираж и форму — пришлём расчёт в течение 1 рабочего дня. Или напишите напрямую в мессенджер.
               </p>
 
               <ul className="mt-8 space-y-3 text-sm text-[#7c847d]">
@@ -905,7 +1032,7 @@ export default function LandingPage() {
               <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-5 text-sm leading-7 text-[#7c847d]">
                 После заявки вы получите:
                 <ul className="mt-3 space-y-2">
-                  {['Визуальный концепт формы — рендер и описание материалов', 'Расчёт стоимости под ваш тираж', 'Ответы на вопросы по формату и срокам'].map(i => (
+                  {['Расчёт стоимости под ваш тираж', 'Визуальный концепт формы — рендер и описание', 'Ответы по срокам и условиям производства'].map(i => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff6a3d] shrink-0" />
                       {i}
@@ -938,7 +1065,7 @@ export default function LandingPage() {
                       required
                       value={formValues.name}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-colors placeholder:text-[#7c847d] focus:border-[#ff6a3d]"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
                       placeholder="Ваше имя"
                     />
                   </label>
@@ -953,7 +1080,7 @@ export default function LandingPage() {
                       required
                       value={formValues.company}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-colors placeholder:text-[#7c847d] focus:border-[#ff6a3d]"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
                       placeholder="Название компании"
                     />
                   </label>
@@ -966,7 +1093,7 @@ export default function LandingPage() {
                       required
                       value={formValues.email}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-colors placeholder:text-[#7c847d] focus:border-[#ff6a3d]"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
                       placeholder="name@company.com"
                     />
                   </label>
@@ -976,7 +1103,7 @@ export default function LandingPage() {
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
                       Отвечаем в течение нескольких часов.
                     </p>
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-wrap gap-3">
                       <a
                         href={TELEGRAM_CTA_URL}
                         target="_blank"
@@ -985,6 +1112,15 @@ export default function LandingPage() {
                         className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
                       >
                         Написать в Telegram
+                      </a>
+                      <a
+                        href={WHATSAPP_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => handleMessengerClick('whatsapp')}
+                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                      >
+                        Написать в WhatsApp
                       </a>
                     </div>
                   </div>
@@ -998,7 +1134,7 @@ export default function LandingPage() {
                       rows="4"
                       value={formValues.task}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-colors placeholder:text-[#7c847d] focus:border-[#ff6a3d]"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
                       placeholder="Где будет использоваться бренд-объект и какой нужен тираж?"
                     />
                   </label>
@@ -1067,7 +1203,7 @@ export default function LandingPage() {
                     type="submit"
                     className="inline-flex w-full items-center justify-center rounded-md bg-[#ff6a3d] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#e85a2e]"
                   >
-                    Отправить заявку
+                    Получить расчёт стоимости
                   </button>
 
                   <p className="text-xs leading-5 text-[#7c847d]">
