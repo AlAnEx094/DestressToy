@@ -74,7 +74,7 @@ const mobileComparisonCards = [
   },
   {
     title: 'Бренд-объект',
-    subtitle: 'Кастомный антистресс-маскот',
+    subtitle: 'Кастомный мягкий маскот',
     points: ['Берут в руки снова и снова', 'Остаётся на столе неделями', 'Запоминается как персональный подарок'],
     result: 'Каждое касание снова возвращает внимание к бренду.',
     tone: 'accent',
@@ -116,6 +116,14 @@ const pricingTiers = [
   { qty: 'от 1 000 шт', price: '700 ₽', perUnit: 'за штуку' },
   { qty: 'от 1 500 шт', price: '650 ₽', perUnit: 'за штуку' },
   { qty: 'от 2 000 шт', price: '600 ₽', perUnit: 'за штуку' },
+]
+
+const plushPricingTiers = [
+  { qty: 'от 200 шт', price: '1 950 ₽', perUnit: 'за штуку' },
+  { qty: 'от 500 шт', price: '1 200 ₽', perUnit: 'за штуку' },
+  { qty: 'от 1 000 шт', price: '1 000 ₽', perUnit: 'за штуку' },
+  { qty: 'от 1 500 шт', price: '900 ₽', perUnit: 'за штуку' },
+  { qty: 'от 2 000 шт', price: '850 ₽', perUnit: 'за штуку' },
 ]
 
 const processSteps = [
@@ -217,7 +225,7 @@ const faqItems = [
   },
   {
     q: 'Из чего делают объекты?',
-    a: 'Мягкий пенополиуретан с бархатистым покрытием. Сертификат ЕС, безопасен для взрослых и детей от 3 лет.',
+    a: 'Два формата на выбор. Антистресс PU foam: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Плюшевые: классический плюш с набивкой, мягкие и приятные на ощупь. Оба формата безопасны, сертификат ЕС, подходят для детей от 3 лет.',
   },
   {
     q: 'Сколько занимает производство?',
@@ -241,7 +249,7 @@ const faqItems = [
   },
   {
     q: 'Где производятся игрушки?',
-    a: 'На нашей фабрике в Китае. Китайские производители специализируются на PU foam-игрушках — это их основная компетенция, а не побочный продукт. Именно это позволяет нам делать тираж от 200 штук по цене от 800 ₽/шт и выдерживать срок 15 дней. Мы контролируем производство напрямую: принимаем образец, согласуем качество — и только после этого запускаем тираж.',
+    a: 'На нашей фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Именно это позволяет нам делать тираж от 200 штук по цене от 800 ₽/шт и выдерживать срок 15 дней. Мы контролируем производство напрямую: принимаем образец, согласуем качество — и только после этого запускаем тираж.',
   },
 ]
 
@@ -323,6 +331,7 @@ export default function LandingPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [pricingTab, setPricingTab] = useState('pu')
   const utmRef = useRef({})
 
   useEffect(() => {
@@ -497,7 +506,7 @@ export default function LandingPage() {
                 Мягкие игрушки и маскоты на заказ для вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Мягкий пенополиуретан с бархатистым покрытием. Тираж от 200 шт — от 1 250 ₽/шт.
+                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Антистресс PU foam или классические плюшевые — выберите формат под задачу. Тираж от 200 шт.
               </p>
 
               <div className="mt-8 md:mt-10">
@@ -581,6 +590,53 @@ export default function LandingPage() {
         </Container>
       </section>
 
+      <section id="formats" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Форматы</SectionLabel>
+          <div className="max-w-[720px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+              Выберите тип под вашу задачу
+            </h2>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · PU foam</p>
+              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс PU foam</h3>
+              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 250 ₽/шт</p>
+              <ul className="mt-5 space-y-3">
+                {['Сжимается и возвращает форму — антистресс-эффект', 'Бархатистое покрытие, приятно держать', 'Любая форма: логотип, маскот, символ', 'Дольше остаётся в руках — больше касаний с брендом'].map((point) => (
+                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
+                Смотреть цены →
+              </a>
+            </article>
+
+            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Плюш · классика</p>
+              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Плюшевые игрушки</h3>
+              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 950 ₽/шт</p>
+              <ul className="mt-5 space-y-3">
+                {['Классический мягкий плюш с набивкой', 'Высокая воспринимаемая ценность — premium-подарок', 'Узнаваемый формат для любой аудитории', 'Подходит для дорогих welcome kit и подарков партнёрам'].map((point) => (
+                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
+                Смотреть цены →
+              </a>
+            </article>
+          </div>
+        </Container>
+      </section>
+
       <section id="pricing" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Стоимость</SectionLabel>
@@ -593,8 +649,32 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5 md:gap-5">
-            {pricingTiers.map((tier) => (
+          <div className="mt-8 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setPricingTab('pu')}
+              className={`rounded-md px-5 py-2.5 text-sm font-semibold transition-colors ${pricingTab === 'pu' ? 'bg-[#ff6a3d] text-white' : 'border border-white/10 bg-white/5 text-[#7c847d] hover:text-white'}`}
+            >
+              Антистресс PU foam
+            </button>
+            <button
+              type="button"
+              onClick={() => setPricingTab('plush')}
+              className={`rounded-md px-5 py-2.5 text-sm font-semibold transition-colors ${pricingTab === 'plush' ? 'bg-[#ff6a3d] text-white' : 'border border-white/10 bg-white/5 text-[#7c847d] hover:text-white'}`}
+            >
+              Плюшевые
+            </button>
+          </div>
+
+          {pricingTab === 'pu' && (
+            <p className="mt-4 text-sm text-[#7c847d]">Сжимается, возвращает форму. Бархатистое покрытие. Антистресс-эффект.</p>
+          )}
+          {pricingTab === 'plush' && (
+            <p className="mt-4 text-sm text-[#7c847d]">Классическая мягкая игрушка. Плюшевый ворс. Подходит для premium welcome kit и статусных подарков.</p>
+          )}
+
+          <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5 md:gap-5">
+            {(pricingTab === 'pu' ? pricingTiers : plushPricingTiers).map((tier) => (
               <div
                 key={tier.qty}
                 className={`rounded-xl border p-5 text-center relative ${tier.qty === 'от 500 шт' ? 'border-[#ff6a3d] bg-white/10' : 'border-white/10 bg-white/5'}`}
