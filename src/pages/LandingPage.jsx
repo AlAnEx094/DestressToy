@@ -64,6 +64,23 @@ const comparisonMatrix = [
   { label: 'Остаётся ли на столе', values: ['Нет', 'Иногда', 'Редко', 'Иногда', 'Часто'] },
 ]
 
+const mobileComparisonCards = [
+  {
+    title: 'Обычный мерч',
+    subtitle: 'Шоколад, ручки, блокноты и брелоки',
+    points: ['Съели, потеряли или убрали в ящик', 'Контакт с брендом короткий', 'Слабо выделяется среди похожих подарков'],
+    result: 'Бренд быстро исчезает из поля зрения.',
+    tone: 'muted',
+  },
+  {
+    title: 'Бренд-объект',
+    subtitle: 'Кастомный антистресс-маскот',
+    points: ['Берут в руки снова и снова', 'Остаётся на столе неделями', 'Запоминается как персональный подарок'],
+    result: 'Каждое касание снова возвращает внимание к бренду.',
+    tone: 'accent',
+  },
+]
+
 const whyCards = [
   {
     number: '01',
@@ -523,31 +540,41 @@ export default function LandingPage() {
             </table>
           </div>
 
-          <div className="mt-10 space-y-4 md:hidden">
-            {comparisonMatrix.map((row) => (
+          <div className="mt-8 space-y-4 md:hidden">
+            {mobileComparisonCards.map((card) => (
               <article
-                key={row.label}
-                className="rounded-xl border border-[#e5e0d8] bg-white p-5"
+                key={card.title}
+                className={`rounded-xl border p-5 ${
+                  card.tone === 'accent'
+                    ? 'border-[#ff6a3d] bg-white shadow-[0_18px_34px_rgba(255,106,61,0.14)]'
+                    : 'border-[#e5e0d8] bg-white'
+                }`}
               >
-                <h3 className="text-sm font-semibold text-[#151716]">{row.label}</h3>
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  {[0, 4].map((origIdx) => (
-                    <div key={`${row.label}-${origIdx}`} className={`flex flex-col items-center gap-1.5 text-center rounded-lg p-2 ${origIdx === 4 ? 'bg-[#ff6a3d]/8' : 'bg-[#f4efe8]'}`}>
-                      <span className="text-[10px] uppercase tracking-wider text-[#5a6060]">
-                        {comparisonCols[origIdx + 1]}
-                      </span>
-                      {origIdx === 4 ? (
-                        <span className="inline-flex items-center rounded-full bg-[#ff6a3d] px-2 py-0.5 text-[10px] font-bold text-white">
-                          {row.values[origIdx]}
-                        </span>
-                      ) : (
-                        <span className="text-sm text-[#5a6060]">{row.values[origIdx]}</span>
-                      )}
-                    </div>
+                <p className={`text-xs font-semibold uppercase tracking-[0.08em] ${card.tone === 'accent' ? 'text-[#ff6a3d]' : 'text-[#7c847d]'}`}>
+                  {card.subtitle}
+                </p>
+                <h3 className="mt-2 text-xl font-bold leading-7 text-[#151716]">{card.title}</h3>
+                <ul className="mt-4 space-y-3">
+                  {card.points.map((point) => (
+                    <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
+                      <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${card.tone === 'accent' ? 'bg-[#ff6a3d]' : 'bg-[#d0c9bf]'}`} />
+                      <span>{point}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
+                <p className={`mt-5 rounded-lg px-4 py-3 text-sm font-semibold leading-6 ${
+                  card.tone === 'accent'
+                    ? 'bg-[#ff6a3d] text-white'
+                    : 'bg-[#f4efe8] text-[#5a6060]'
+                }`}>
+                  {card.result}
+                </p>
               </article>
             ))}
+            <p className="rounded-xl bg-[#ebe5dd] p-5 text-sm leading-6 text-[#5a6060]">
+              Поэтому антистресс-маскот лучше работает для welcome kit, событий и подарков партнёрам: он не просто
+              передаёт логотип, а остаётся рядом с человеком.
+            </p>
           </div>
 
           <div className="mt-8 rounded-xl bg-[#ebe5dd] p-6 text-base text-[#5a6060]">
@@ -683,11 +710,11 @@ export default function LandingPage() {
               </PrimaryButton>
             </div>
 
-            <div className="order-1 md:order-2 overflow-hidden rounded-xl bg-[#ebe5dd] min-h-[260px] md:min-h-[420px] flex items-center justify-center p-6 md:p-10">
+            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] flex items-center justify-center">
               <img
                 src="/images/showcase_shelf.webp"
                 alt="Линейка кастомных антистресс бренд-объектов DeStressToys — варианты для корпоративного welcome kit"
-                className="w-full max-h-[380px] object-contain"
+                className="w-full max-h-[420px] rounded-xl object-contain"
                 loading="lazy"
               />
             </div>
