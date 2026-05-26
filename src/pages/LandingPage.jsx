@@ -272,13 +272,14 @@ const formDefaults = {
 
 const assetDeliveryOptions = [
   { value: 'telegram', label: 'Прикреплю в Telegram' },
+  { value: 'max', label: 'Прикреплю в MAX' },
   { value: 'email_reply', label: 'Отправлю ответом на письмо' },
   { value: 'link', label: 'Есть ссылка' },
 ]
 
 const METRIKA_ID = 108979976
 const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
-const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL || 'https://wa.me/79000000000'
+const MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || 'https://max.ru/'
 
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
@@ -528,13 +529,13 @@ export default function LandingPage() {
                     Написать в Telegram
                   </a>
                   <a
-                    href={WHATSAPP_URL}
+                    href={MAX_CTA_URL}
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() => handleMessengerClick('whatsapp')}
+                    onClick={() => handleMessengerClick('max')}
                     className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
                   >
-                    Написать в WhatsApp
+                    Написать в MAX
                   </a>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
@@ -1222,13 +1223,13 @@ export default function LandingPage() {
                         Написать в Telegram
                       </a>
                       <a
-                        href={WHATSAPP_URL}
+                        href={MAX_CTA_URL}
                         target="_blank"
                         rel="noreferrer"
-                        onClick={() => handleMessengerClick('whatsapp')}
+                        onClick={() => handleMessengerClick('max')}
                         className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
                       >
-                        Написать в WhatsApp
+                        Написать в MAX
                       </a>
                     </div>
                   </div>
