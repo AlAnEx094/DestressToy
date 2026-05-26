@@ -380,11 +380,14 @@ return [{ json: { dealId, variant, conceptName, productTrack, material: chosen.m
 }
 
 function patchApprovedWorkflow(workflow) {
+  const oldUpdateName = 'Airtable: Статус → RFQ поставщикам';
+  const newUpdateName = 'Airtable: Статус → RFQ по продуктовому треку';
   const update = workflow.nodes.find((item) =>
-    item.name === 'Airtable: Статус → КП выставлен' || item.name === 'Airtable: Статус → RFQ поставщикам'
+    item.name === 'Airtable: Статус → КП выставлен' || item.name === oldUpdateName || item.name === newUpdateName
   );
   if (!update) throw new Error(`Approval status node not found in "${workflow.name}"`);
-  update.name = 'Airtable: Статус → RFQ по продуктовому треку';
+  const previousName = update.name;
+  update.name = newUpdateName;
   delete update.parameters.id;
   update.parameters.columns.matchingColumns = ['id'];
   update.parameters.columns.value = {
@@ -397,11 +400,68 @@ function patchApprovedWorkflow(workflow) {
     'Последнее сообщение клиенту': 'Дизайн одобрен, требуется RFQ по выбранному продуктовому треку',
   };
 
+  const search = findNode(workflow, 'Airtable: Найти одобренные сделки');
+  search.parameters.options = {
+    ...(search.parameters.options || {}),
+    fields: [
+      'Клиент',
+      'Тип заказа',
+      'Тираж',
+      'Превью 1',
+      'Статус воронки',
+      'Продуктовый трек',
+    ],
+  };
+
   const prepare = workflow.nodes.find((node) => node.name === 'Подготовить уведомление');
   if (prepare?.parameters?.jsCode) {
-    prepare.parameters.jsCode = prepare.parameters.jsCode
-      .replace(/const orderDesc = deal\['Тип заказа'\] \|\| '';/, "const orderDesc = deal['Тип заказа'] || '';\\nconst productTrack = deal['Продуктовый трек'] || '❓ Не определён';")
-      .replace(/return \[\{ json: \{ dealId, client, orderDesc, quantity, preview \} \}\];/, "return [{ json: { dealId, client, orderDesc, quantity, preview, productTrack } }];");
+    prepare.parameters.jsCode = `const deal = $input.first().json;
+const dealId = deal.id;
+const orderDesc = deal['Тип заказа'] || '—';
+const productTrack = deal['Продуктовый трек'] || '❓ Не определён';
+const quantity = deal['Тираж'] || 'не указан';
+const client = deal['Клиент'] || '—';
+const preview = (deal['Превью 1'] && deal['Превью 1'][0] && deal['Превью 1'][0].url) || '';
+return [{ json: { dealId, orderDesc, productTrack, quantity, client, preview } }];`;
+  }
+
+  if (workflow.connections[previousName] && previousName !== newUpdateName) {
+    workflow.connections[newUpdateName] = workflow.connections[previousName];
+    delete workflow.connections[previousName];
+  }
+  if (workflow.connections[oldUpdateName] && oldUpdateName !== newUpdateName) {
+    workflow.connections[newUpdateName] = workflow.connections[oldUpdateName];
+    delete workflow.connections[oldUpdateName];
+  }
+  for (const connection of Object.values(workflow.connections)) {
+    for (const outputs of Object.values(connection)) {
+      for (const output of outputs) {
+        for (const edge of output) {
+          if (edge.node === previousName || edge.node === oldUpdateName) {
+            edge.node = newUpdateName;
+          }
+        }
+      }
+    }
+  }
+
+  const telegram = workflow.nodes.find((node) => node.name === 'Telegram: Найти поставщика');
+  if (telegram?.parameters?.text) {
+    const existingText = String(telegram.parameters.text || '');
+    const calculatorAccessToken = existingText.match(/access=([A-Za-z0-9]+)/)?.[1] || process.env.CALCULATOR_ACCESS_TOKEN || 'SET_CALCULATOR_ACCESS_TOKEN';
+    telegram.parameters.text = `=✅ *Дизайн одобрен — нужен поставщик*
+
+*Сделка:* {{ $('Подготовить уведомление').first().json.dealId }}
+*Трек:* {{ $('Подготовить уведомление').first().json.productTrack }}
+*Клиент:* {{ $('Подготовить уведомление').first().json.client }}
+*Заказ:* {{ $('Подготовить уведомление').first().json.orderDesc }}
+*Тираж:* {{ $('Подготовить уведомление').first().json.quantity }} шт.
+{{ $('Подготовить уведомление').first().json.preview ? '\\n🖼 Превью: ' + $('Подготовить уведомление').first().json.preview : '' }}
+
+🔍 Найти поставщика под выбранный продуктовый трек и добавить данные в CRM.
+
+🧮 Калькулятор себестоимости:
+https://destresstoys.ru/tools/cost-calculator?dealId={{ $('Подготовить уведомление').first().json.dealId }}&access=${calculatorAccessToken}`;
   }
 }
 
