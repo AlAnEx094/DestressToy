@@ -22,7 +22,13 @@ const logisticOptions = {
   },
 }
 
+const currencyOptions = {
+  usd: { label: 'USD', symbol: '$', rateLabel: 'Курс USD', perUnit: '$/шт' },
+  cny: { label: 'CNY', symbol: '¥', rateLabel: 'Курс CNY', perUnit: '¥/шт' },
+}
+
 const defaults = {
+  supplierCurrency: 'usd',
   exwUsd: 1.5,
   quantity: 200,
   weightGram: 80,
@@ -33,7 +39,8 @@ const defaults = {
   sampleUsd: 80,
   bankPct: 3,
   defectPct: 4,
-  rateRub: 95,
+  rateRub: 76,
+  cnyRateRub: 10.5,
   markup: 3,
   logistic: 'cargo',
 }
@@ -44,6 +51,11 @@ function formatRub(value) {
 
 function formatUsd(value) {
   return `$${Number(value).toFixed(2)}`
+}
+
+function formatCurrency(value, currency) {
+  const option = currencyOptions[currency] || currencyOptions.usd
+  return `${option.symbol}${Number(value).toFixed(2)}`
 }
 
 function getNumber(value, fallback = 0) {
@@ -119,6 +131,11 @@ export default function CostCalculatorPage() {
     setCopied('')
   }
 
+  const updateSupplierCurrency = (currency) => {
+    setValues((current) => ({ ...current, supplierCurrency: currency }))
+    setCopied('')
+  }
+
   const updateMoneyInput = (key, value) => {
     const normalized = value.replace(',', '.')
     if (!/^\d*\.?\d*$/.test(normalized)) return
@@ -129,45 +146,52 @@ export default function CostCalculatorPage() {
 
   const result = useMemo(() => {
     const logistic = logisticOptions[values.logistic]
+    const currency = currencyOptions[values.supplierCurrency] ? values.supplierCurrency : 'usd'
+    const supplierRateRub = currency === 'cny' ? values.cnyRateRub : values.rateRub
     const quantity = Math.max(values.quantity, 1)
     const totalKg = (quantity * values.weightGram) / 1000
     const chargedKg = totalKg * 1.15
 
-    const productionUsd = values.exwUsd + values.packUsd
-    const oneTimeUsd = values.moldUsd + values.printSetupUsd + values.chinaDeliveryUsd + values.sampleUsd
-    const oneTimePerUnitUsd = oneTimeUsd / quantity
+    const productionForeign = values.exwUsd + values.packUsd
+    const oneTimeForeign = values.moldUsd + values.printSetupUsd + values.chinaDeliveryUsd + values.sampleUsd
+    const oneTimePerUnitForeign = oneTimeForeign / quantity
     const logisticsUsd = (chargedKg * logistic.pricePerKg) / quantity
-    const customsUsd = (productionUsd + oneTimePerUnitUsd) * logistic.customsPct
-    const vatUsd = (productionUsd + oneTimePerUnitUsd + logisticsUsd + customsUsd) * logistic.vatPct
-    const defectUsd = productionUsd * (values.defectPct / 100)
-    const bankUsd = (productionUsd + oneTimePerUnitUsd + logisticsUsd + customsUsd + vatUsd + defectUsd) * (values.bankPct / 100)
+    const productionRub = productionForeign * supplierRateRub
+    const oneTimePerUnitRub = oneTimePerUnitForeign * supplierRateRub
+    const logisticsRub = logisticsUsd * values.rateRub
+    const customsRub = (productionRub + oneTimePerUnitRub) * logistic.customsPct
+    const vatRub = (productionRub + oneTimePerUnitRub + logisticsRub + customsRub) * logistic.vatPct
+    const defectRub = productionRub * (values.defectPct / 100)
+    const bankRub = (productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub) * (values.bankPct / 100)
     const brokerRubPerUnit = logistic.brokerRub / quantity
     const localRub = logistic.localDeliveryRub + brokerRubPerUnit
 
-    const costUsd = productionUsd + oneTimePerUnitUsd + logisticsUsd + customsUsd + vatUsd + defectUsd + bankUsd
-    const costRub = costUsd * values.rateRub + localRub
+    const costRub = productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub + bankRub + localRub
     const priceRub = costRub * values.markup
     const profitRub = priceRub - costRub
     const marginPct = priceRub > 0 ? (profitRub / priceRub) * 100 : 0
 
     const breakdown = [
-      ['Производство EXW', values.exwUsd * values.rateRub],
-      ['Упаковка', values.packUsd * values.rateRub],
-      ['Форма / оснастка', (values.moldUsd / quantity) * values.rateRub],
-      ['Печать / подготовка', (values.printSetupUsd / quantity) * values.rateRub],
-      ['Доставка по Китаю', (values.chinaDeliveryUsd / quantity) * values.rateRub],
-      ['Образец', (values.sampleUsd / quantity) * values.rateRub],
-      ['Логистика до РФ', logisticsUsd * values.rateRub],
-      ['Таможня', customsUsd * values.rateRub],
-      ['НДС', vatUsd * values.rateRub],
-      ['Брак / риск', defectUsd * values.rateRub],
-      ['Банк / конвертация', bankUsd * values.rateRub],
+      ['Производство EXW', values.exwUsd * supplierRateRub],
+      ['Упаковка', values.packUsd * supplierRateRub],
+      ['Форма / оснастка', (values.moldUsd / quantity) * supplierRateRub],
+      ['Печать / подготовка', (values.printSetupUsd / quantity) * supplierRateRub],
+      ['Доставка по Китаю', (values.chinaDeliveryUsd / quantity) * supplierRateRub],
+      ['Образец', (values.sampleUsd / quantity) * supplierRateRub],
+      ['Логистика до РФ', logisticsRub],
+      ['Таможня', customsRub],
+      ['НДС', vatRub],
+      ['Брак / риск', defectRub],
+      ['Банк / конвертация', bankRub],
       ['Доставка по РФ / брокер', localRub],
     ].filter(([, amount]) => amount > 0.01)
 
     return {
       chargedKg,
-      costUsd,
+      currency,
+      supplierRateRub,
+      supplierCostForeign: productionForeign + oneTimePerUnitForeign,
+      logisticsUsd,
       costRub,
       priceRub,
       profitRub,
@@ -182,7 +206,10 @@ export default function CostCalculatorPage() {
   const crmText = [
     dealId ? `Сделка: ${dealId}` : null,
     `Тираж: ${values.quantity} шт.`,
-    `EXW: ${formatUsd(values.exwUsd)} / шт.`,
+    `Валюта поставщика: ${currencyOptions[result.currency].label}`,
+    `EXW: ${formatCurrency(values.exwUsd, result.currency)} / шт.`,
+    `Курс поставщика: ${result.supplierRateRub} ₽`,
+    result.currency === 'cny' ? `Курс USD для логистики: ${values.rateRub} ₽` : null,
     `Вес: ${values.weightGram} г / шт. (${Math.round(result.chargedKg)} кг расчётный вес)`,
     `Логистика: ${logisticOptions[values.logistic].label}`,
     `Себестоимость: ${formatRub(result.costRub)} / шт.`,
@@ -235,15 +262,28 @@ export default function CostCalculatorPage() {
         <section className="grid gap-4 lg:grid-cols-[1fr_1fr]">
           <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
             <div className="mb-5 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Партия и производство</div>
+            <div className="mb-5 grid grid-cols-2 gap-2">
+              {Object.entries(currencyOptions).map(([key, option]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => updateSupplierCurrency(key)}
+                  className={`rounded-md border px-3 py-3 text-left transition-colors ${values.supplierCurrency === key ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+                >
+                  <span className="block text-sm font-medium">{option.label}</span>
+                  <span className="mt-1 block font-mono text-xs opacity-70">валюта поставщика</span>
+                </button>
+              ))}
+            </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="EXW цена" value={values.exwUsd} suffix=" $/шт" min={0.3} max={8} step={0.1} onChange={(value) => update('exwUsd', value)} />
+              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0.3} max={values.supplierCurrency === 'cny' ? 80 : 8} step={values.supplierCurrency === 'cny' ? 0.5 : 0.1} onChange={(value) => update('exwUsd', value)} />
               <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={5000} step={50} onChange={(value) => update('quantity', value)} />
               <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={20} max={500} step={10} onChange={(value) => update('weightGram', value)} />
-              <Field label="Упаковка" value={values.packUsd} suffix=" $/шт" min={0} max={2} step={0.05} onChange={(value) => update('packUsd', value)} />
-              <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix="$" onChange={(value) => updateMoneyInput('moldUsd', value)} />
-              <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix="$" onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
-              <NumberInput label="Доставка по Китаю" value={moneyInputs.chinaDeliveryUsd} suffix="$" onChange={(value) => updateMoneyInput('chinaDeliveryUsd', value)} />
-              <NumberInput label="Образец / sample" value={moneyInputs.sampleUsd} suffix="$" onChange={(value) => updateMoneyInput('sampleUsd', value)} />
+              <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={values.supplierCurrency === 'cny' ? 0.5 : 0.05} onChange={(value) => update('packUsd', value)} />
+              <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('moldUsd', value)} />
+              <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
+              <NumberInput label="Доставка по Китаю" value={moneyInputs.chinaDeliveryUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('chinaDeliveryUsd', value)} />
+              <NumberInput label="Образец / sample" value={moneyInputs.sampleUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('sampleUsd', value)} />
             </div>
           </div>
 
@@ -263,7 +303,10 @@ export default function CostCalculatorPage() {
               ))}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={80} max={130} step={1} onChange={(value) => update('rateRub', value)} />
+              <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
+              {values.supplierCurrency === 'cny' ? (
+                <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
+              ) : null}
               <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
               <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
               <Field label="Банк / конвертация" value={values.bankPct} suffix="%" min={0} max={8} step={0.5} onChange={(value) => update('bankPct', value)} />
@@ -272,7 +315,7 @@ export default function CostCalculatorPage() {
         </section>
 
         <section className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Metric label="Себестоимость / шт" value={formatRub(result.costRub)} sub={`${formatUsd(result.costUsd)} / шт`} />
+          <Metric label="Себестоимость / шт" value={formatRub(result.costRub)} sub={`${formatCurrency(result.supplierCostForeign, result.currency)} поставщик / шт`} />
           <Metric label="Цена клиенту / шт" value={formatRub(result.priceRub)} sub={`наценка ×${values.markup.toFixed(1)}`} accent />
           <Metric label="Сумма КП" value={formatRub(result.totalPriceRub)} sub={`${values.quantity} шт.`} />
           <Metric label="Прибыль партии" value={formatRub(result.totalProfitRub)} sub={`${Math.round(result.marginPct)}% маржа`} />
