@@ -2,14 +2,11 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 const stageItems = [
-  { src: '/images/hero-stage/dinosaur.webp', alt: 'Кастомный антистресс динозавр — мягкий бренд-объект для welcome kit',             size: 178, x: 60, y: 22, z: 1, delay: '0s',   float: '3.8s' },
-  { src: '/images/hero-stage/cat.webp',      alt: 'Антистресс кот-маскот с логотипом клиента — корпоративный мерч',                   size: 165, x: 1,  y: 30, z: 2, delay: '0.6s', float: '4.4s' },
-  { src: '/images/hero-stage/bear.webp',     alt: 'Кастомный антистресс медведь с логотипом — пример бренд-объекта DeStressToys',     size: 252, x: 24, y: 30, z: 3, delay: '0.2s', float: '4.0s' },
-  { src: '/images/hero-stage/robot.webp',    alt: 'Антистресс робот с фирменным логотипом — пример корпоративного бренд-объекта',    size: 200, x: 54, y: 54, z: 2, delay: '0.9s', float: '3.5s' },
-  { src: '/images/hero-stage/drop.webp',     alt: 'Мягкая антистресс капля — кастомная форма бренд-объекта под логотип',             size: 158, x: 3,  y: 61, z: 1, delay: '1.2s', float: '4.8s' },
-  { src: '/images/hero-stage/plush_rabbit.webp', alt: 'Плюшевый кролик-маскот — кастомная мягкая игрушка для корпоративного мерча', size: 170, x: 70, y: 15, z: 2, delay: '0.4s', float: '4.2s' },
-  { src: '/images/hero-stage/plush_fox.webp',    alt: 'Плюшевый кибер-лис — кастомный мягкий маскот для IT-брендинга',               size: 190, x: 10, y: 45, z: 1, delay: '1.0s', float: '3.6s' },
-  { src: '/images/hero-stage/plush_rocket.webp', alt: 'Плюшевая ракета — кастомный мягкий маскот для запусков и конференций',         size: 155, x: 50, y: 60, z: 3, delay: '0.7s', float: '4.6s' },
+  { src: '/images/hero-stage/bear.webp',        alt: 'Кастомный антистресс медведь с логотипом — пример бренд-объекта DeStressToys', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/hero-stage/cat.webp',         alt: 'Антистресс кот-маскот с логотипом клиента — корпоративный мерч',               size: 155, x: 2,  y: 6,  z: 2, delay: '0.6s', float: '4.4s' },
+  { src: '/images/hero-stage/robot.webp',       alt: 'Антистресс робот с фирменным логотипом — пример корпоративного бренд-объекта', size: 180, x: 58, y: 55, z: 2, delay: '0.9s', float: '3.5s' },
+  { src: '/images/hero-stage/plush_rabbit.webp',alt: 'Плюшевый кролик-маскот — кастомная мягкая игрушка для корпоративного мерча',   size: 160, x: 65, y: 5,  z: 1, delay: '0.4s', float: '4.2s' },
+  { src: '/images/hero-stage/plush_fox.webp',   alt: 'Плюшевый кибер-лис — кастомный мягкий маскот для IT-брендинга',               size: 155, x: 4,  y: 62, z: 1, delay: '1.0s', float: '3.6s' },
 ]
 
 function ProductStage() {
@@ -1059,16 +1056,19 @@ export default function LandingPage() {
             <div className="max-w-[540px]">
               <SectionLabel>Материал</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Приятно держать. Сложно отложить.
+                Два материала — одно качество.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Мягкий пенополиуретан с бархатистым покрытием. Объект пружинит, возвращает форму и не теряет вид — руки тянутся к нему снова и снова.
+                PU foam и плюш — разные форматы, одинаковый стандарт производства. Оба материала безопасны, прошли сертификацию ЕС и рассчитаны на долгое использование.
               </p>
-              <ul className="mt-8 space-y-3 text-sm leading-6 text-[#7c847d]">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
+                Антистресс PU foam
+              </p>
+              <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
                 {[
                   'Покрытие: бархатистый полиуретан',
                   'Наполнитель: медленно восстанавливающаяся пена',
-                  'Безопасен: сертификат ЕС, без латекса',
+                  'Сжимается и возвращает форму — тактильный антистресс',
                   'Долговечность: 3+ года активного использования',
                 ].map((detail) => (
                   <li key={detail} className="flex gap-3">
@@ -1077,6 +1077,25 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
+                Плюшевые игрушки
+              </p>
+              <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
+                {[
+                  'Материал: мягкий плюшевый ворс',
+                  'Наполнитель: гипоаллергенный холлофайбер',
+                  'Высокая воспринимаемая ценность — premium-подарок',
+                  'Вышивка или принт логотипа на поверхности',
+                ].map((detail) => (
+                  <li key={detail} className="flex gap-3">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#7c847d]" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs text-[#7c847d]/70">
+                Безопасны: сертификат ЕС, без латекса
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
