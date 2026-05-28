@@ -51,7 +51,7 @@
 | `cta_click` | Клик по основным CTA | Понять, какие блоки ведут к заявке |
 | `pricing_tab_click` | Переключение ПУ / плюш | Видеть интерес к типу изделия |
 | `contact_phone_click` | Клик по телефону | Отдельная цель для звонков |
-| `contact_email_click` | Клик по email | Отдельная цель для заявок через почту |
+| `contact_email_copy` | Копирование email | Отдельная цель для заявок через почту |
 | `contact_telegram_click` | Клик по Telegram | Отдельная цель для переходов в Telegram-бот |
 | `contact_max_click` | Клик по MAX | Отдельная цель для заявок через MAX |
 | `lead_form_submit` | Нажатие отправки формы | Черновая конверсия до ответа webhook |
@@ -64,7 +64,7 @@
 1. `lead_form_success` — основная цель.
 2. `lead_form_submit` — вспомогательная цель.
 3. `contact_phone_click` — звонки.
-4. `contact_email_click` — письма.
+4. `contact_email_copy` — копирование почты.
 5. `contact_telegram_click` — переходы в Telegram.
 6. `contact_max_click` — переходы в MAX.
 7. `cta_click` — интерес к расчёту.
@@ -75,7 +75,7 @@
 Второстепенные цели можно использовать для оптимизации после накопления статистики:
 
 - `contact_phone_click`;
-- `contact_email_click`;
+- `contact_email_copy`;
 - `contact_telegram_click`;
 - `contact_max_click`;
 - `cta_click`.

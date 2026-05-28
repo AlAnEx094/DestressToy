@@ -319,7 +319,6 @@ const METRIKA_ID = 108979976
 const CONTACT_PHONE = '+7 953 970-97-89'
 const CONTACT_PHONE_HREF = 'tel:+79539709789'
 const CONTACT_EMAIL = 'info@destresstoys.ru'
-const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`
 const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOKaimmN-xgqBCQy-efE6Jo5-pFyieeix86sJ3PrxufNqwd3h_k'
 const TELEGRAM_CONTACT_URL = 'https://t.me/DestressToys_bot'
 const RESPONSE_HOURS = '8:00–18:00 по МСК'
@@ -468,7 +467,7 @@ function PrimaryButton({ as: Component = 'a', className = '', children, ...props
   )
 }
 
-function ContactIconLink({ href, label, tooltip, children, onClick, external = false }) {
+function ContactIconLink({ href = '#', label, tooltip, children, onClick, external = false }) {
   return (
     <a
       href={href}
@@ -569,6 +568,23 @@ export default function LandingPage() {
     })
   }
 
+  const handleEmailCopy = async (event, placement) => {
+    event.preventDefault()
+
+    try {
+      await navigator.clipboard?.writeText(CONTACT_EMAIL)
+    } catch {
+      // Copy failures should not block tracking or the rest of the page.
+    }
+
+    trackEvent('contact_email_copy', {
+      lead_source: 'email',
+      placement,
+      email: CONTACT_EMAIL,
+      ...utmRef.current,
+    })
+  }
+
   const handleCtaClick = (placement, target) => {
     trackEvent('cta_click', {
       placement,
@@ -625,10 +641,9 @@ export default function LandingPage() {
                 </svg>
               </ContactIconLink>
               <ContactIconLink
-                href={CONTACT_EMAIL_HREF}
-                label="Написать на почту"
-                tooltip={CONTACT_EMAIL}
-                onClick={() => handleContactClick('email', 'header')}
+                label="Скопировать email"
+                tooltip={`${CONTACT_EMAIL} · нажмите, чтобы скопировать`}
+                onClick={(event) => handleEmailCopy(event, 'header')}
               >
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -701,7 +716,7 @@ export default function LandingPage() {
                     <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'mobile_menu')} className="text-base font-semibold text-white">
                       {CONTACT_PHONE}
                     </a>
-                    <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'mobile_menu')} className="text-base font-medium text-white">
+                    <a href="#" onClick={(event) => handleEmailCopy(event, 'mobile_menu')} className="text-base font-medium text-white">
                       {CONTACT_EMAIL}
                     </a>
                     <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'mobile_menu')} className="text-base font-medium text-white">
@@ -1448,11 +1463,11 @@ export default function LandingPage() {
                         Позвонить
                       </a>
                       <a
-                        href={CONTACT_EMAIL_HREF}
-                        onClick={() => handleContactClick('email', 'form_contact')}
+                        href="#"
+                        onClick={(event) => handleEmailCopy(event, 'form_contact')}
                         className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
                       >
-                        Написать на почту
+                        Скопировать почту
                       </a>
                       <a
                         href={TELEGRAM_CONTACT_URL}
@@ -1604,7 +1619,7 @@ export default function LandingPage() {
                 <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_PHONE}
                 </a>
-                <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href="#" onClick={(event) => handleEmailCopy(event, 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_EMAIL}
                 </a>
                 <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
