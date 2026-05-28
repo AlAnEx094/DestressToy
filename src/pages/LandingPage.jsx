@@ -276,16 +276,35 @@ const formDefaults = {
 }
 
 const assetDeliveryOptions = [
-  { value: 'telegram', label: 'Пришлю в Telegram' },
-  { value: 'max', label: 'Пришлю в MAX' },
   { value: 'email_reply', label: 'Отвечу на письмо' },
   { value: 'link', label: 'Вставлю ссылку' },
+  { value: 'later', label: 'Пришлю позже' },
 ]
 
 const METRIKA_ID = 108979976
-const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
-const RAW_MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || 'https://max.ru/'
-const MAX_CTA_URL = RAW_MAX_CTA_URL.startsWith('https://max.ru/') ? RAW_MAX_CTA_URL : 'https://max.ru/'
+const CONTACT_PHONE = '+7 953 970-97-89'
+const CONTACT_PHONE_HREF = 'tel:+79539709789'
+const CONTACT_EMAIL = 'info@destresstoys.ru'
+const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`
+const RESPONSE_HOURS = '8:00–18:00 по МСК'
+const COMPANY_CITY = 'Россия, г. Тула'
+const LEGAL_NAME = 'ИП Антипов Алексей Александрович'
+const LEGAL_ID = 'ОГРНИП 325710000056557'
+
+const afterRequestSteps = [
+  {
+    title: 'Уточним задачу',
+    body: 'Проверим тираж, сроки, материал, форму и ограничения по производству.',
+  },
+  {
+    title: 'Подготовим концепт и расчёт',
+    body: 'Покажем визуальное направление и ориентир по стоимости партии.',
+  },
+  {
+    title: 'Зафиксируем условия',
+    body: 'После согласования заключаем договор и запускаем тираж в работу.',
+  },
+]
 
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
@@ -420,13 +439,6 @@ export default function LandingPage() {
     setIsSubmitted(true)
   }
 
-  const handleMessengerClick = (channel) => {
-    trackEvent(`messenger_${channel}_click`, {
-      lead_source: channel,
-      ...utmRef.current,
-    })
-  }
-
   const handleFaqToggle = (index) => {
     setOpenFaqIndex((current) => (current === index ? null : index))
   }
@@ -458,6 +470,15 @@ export default function LandingPage() {
                 </a>
               ))}
             </nav>
+
+            <div className="hidden items-center gap-4 text-sm lg:flex">
+              <a href={CONTACT_EMAIL_HREF} className="text-[#7c847d] transition-colors hover:text-white">
+                {CONTACT_EMAIL}
+              </a>
+              <a href={CONTACT_PHONE_HREF} className="font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+                {CONTACT_PHONE}
+              </a>
+            </div>
 
             <div className="hidden md:block">
               <PrimaryButton href="#pricing" className="px-5 py-2.5 text-sm">
@@ -497,6 +518,18 @@ export default function LandingPage() {
                     {link.label}
                   </a>
                 ))}
+                <div className="mt-2 border-t border-white/10 pt-4">
+                  <p className="text-sm text-[#7c847d]">Связаться напрямую</p>
+                  <div className="mt-3 flex flex-col gap-2">
+                    <a href={CONTACT_PHONE_HREF} className="text-base font-semibold text-white">
+                      {CONTACT_PHONE}
+                    </a>
+                    <a href={CONTACT_EMAIL_HREF} className="text-base font-medium text-white">
+                      {CONTACT_EMAIL}
+                    </a>
+                  </div>
+                  <p className="mt-2 text-sm text-[#7c847d]">Ответим с {RESPONSE_HOURS}</p>
+                </div>
                 <PrimaryButton
                   href="#pricing"
                   className="mt-2 w-full"
@@ -845,13 +878,14 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-4 md:gap-6 xl:grid-cols-5">
+          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-6">
             {[
               { title: 'Минимальный тираж', value: 'от 200 шт.' },
-              { title: 'Концепт', value: 'за 2 часа' },
-              { title: 'Производство тиража', value: '15 дней' },
+              { title: 'Расчёт', value: 'за 1 день' },
+              { title: 'Договор', value: 'перед запуском' },
+              { title: 'Производство', value: 'около 15 дней' },
               { title: 'Доставка', value: '25–30 дней' },
-              { title: 'На рынке', value: 'более 2 лет' },
+              { title: 'Контроль', value: 'фото / видео' },
             ].map((item) => (
               <div key={item.title}>
                 <p className="text-sm text-[#5a6060]">{item.title}</p>
@@ -1091,11 +1125,11 @@ export default function LandingPage() {
                 Рассчитайте стоимость под ваш тираж
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Укажите тираж и форму — пришлём расчёт в течение 1 рабочего дня. Или напишите напрямую в мессенджер.
+                Укажите тираж и задачу — пришлём ориентир по стоимости в течение 1 рабочего дня. Если удобнее, свяжитесь с нами напрямую.
               </p>
 
               <ul className="mt-8 space-y-3 text-sm text-[#7c847d]">
-                {['Без предоплаты', 'Правки бесплатно', 'Ответим за 1 день'].map(
+                {['Ответим с 8:00 до 18:00 по МСК', 'Файлы можно прислать позже', 'Договор перед запуском тиража'].map(
                   (item) => (
                     <li key={item} className="flex gap-3">
                       <span className="text-[#ff6a3d]">✓</span>
@@ -1114,15 +1148,20 @@ export default function LandingPage() {
                 />
               </div>
               <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-5 text-sm leading-7 text-[#7c847d]">
-                После заявки вы получите:
-                <ul className="mt-3 space-y-2">
-                  {['Расчёт стоимости под ваш тираж', 'Визуальный концепт формы — рендер и описание', 'Ответы по срокам и условиям производства'].map(i => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff6a3d] shrink-0" />
-                      {i}
-                    </li>
+                <p className="font-semibold text-white">Что будет после заявки</p>
+                <div className="mt-4 space-y-4">
+                  {afterRequestSteps.map((step, index) => (
+                    <div key={step.title} className="flex gap-3">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-xs font-bold text-[#ff6a3d]">
+                        {index + 1}
+                      </span>
+                      <div>
+                        <p className="font-medium text-white">{step.title}</p>
+                        <p className="mt-1 text-xs leading-5 text-[#7c847d]">{step.body}</p>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
 
@@ -1135,8 +1174,8 @@ export default function LandingPage() {
                   <p className="text-base leading-7 text-[#7c847d]">
                     Мы получили ваши данные и подготовим концепт под задачу
                     {formValues.company ? ` для ${formValues.company}` : ''}.
-                    Ответ придёт на {formValues.email || 'указанный email'} — или напишите напрямую в{' '}
-                    <a href={TELEGRAM_CTA_URL} target="_blank" rel="noreferrer" className="text-[#ff6a3d] underline">Telegram</a>.
+                    Ответ придёт на {formValues.email || 'указанный email'}. Для срочного вопроса можно позвонить по номеру{' '}
+                    <a href={CONTACT_PHONE_HREF} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
                   </p>
                 </div>
               ) : (
@@ -1183,28 +1222,22 @@ export default function LandingPage() {
                   </label>
 
                   <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-sm font-medium text-white">Быстрее в мессенджере</p>
+                    <p className="text-sm font-medium text-white">Связаться напрямую</p>
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Отвечаем в течение нескольких часов.
+                      Отвечаем с {RESPONSE_HOURS}. Для срочных вопросов сейчас доступны телефон и почта.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
-                        href={TELEGRAM_CTA_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => handleMessengerClick('telegram')}
+                        href={CONTACT_PHONE_HREF}
                         className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
                       >
-                        Написать в Telegram
+                        Позвонить
                       </a>
                       <a
-                        href={MAX_CTA_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => handleMessengerClick('max')}
+                        href={CONTACT_EMAIL_HREF}
                         className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
                       >
-                        Написать в MAX
+                        Написать на почту
                       </a>
                     </div>
                   </div>
@@ -1306,28 +1339,49 @@ export default function LandingPage() {
 
       <footer
         id="footer"
-        className="border-t border-white/10 bg-[#151716] py-8 text-sm text-[#7c847d]"
+        className="border-t border-white/10 bg-[#151716] py-10 text-sm text-[#7c847d]"
       >
         <Container>
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <p>© 2025 DeStressToys</p>
-            <nav className="flex flex-wrap gap-5">
-              <a href="#comparison" className="transition-colors hover:text-white">
-                Продукт
-              </a>
-              <a href="#gallery" className="transition-colors hover:text-white">
-                Работы
-              </a>
-              <a href="#process" className="transition-colors hover:text-white">
-                Процесс
-              </a>
-              <a href="#faq" className="transition-colors hover:text-white">
-                FAQ
-              </a>
+          <div className="grid gap-8 md:grid-cols-[1.1fr_0.8fr_1.1fr] md:items-start">
+            <div>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+                <span className="text-xl font-bold tracking-tight text-white">DeStressToys</span>
+              </div>
+              <p className="mt-4 max-w-[320px] leading-6">
+                Брендированные мягкие игрушки и антистресс-объекты для корпоративных подарков, событий и промо-наборов.
+              </p>
+              <p className="mt-4">© 2025 DeStressToys</p>
+            </div>
+
+            <nav className="flex flex-col gap-3">
+              <p className="font-semibold text-white">Разделы</p>
+              <a href="#gallery" className="transition-colors hover:text-white">Работы</a>
+              <a href="#pricing" className="transition-colors hover:text-white">Цены</a>
+              <a href="#process" className="transition-colors hover:text-white">Процесс</a>
+              <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
+              <Link className="transition-colors hover:text-white" to="/privacy">
+                Политика конфиденциальности
+              </Link>
             </nav>
-            <Link className="transition-colors hover:text-white" to="/privacy">
-              Политика конфиденциальности
-            </Link>
+
+            <div>
+              <p className="font-semibold text-white">Контакты</p>
+              <div className="mt-3 flex flex-col gap-2">
+                <a href={CONTACT_PHONE_HREF} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+                  {CONTACT_PHONE}
+                </a>
+                <a href={CONTACT_EMAIL_HREF} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                  {CONTACT_EMAIL}
+                </a>
+                <span>{RESPONSE_HOURS}</span>
+                <span>{COMPANY_CITY}</span>
+              </div>
+              <div className="mt-5 border-t border-white/10 pt-4 leading-6">
+                <p>{LEGAL_NAME}</p>
+                <p>{LEGAL_ID}</p>
+              </div>
+            </div>
           </div>
         </Container>
       </footer>

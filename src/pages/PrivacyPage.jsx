@@ -78,10 +78,10 @@ export default function PrivacyPage() {
                 <p className="mt-3 text-base leading-7 text-[#7c847d]">
                   По вопросам обработки персональных данных напишите на{' '}
                   <a
-                    href="mailto:AlexeyAntipov4233@yandex.ru"
+                    href="mailto:info@destresstoys.ru"
                     className="text-[#151716] underline underline-offset-2 hover:text-[#ff6a3d] transition-colors"
                   >
-                    AlexeyAntipov4233@yandex.ru
+                    info@destresstoys.ru
                   </a>
                 </p>
               </section>
