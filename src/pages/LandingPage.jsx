@@ -49,6 +49,7 @@ function ProductStage() {
 
 const navLinks = [
   { label: 'Работы', href: '#gallery' },
+  { label: 'Форматы', href: '#formats' },
   { label: 'Цены', href: '#pricing' },
   { label: 'Процесс', href: '#process' },
   { label: 'Отзывы', href: '#reviews' },
@@ -197,6 +198,39 @@ const useCases = [
   },
 ]
 
+const productFormats = [
+  {
+    title: 'Маскот бренда',
+    body: 'Объёмный персонаж компании для мероприятий, подарков сотрудникам и клиентских коммуникаций.',
+    fit: 'Когда у бренда уже есть герой или нужен узнаваемый символ.',
+  },
+  {
+    title: 'Плюшевая игрушка',
+    body: 'Классическая мягкая игрушка с фирменными цветами, вышивкой или печатью логотипа.',
+    fit: 'Для подарков партнёрам, клиентам и команде.',
+  },
+  {
+    title: 'Игрушка-персонаж',
+    body: 'Кастомный герой по иллюстрации, логотипу, продукту или идее рекламной кампании.',
+    fit: 'Для запусков, спецпроектов и брендов с характером.',
+  },
+  {
+    title: 'Промо-игрушка',
+    body: 'Яркий предмет для выставок, стендов, рассылок и раздатки, который хочется забрать с собой.',
+    fit: 'Когда важны охват, запоминаемость и эмоция на первом контакте.',
+  },
+  {
+    title: 'Бренд-объект',
+    body: 'Мягкая форма по продукту, символу или визуальному коду компании, а не типовой сувенир.',
+    fit: 'Для ниш, где обычный мерч выглядит слишком ожидаемо.',
+  },
+  {
+    title: 'Подарок для сотрудников',
+    body: 'Тактильный корпоративный подарок для внутренних запусков, онбординга и памятных дат.',
+    fit: 'Когда подарок должен остаться на столе, а не уйти в ящик.',
+  },
+]
+
 const reviews = [
   {
     name: 'Анна С.',
@@ -252,11 +286,11 @@ const faqItems = [
   },
   {
     q: 'Как происходит доставка?',
-    a: 'Доставляем по России и СНГ. Возможна доставка до склада или прямая развозка на мероприятие.',
+    a: 'Доставляем по России. Возможна доставка до склада или прямая отправка на мероприятие по договорённости.',
   },
   {
     q: 'Сколько стоит?',
-    a: 'Ориентировочные цены: от 1 250 ₽/шт при тираже 200 шт, от 800 ₽/шт при 500 шт, от 700 ₽/шт при 1 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
+    a: 'Ориентировочные цены: от 1 250 ₽/шт при тираже 200 шт, от 850 ₽/шт при 500 шт, от 700 ₽/шт при 1 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
   },
   {
     q: 'Где производятся игрушки?',
@@ -443,6 +477,14 @@ export default function LandingPage() {
     setOpenFaqIndex((current) => (current === index ? null : index))
   }
 
+  const handleContactClick = (channel, placement) => {
+    trackEvent(`contact_${channel}_click`, {
+      lead_source: channel,
+      placement,
+      ...utmRef.current,
+    })
+  }
+
   return (
     <main className="bg-[#151716] text-[#151716]">
       <header
@@ -472,10 +514,10 @@ export default function LandingPage() {
             </nav>
 
             <div className="hidden items-center gap-4 text-sm lg:flex">
-              <a href={CONTACT_EMAIL_HREF} className="text-[#7c847d] transition-colors hover:text-white">
+              <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'header')} className="text-[#7c847d] transition-colors hover:text-white">
                 {CONTACT_EMAIL}
               </a>
-              <a href={CONTACT_PHONE_HREF} className="font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+              <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'header')} className="font-semibold text-white transition-colors hover:text-[#ff6a3d]">
                 {CONTACT_PHONE}
               </a>
             </div>
@@ -521,10 +563,10 @@ export default function LandingPage() {
                 <div className="mt-2 border-t border-white/10 pt-4">
                   <p className="text-sm text-[#7c847d]">Связаться напрямую</p>
                   <div className="mt-3 flex flex-col gap-2">
-                    <a href={CONTACT_PHONE_HREF} className="text-base font-semibold text-white">
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'mobile_menu')} className="text-base font-semibold text-white">
                       {CONTACT_PHONE}
                     </a>
-                    <a href={CONTACT_EMAIL_HREF} className="text-base font-medium text-white">
+                    <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'mobile_menu')} className="text-base font-medium text-white">
                       {CONTACT_EMAIL}
                     </a>
                   </div>
@@ -623,11 +665,38 @@ export default function LandingPage() {
           <SectionLabel>Форматы</SectionLabel>
           <div className="max-w-[720px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Выберите тип под вашу задачу
+              Что можно изготовить под ваш бренд
             </h2>
+            <p className="mt-4 text-base leading-7 text-[#5a6060]">
+              Начинаем не с материала, а с задачи: кому вручаете, где игрушка будет работать и какой образ должен остаться у клиента или сотрудника.
+            </p>
           </div>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {productFormats.map((format) => (
+              <article
+                key={format.title}
+                className="rounded-xl border border-[#e5e0d8] bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
+              >
+                <h3 className="text-lg font-bold leading-6 text-[#151716]">{format.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#5a6060]">{format.body}</p>
+                <p className="mt-4 border-t border-[#e5e0d8] pt-4 text-xs leading-5 text-[#7c847d]">
+                  {format.fit}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10 max-w-[720px]">
+            <h3 className="text-2xl font-bold leading-tight text-[#151716]">
+              Выберите материал под бюджет и впечатление
+            </h3>
+            <p className="mt-3 text-base leading-7 text-[#5a6060]">
+              После заявки подскажем, какой формат лучше подходит под форму, тираж и сроки.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
             <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · ПУ-пена</p>
               <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс из ПУ-пены</h3>
@@ -1175,7 +1244,7 @@ export default function LandingPage() {
                     Мы получили ваши данные и подготовим концепт под задачу
                     {formValues.company ? ` для ${formValues.company}` : ''}.
                     Ответ придёт на {formValues.email || 'указанный email'}. Для срочного вопроса можно позвонить по номеру{' '}
-                    <a href={CONTACT_PHONE_HREF} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'success_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
                   </p>
                 </div>
               ) : (
@@ -1229,12 +1298,14 @@ export default function LandingPage() {
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
                         href={CONTACT_PHONE_HREF}
+                        onClick={() => handleContactClick('phone', 'form_contact')}
                         className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
                       >
                         Позвонить
                       </a>
                       <a
                         href={CONTACT_EMAIL_HREF}
+                        onClick={() => handleContactClick('email', 'form_contact')}
                         className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
                       >
                         Написать на почту
@@ -1368,10 +1439,10 @@ export default function LandingPage() {
             <div>
               <p className="font-semibold text-white">Контакты</p>
               <div className="mt-3 flex flex-col gap-2">
-                <a href={CONTACT_PHONE_HREF} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_PHONE}
                 </a>
-                <a href={CONTACT_EMAIL_HREF} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_EMAIL}
                 </a>
                 <span>{RESPONSE_HOURS}</span>
