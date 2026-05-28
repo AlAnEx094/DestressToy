@@ -202,7 +202,7 @@ const reviews = [
     name: 'Алексей К.',
     role: 'HR-директор, ретейл-компания',
     city: 'Москва',
-    text: 'Заказали 300 штук для welcome kit. Производство заняло 4 недели, всё пришло в срок. Сотрудники сами начали фотографировать и выкладывать — без какого-либо подогрева с нашей стороны.',
+    text: 'Искали что-то живее кружки и блокнота для welcome-набора. По срокам предупредили сразу, макет поправили два раза без споров. Игрушки получились аккуратные, часть ребят правда оставила их на столах.',
     qty: '300 шт',
     type: 'Welcome kit',
   },
@@ -210,17 +210,17 @@ const reviews = [
     name: 'Марина В.',
     role: 'Маркетолог, SaaS-компания',
     city: 'Санкт-Петербург',
-    text: 'Нужен был маскот для стенда на конференции. Концепт сделали за день, согласовали за два, уложились в 3 недели производства. Расхватали прямо со стенда — не успела сфотографироваться.',
-    qty: '150 шт',
+    text: 'Делали небольшой тираж к конференции. С первого варианта не попали в форму персонажа, но после комментариев стало похоже на наш бренд. На стенде игрушки брали охотнее, чем листовки.',
+    qty: '200 шт',
     type: 'Event-раздатка',
   },
   {
     name: 'Дмитрий О.',
-    role: 'Основатель, digital-агентство',
+    role: 'Руководитель маркетинга, производственная компания',
     city: 'Екатеринбург',
-    text: 'Хотели нестандартный подарок клиентам на 8 лет компании вместо ежедневников. Несколько клиентов написали сами, что объект стоит на столе. Это и есть цель.',
-    qty: '100 шт',
-    type: 'Подарки клиентам',
+    text: 'Заказывали подарки для клиентов перед выставкой. Боялись, что по фото будет выглядеть лучше, чем вживую, поэтому сначала просили больше деталей по материалам. В итоге качество нормальное, упаковку отдельно согласовали.',
+    qty: '400 шт',
+    type: 'Подарки партнёрам',
   },
 ]
 
@@ -279,7 +279,8 @@ const assetDeliveryOptions = [
 
 const METRIKA_ID = 108979976
 const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
-const MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || 'https://max.ru/'
+const RAW_MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || ''
+const MAX_CTA_URL = RAW_MAX_CTA_URL.startsWith('https://max.ru/') ? RAW_MAX_CTA_URL : ''
 
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
@@ -528,15 +529,17 @@ export default function LandingPage() {
                   >
                     Написать в Telegram
                   </a>
-                  <a
-                    href={MAX_CTA_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => handleMessengerClick('max')}
-                    className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
-                  >
-                    Написать в MAX
-                  </a>
+                  {MAX_CTA_URL ? (
+                    <a
+                      href={MAX_CTA_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => handleMessengerClick('max')}
+                      className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
+                    >
+                      Написать в MAX
+                    </a>
+                  ) : null}
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 200 шт', 'Концепт за 2 часа', 'Образец за 10 дней'].map((p, i) => (
@@ -1116,11 +1119,11 @@ export default function LandingPage() {
                 Рассчитайте стоимость под ваш тираж
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Укажите тираж и форму — пришлём расчёт в течение 1 рабочего дня. Или напишите напрямую в мессенджер.
+                Оставьте короткое описание задачи. Мы уточним детали, посчитаем ориентир и подскажем, какой формат лучше: плюш или ПУ-пена.
               </p>
 
               <ul className="mt-8 space-y-3 text-sm text-[#7c847d]">
-                {['Без предоплаты', 'Правки бесплатно', 'Ответим за 1 день'].map(
+                {['Ответим в течение рабочего дня', 'Файлы можно прислать позже', 'Расчёт без обязательств'].map(
                   (item) => (
                     <li key={item} className="flex gap-3">
                       <span className="text-[#ff6a3d]">✓</span>
@@ -1129,26 +1132,6 @@ export default function LandingPage() {
                   ),
                 )}
               </ul>
-
-              <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
-                <img
-                  src="/images/cta/cta-hero.webp"
-                  alt="Кастомная мягкая игрушка с логотипом на рабочем столе — корпоративный подарок партнёру"
-                  className="w-full h-[220px] object-cover rounded-lg"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-5 text-sm leading-7 text-[#7c847d]">
-                После заявки вы получите:
-                <ul className="mt-3 space-y-2">
-                  {['Расчёт стоимости под ваш тираж', 'Визуальный концепт формы — рендер и описание', 'Ответы по срокам и условиям производства'].map(i => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff6a3d] shrink-0" />
-                      {i}
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
 
             <div className="rounded-[12px] border border-white/10 bg-white/5 p-8 md:p-10">
@@ -1207,10 +1190,22 @@ export default function LandingPage() {
                     />
                   </label>
 
+                  <label className="block">
+                    <span className="mb-2 block text-sm font-medium text-white">Примерный тираж</span>
+                    <input
+                      type="text"
+                      name="quantity"
+                      value={formValues.quantity}
+                      onChange={handleInputChange}
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
+                      placeholder="Например: 200, 500 или 1000 шт"
+                    />
+                  </label>
+
                   <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
                     <p className="text-sm font-medium text-white">Быстрее в мессенджере</p>
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Отвечаем в течение нескольких часов.
+                      Можно сразу написать в Telegram — так быстрее уточним детали.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
@@ -1222,15 +1217,17 @@ export default function LandingPage() {
                       >
                         Написать в Telegram
                       </a>
-                      <a
-                        href={MAX_CTA_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => handleMessengerClick('max')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
-                      >
-                        Написать в MAX
-                      </a>
+                      {MAX_CTA_URL ? (
+                        <a
+                          href={MAX_CTA_URL}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => handleMessengerClick('max')}
+                          className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                        >
+                          Написать в MAX
+                        </a>
+                      ) : null}
                     </div>
                   </div>
 
@@ -1246,61 +1243,10 @@ export default function LandingPage() {
                       className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
                       placeholder="Где будет использоваться бренд-объект и какой нужен тираж?"
                     />
+                    <span className="mt-2 block text-xs leading-5 text-[#7c847d]">
+                      Логотип, брендбук или референсы можно будет прислать ответом на письмо или в мессенджере.
+                    </span>
                   </label>
-
-                  <details className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
-                    <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Дополнительно</summary>
-                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <fieldset className="col-span-2">
-                        <legend className="block text-sm font-medium text-[#7c847d] mb-2">
-                          Есть логотип, брендбук или референсы?
-                        </legend>
-                        <div className="grid gap-2 sm:grid-cols-2">
-                          {assetDeliveryOptions.map((option) => (
-                            <label
-                              key={option.value}
-                              className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors hover:border-white/25"
-                            >
-                              <input
-                                type="radio"
-                                name="assetDelivery"
-                                value={option.value}
-                                checked={formValues.assetDelivery === option.value}
-                                onChange={handleInputChange}
-                                className="h-4 w-4 border-white/20 accent-[#ff6a3d]"
-                              />
-                              <span>{option.label}</span>
-                            </label>
-                          ))}
-                        </div>
-                        <p className="mt-2 text-xs leading-5 text-[#7c847d]">
-                          Файлы удобнее отправить в мессенджере или ответом на письмо после заявки.
-                        </p>
-                      </fieldset>
-
-                      <div>
-                        <label htmlFor="quantity" className="block text-sm font-medium text-[#7c847d] mb-1.5">Примерный тираж</label>
-                        <input id="quantity" name="quantity" type="text" placeholder="200 / 500 / 1000"
-                          value={formValues.quantity}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
-                      </div>
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-[#7c847d] mb-1.5">Телефон</label>
-                        <input id="phone" name="phone" type="tel" placeholder="+7"
-                          value={formValues.phone}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
-                      </div>
-                      <div className="col-span-2">
-                        <label htmlFor="reference" className="block text-sm font-medium text-[#7c847d] mb-1.5">Ссылка / референс</label>
-                        <input id="reference" name="reference" type="url" placeholder="Figma, Drive, сайт"
-                          value={formValues.reference}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
-                      </div>
-                    </div>
-                  </details>
 
                   <label className="flex items-start gap-3 rounded-md bg-white/[0.04] px-4 py-3 text-sm text-[#7c847d] cursor-pointer">
                     <input type="checkbox" name="consent" required
