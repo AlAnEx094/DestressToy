@@ -321,6 +321,7 @@ const CONTACT_PHONE_HREF = 'tel:+79539709789'
 const CONTACT_EMAIL = 'info@destresstoys.ru'
 const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`
 const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOKaimmN-xgqBCQy-efE6Jo5-pFyieeix86sJ3PrxufNqwd3h_k'
+const TELEGRAM_CONTACT_URL = 'https://t.me/DestressToys_bot'
 const RESPONSE_HOURS = '8:00–18:00 по МСК'
 const COMPANY_CITY = 'Россия, г. Тула'
 const LEGAL_NAME = 'ИП Антипов Алексей Александрович'
@@ -467,6 +468,25 @@ function PrimaryButton({ as: Component = 'a', className = '', children, ...props
   )
 }
 
+function ContactIconLink({ href, label, tooltip, children, onClick, external = false }) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      title={tooltip}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noreferrer' : undefined}
+      onClick={onClick}
+      className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 text-[#dfe5df] transition-colors hover:border-[#ff6a3d]/70 hover:bg-white/5 hover:text-white"
+    >
+      {children}
+      <span className="pointer-events-none absolute right-0 top-[calc(100%+10px)] z-50 max-w-[260px] whitespace-nowrap rounded-md border border-white/10 bg-[#151716] px-3 py-2 text-xs font-medium text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+        {tooltip}
+      </span>
+    </a>
+  )
+}
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
@@ -593,13 +613,48 @@ export default function LandingPage() {
               ))}
             </nav>
 
-            <div className="hidden items-center gap-3 text-sm xl:flex">
-              <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'header')} className="text-[#7c847d] transition-colors hover:text-white">
-                {CONTACT_EMAIL}
-              </a>
-              <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'header')} className="font-semibold text-white transition-colors hover:text-[#ff6a3d]">
-                {CONTACT_PHONE}
-              </a>
+            <div className="hidden items-center gap-2 xl:flex">
+              <ContactIconLink
+                href={CONTACT_PHONE_HREF}
+                label="Позвонить"
+                tooltip={CONTACT_PHONE}
+                onClick={() => handleContactClick('phone', 'header')}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.1 5.18 2 2 0 0 1 5.11 3h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.61a2 2 0 0 1-.45 2.11L9 10.72a16 16 0 0 0 4.28 4.28l1.28-1.28a2 2 0 0 1 2.11-.45c.84.29 1.71.5 2.61.62A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </ContactIconLink>
+              <ContactIconLink
+                href={CONTACT_EMAIL_HREF}
+                label="Написать на почту"
+                tooltip={CONTACT_EMAIL}
+                onClick={() => handleContactClick('email', 'header')}
+              >
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+              </ContactIconLink>
+              <ContactIconLink
+                href={TELEGRAM_CONTACT_URL}
+                label="Написать в Telegram"
+                tooltip="Telegram"
+                external
+                onClick={() => handleContactClick('telegram', 'header')}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21.6 4.2 18.4 19.3c-.24 1.06-.86 1.32-1.74.82l-4.8-3.54-2.32 2.23c-.26.26-.47.47-.96.47l.34-4.88 8.88-8.02c.39-.34-.08-.53-.6-.2L6.22 13.1 1.5 11.62c-1.03-.32-1.05-1.03.22-1.53L20.16 3c.85-.32 1.6.2 1.44 1.2z" />
+                </svg>
+              </ContactIconLink>
+              <ContactIconLink
+                href={MAX_CONTACT_URL}
+                label="Написать в MAX"
+                tooltip="MAX"
+                external
+                onClick={() => handleContactClick('max', 'header')}
+              >
+                <span className="text-[11px] font-black tracking-[-0.02em]" aria-hidden="true">MAX</span>
+              </ContactIconLink>
             </div>
 
             <div className="hidden md:block">
@@ -648,6 +703,9 @@ export default function LandingPage() {
                     </a>
                     <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'mobile_menu')} className="text-base font-medium text-white">
                       {CONTACT_EMAIL}
+                    </a>
+                    <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'mobile_menu')} className="text-base font-medium text-white">
+                      Telegram
                     </a>
                     <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'mobile_menu')} className="text-base font-medium text-white">
                       MAX
@@ -1379,7 +1437,7 @@ export default function LandingPage() {
                   <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
                     <p className="text-sm font-medium text-white">Связаться напрямую</p>
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Отвечаем с {RESPONSE_HOURS}. Для срочных вопросов сейчас доступны телефон и почта.
+                      Отвечаем с {RESPONSE_HOURS}. Для срочных вопросов доступны телефон, почта и мессенджеры.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
@@ -1395,6 +1453,15 @@ export default function LandingPage() {
                         className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
                       >
                         Написать на почту
+                      </a>
+                      <a
+                        href={TELEGRAM_CONTACT_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => handleContactClick('telegram', 'form_contact')}
+                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                      >
+                        Написать в Telegram
                       </a>
                       <a
                         href={MAX_CONTACT_URL}
@@ -1539,6 +1606,9 @@ export default function LandingPage() {
                 </a>
                 <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_EMAIL}
+                </a>
+                <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                  Telegram
                 </a>
                 <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
                   MAX

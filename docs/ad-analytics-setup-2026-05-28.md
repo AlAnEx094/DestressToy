@@ -52,6 +52,7 @@
 | `pricing_tab_click` | Переключение ПУ / плюш | Видеть интерес к типу изделия |
 | `contact_phone_click` | Клик по телефону | Отдельная цель для звонков |
 | `contact_email_click` | Клик по email | Отдельная цель для заявок через почту |
+| `contact_telegram_click` | Клик по Telegram | Отдельная цель для переходов в Telegram-бот |
 | `contact_max_click` | Клик по MAX | Отдельная цель для заявок через MAX |
 | `lead_form_submit` | Нажатие отправки формы | Черновая конверсия до ответа webhook |
 | `lead_form_success` | Форма принята сайтом | Основная цель заявки |
@@ -64,9 +65,10 @@
 2. `lead_form_submit` — вспомогательная цель.
 3. `contact_phone_click` — звонки.
 4. `contact_email_click` — письма.
-5. `contact_max_click` — переходы в MAX.
-6. `cta_click` — интерес к расчёту.
-7. `pricing_tab_click` — интерес к формату изделия.
+5. `contact_telegram_click` — переходы в Telegram.
+6. `contact_max_click` — переходы в MAX.
+7. `cta_click` — интерес к расчёту.
+8. `pricing_tab_click` — интерес к формату изделия.
 
 Для Яндекс Директа основной целью лучше назначить `lead_form_success`.
 
@@ -74,6 +76,7 @@
 
 - `contact_phone_click`;
 - `contact_email_click`;
+- `contact_telegram_click`;
 - `contact_max_click`;
 - `cta_click`.
 
@@ -115,6 +118,7 @@ Telegram:
 
 - для рекламы лучше использовать бота, если он фиксирует заявку, источник и не теряет сообщения;
 - личный Telegram лучше оставить как резервный канал, а не как основной рекламный CTA.
+- текущая ссылка на сайте ведёт в Telegram-бота: `https://t.me/DestressToys_bot`.
 
 MAX:
 
