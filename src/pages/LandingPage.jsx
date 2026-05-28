@@ -320,6 +320,7 @@ const CONTACT_PHONE = '+7 953 970-97-89'
 const CONTACT_PHONE_HREF = 'tel:+79539709789'
 const CONTACT_EMAIL = 'info@destresstoys.ru'
 const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`
+const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOKaimmN-xgqBCQy-efE6Jo5-pFyieeix86sJ3PrxufNqwd3h_k'
 const RESPONSE_HOURS = '8:00–18:00 по МСК'
 const COMPANY_CITY = 'Россия, г. Тула'
 const LEGAL_NAME = 'ИП Антипов Алексей Александрович'
@@ -647,6 +648,9 @@ export default function LandingPage() {
                     </a>
                     <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'mobile_menu')} className="text-base font-medium text-white">
                       {CONTACT_EMAIL}
+                    </a>
+                    <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'mobile_menu')} className="text-base font-medium text-white">
+                      MAX
                     </a>
                   </div>
                   <p className="mt-2 text-sm text-[#7c847d]">Ответим с {RESPONSE_HOURS}</p>
@@ -1392,6 +1396,15 @@ export default function LandingPage() {
                       >
                         Написать на почту
                       </a>
+                      <a
+                        href={MAX_CONTACT_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => handleContactClick('max', 'form_contact')}
+                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                      >
+                        Написать в MAX
+                      </a>
                     </div>
                   </div>
 
@@ -1526,6 +1539,9 @@ export default function LandingPage() {
                 </a>
                 <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
                   {CONTACT_EMAIL}
+                </a>
+                <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                  MAX
                 </a>
                 <span>{RESPONSE_HOURS}</span>
                 <span>{COMPANY_CITY}</span>
