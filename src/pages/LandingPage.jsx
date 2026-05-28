@@ -231,7 +231,7 @@ const faqItems = [
   },
   {
     q: 'Из чего делают объекты?',
-    a: 'Два формата на выбор. Антистресс PU foam: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Плюшевые: классический плюш с набивкой, мягкие и приятные на ощупь. Оба формата безопасны, сертификат ЕС, подходят для детей от 3 лет.',
+    a: 'Два формата на выбор. Антистресс из ПУ-пены: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Плюшевые: классический плюш с набивкой, мягкие и приятные на ощупь. Оба формата безопасны, сертификат ЕС, подходят для детей от 3 лет.',
   },
   {
     q: 'Сколько занимает производство?',
@@ -514,30 +514,12 @@ export default function LandingPage() {
                 Мягкие игрушки и маскоты на заказ для вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Антистресс PU foam или классические плюшевые — выберите формат под задачу. Тираж от 200 шт.
+                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Антистресс из ПУ-пены или классические плюшевые — выберите формат под задачу. Тираж от 200 шт.
               </p>
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
                   <PrimaryButton href="#pricing">Рассчитать стоимость</PrimaryButton>
-                  <a
-                    href={TELEGRAM_CTA_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => handleMessengerClick('telegram')}
-                    className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
-                  >
-                    Написать в Telegram
-                  </a>
-                  <a
-                    href={MAX_CTA_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => handleMessengerClick('max')}
-                    className="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:border-white/40"
-                  >
-                    Написать в MAX
-                  </a>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 200 шт', 'Концепт за 2 часа', 'Образец за 10 дней'].map((p, i) => (
@@ -609,8 +591,8 @@ export default function LandingPage() {
 
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · PU foam</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс PU foam</h3>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · ПУ-пена</p>
+              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс из ПУ-пены</h3>
               <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 250 ₽/шт</p>
               <ul className="mt-5 space-y-3">
                 {['Сжимается и возвращает форму — антистресс-эффект', 'Бархатистое покрытие, приятно держать', 'Любая форма: логотип, маскот, символ', 'Дольше остаётся в руках — больше касаний с брендом'].map((point) => (
@@ -663,7 +645,7 @@ export default function LandingPage() {
               onClick={() => setPricingTab('pu')}
               className={`rounded-md px-5 py-2.5 text-sm font-semibold transition-colors ${pricingTab === 'pu' ? 'bg-[#ff6a3d] text-white' : 'border border-white/10 bg-white/5 text-[#7c847d] hover:text-white'}`}
             >
-              Антистресс PU foam
+              Антистресс из ПУ-пены
             </button>
             <button
               type="button"
@@ -1061,10 +1043,10 @@ export default function LandingPage() {
                 Два материала — одно качество.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                PU foam и плюш — разные форматы, одинаковый стандарт производства. Оба материала безопасны, прошли сертификацию ЕС и рассчитаны на долгое использование.
+                ПУ-пена и плюш — разные форматы, одинаковый стандарт производства. Оба материала безопасны, прошли сертификацию ЕС и рассчитаны на долгое использование.
               </p>
               <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
-                Антистресс PU foam
+                Антистресс из ПУ-пены
               </p>
               <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
                 {[
