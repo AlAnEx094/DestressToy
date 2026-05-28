@@ -324,6 +324,22 @@ const RESPONSE_HOURS = '8:00–18:00 по МСК'
 const COMPANY_CITY = 'Россия, г. Тула'
 const LEGAL_NAME = 'ИП Антипов Алексей Александрович'
 const LEGAL_ID = 'ОГРНИП 325710000056557'
+const ATTRIBUTION_STORAGE_KEY = 'destresstoys_attribution'
+const SESSION_STORAGE_KEY = 'destresstoys_session_id'
+const ATTRIBUTION_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'yclid',
+  'ymclid',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'fbclid',
+  'openstat',
+]
 
 const afterRequestSteps = [
   {
@@ -340,12 +356,70 @@ const afterRequestSteps = [
   },
 ]
 
+function createTrackingId(prefix) {
+  const randomPart =
+    typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`
+
+  return `${prefix}_${randomPart}`
+}
+
+function getOrCreateSessionId() {
+  if (typeof window === 'undefined') return ''
+
+  const existing = sessionStorage.getItem(SESSION_STORAGE_KEY)
+  if (existing) return existing
+
+  const next = createTrackingId('session')
+  sessionStorage.setItem(SESSION_STORAGE_KEY, next)
+  return next
+}
+
+function collectAttribution() {
+  if (typeof window === 'undefined') return {}
+
+  const params = new URLSearchParams(window.location.search)
+  const saved = sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY)
+  let attribution = {}
+
+  if (saved) {
+    try {
+      attribution = JSON.parse(saved)
+    } catch {
+      sessionStorage.removeItem(ATTRIBUTION_STORAGE_KEY)
+    }
+  }
+
+  ATTRIBUTION_KEYS.forEach((key) => {
+    const value = params.get(key)
+    if (value) attribution[key] = value
+  })
+
+  attribution.session_id = getOrCreateSessionId()
+  attribution.landing_page = attribution.landing_page || window.location.href
+  attribution.current_page = window.location.href
+  attribution.referrer = attribution.referrer || document.referrer || ''
+
+  sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(attribution))
+  return attribution
+}
+
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
 
-  window.ym?.(METRIKA_ID, 'reachGoal', eventName, params)
-  window.gtag?.('event', eventName, params)
-  window.dataLayer?.push({ event: eventName, ...params })
+  const eventPayload = {
+    event_id: createTrackingId('event'),
+    page_path: window.location.pathname,
+    page_title: document.title,
+    ...params,
+  }
+
+  window.ym?.(METRIKA_ID, 'reachGoal', eventName, eventPayload)
+  window.gtag?.('event', eventName, eventPayload)
+  window.dataLayer?.push({ event: eventName, ...eventPayload })
+
+  return eventPayload
 }
 
 function Container({ children, className = '' }) {
@@ -401,26 +475,7 @@ export default function LandingPage() {
   const utmRef = useRef({})
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
-    const utm = {}
-    utmKeys.forEach((key) => {
-      const val = params.get(key)
-      if (val) utm[key] = val
-    })
-    if (Object.keys(utm).length > 0) {
-      utmRef.current = utm
-      sessionStorage.setItem('utm', JSON.stringify(utm))
-    } else {
-      const stored = sessionStorage.getItem('utm')
-      if (stored) {
-        try {
-          utmRef.current = JSON.parse(stored)
-        } catch {
-          sessionStorage.removeItem('utm')
-        }
-      }
-    }
+    utmRef.current = collectAttribution()
   }, [])
 
   const handleInputChange = (event) => {
@@ -433,7 +488,11 @@ export default function LandingPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const leadId = createTrackingId('lead')
+    const submittedAt = new Date().toISOString()
     const payload = {
+      lead_id: leadId,
+      submitted_at: submittedAt,
       name: formValues.name,
       company: formValues.company,
       email: formValues.email,
@@ -444,16 +503,19 @@ export default function LandingPage() {
       has_assets: Boolean(formValues.assetDelivery || formValues.reference),
       asset_delivery: formValues.assetDelivery,
       lead_source: 'form',
+      current_pricing_tab: pricingTab,
       ...utmRef.current,
     }
 
     trackEvent('lead_form_submit', {
+      lead_id: leadId,
       lead_source: 'form',
       has_phone: Boolean(formValues.phone),
       has_quantity: Boolean(formValues.quantity),
       has_reference: Boolean(formValues.reference),
       has_assets: Boolean(formValues.assetDelivery || formValues.reference),
       asset_delivery: formValues.assetDelivery,
+      current_pricing_tab: pricingTab,
       ...utmRef.current,
     })
 
@@ -467,6 +529,7 @@ export default function LandingPage() {
       // fire-and-forget — don't block success UX on network errors
     }
     trackEvent('lead_form_success', {
+      lead_id: leadId,
       lead_source: 'form',
       ...utmRef.current,
     })
@@ -481,6 +544,22 @@ export default function LandingPage() {
     trackEvent(`contact_${channel}_click`, {
       lead_source: channel,
       placement,
+      ...utmRef.current,
+    })
+  }
+
+  const handleCtaClick = (placement, target) => {
+    trackEvent('cta_click', {
+      placement,
+      target,
+      ...utmRef.current,
+    })
+  }
+
+  const handlePricingTabClick = (tab) => {
+    setPricingTab(tab)
+    trackEvent('pricing_tab_click', {
+      pricing_tab: tab,
       ...utmRef.current,
     })
   }
@@ -523,7 +602,7 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:block">
-              <PrimaryButton href="#pricing" className="px-4 py-2.5 text-sm lg:px-5">
+              <PrimaryButton href="#pricing" onClick={() => handleCtaClick('header', 'pricing')} className="px-4 py-2.5 text-sm lg:px-5">
                 Рассчитать стоимость
               </PrimaryButton>
             </div>
@@ -575,7 +654,10 @@ export default function LandingPage() {
                 <PrimaryButton
                   href="#pricing"
                   className="mt-2 w-full"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    handleCtaClick('mobile_menu', 'pricing')
+                    setMobileMenuOpen(false)
+                  }}
                 >
                   Рассчитать стоимость
                 </PrimaryButton>
@@ -599,7 +681,7 @@ export default function LandingPage() {
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="#pricing">Рассчитать стоимость</PrimaryButton>
+                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать стоимость</PrimaryButton>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 200 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
@@ -749,14 +831,14 @@ export default function LandingPage() {
           <div className="mt-8 flex gap-2">
             <button
               type="button"
-              onClick={() => setPricingTab('pu')}
+              onClick={() => handlePricingTabClick('pu')}
               className={`rounded-md px-5 py-2.5 text-sm font-semibold transition-colors ${pricingTab === 'pu' ? 'bg-[#ff6a3d] text-white' : 'border border-white/10 bg-white/5 text-[#7c847d] hover:text-white'}`}
             >
               Антистресс из ПУ-пены
             </button>
             <button
               type="button"
-              onClick={() => setPricingTab('plush')}
+              onClick={() => handlePricingTabClick('plush')}
               className={`rounded-md px-5 py-2.5 text-sm font-semibold transition-colors ${pricingTab === 'plush' ? 'bg-[#ff6a3d] text-white' : 'border border-white/10 bg-white/5 text-[#7c847d] hover:text-white'}`}
             >
               Плюшевые
@@ -789,7 +871,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <PrimaryButton href="#final_cta">Рассчитать точную стоимость</PrimaryButton>
+            <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('pricing', 'final_cta')}>Рассчитать точную стоимость</PrimaryButton>
           </div>
         </Container>
       </section>
@@ -877,7 +959,7 @@ export default function LandingPage() {
                 )}
               </div>
 
-              <PrimaryButton href="#pricing" className="mt-8">
+              <PrimaryButton href="#pricing" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
                 Рассчитать стоимость
               </PrimaryButton>
             </div>
