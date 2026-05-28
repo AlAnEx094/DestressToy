@@ -202,7 +202,7 @@ const reviews = [
     name: 'Алексей К.',
     role: 'HR-директор, ретейл-компания',
     city: 'Москва',
-    text: 'Заказали 300 штук для welcome kit. Производство заняло 4 недели, всё пришло в срок. Сотрудники сами начали фотографировать и выкладывать — без какого-либо подогрева с нашей стороны.',
+    text: 'Делали игрушки для welcome-набора. Сначала переживали, что форма будет слишком детской, но после пары правок получилось аккуратно и в фирменных цветах. По срокам предупредили заранее, без сюрпризов.',
     qty: '300 шт',
     type: 'Welcome kit',
   },
@@ -210,7 +210,7 @@ const reviews = [
     name: 'Марина В.',
     role: 'Маркетолог, SaaS-компания',
     city: 'Санкт-Петербург',
-    text: 'Нужен был маскот для стенда на конференции. Концепт сделали за день, согласовали за два, уложились в 3 недели производства. Расхватали прямо со стенда — не успела сфотографироваться.',
+    text: 'Нужен был небольшой тираж к конференции. Первый вариант маскота был не совсем похож на нашего персонажа, но правки внесли нормально. На стенде игрушки разбирали лучше, чем листовки.',
     qty: '150 шт',
     type: 'Event-раздатка',
   },
@@ -218,7 +218,7 @@ const reviews = [
     name: 'Дмитрий О.',
     role: 'Основатель, digital-агентство',
     city: 'Екатеринбург',
-    text: 'Хотели нестандартный подарок клиентам на 8 лет компании вместо ежедневников. Несколько клиентов написали сами, что объект стоит на столе. Это и есть цель.',
+    text: 'Заказывали подарок для постоянных клиентов. Хотелось не очередной ежедневник, а что-то более тёплое. Больше всего помогло то, что можно было обсудить форму до расчёта и не запускать вслепую.',
     qty: '100 шт',
     type: 'Подарки клиентам',
   },
@@ -271,15 +271,16 @@ const formDefaults = {
 }
 
 const assetDeliveryOptions = [
-  { value: 'telegram', label: 'Прикреплю в Telegram' },
-  { value: 'max', label: 'Прикреплю в MAX' },
-  { value: 'email_reply', label: 'Отправлю ответом на письмо' },
-  { value: 'link', label: 'Есть ссылка' },
+  { value: 'telegram', label: 'Пришлю в Telegram' },
+  { value: 'max', label: 'Пришлю в MAX' },
+  { value: 'email_reply', label: 'Отвечу на письмо' },
+  { value: 'link', label: 'Вставлю ссылку' },
 ]
 
 const METRIKA_ID = 108979976
 const TELEGRAM_CTA_URL = import.meta.env.VITE_TELEGRAM_CTA_URL || 'https://t.me/DestressToys_bot'
-const MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || 'https://max.ru/'
+const RAW_MAX_CTA_URL = import.meta.env.VITE_MAX_CTA_URL || 'https://max.ru/'
+const MAX_CTA_URL = RAW_MAX_CTA_URL.startsWith('https://max.ru/') ? RAW_MAX_CTA_URL : 'https://max.ru/'
 
 function trackEvent(eventName, params = {}) {
   if (typeof window === 'undefined') return
@@ -1249,11 +1250,11 @@ export default function LandingPage() {
                   </label>
 
                   <details className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
-                    <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Дополнительно</summary>
+                    <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Файлы и детали заказа — необязательно</summary>
                     <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <fieldset className="col-span-2">
                         <legend className="block text-sm font-medium text-[#7c847d] mb-2">
-                          Есть логотип, брендбук или референсы?
+                          Как удобнее передать логотип или референсы?
                         </legend>
                         <div className="grid gap-2 sm:grid-cols-2">
                           {assetDeliveryOptions.map((option) => (
@@ -1274,7 +1275,7 @@ export default function LandingPage() {
                           ))}
                         </div>
                         <p className="mt-2 text-xs leading-5 text-[#7c847d]">
-                          Файлы удобнее отправить в мессенджере или ответом на письмо после заявки.
+                          Если материалов пока нет, просто пропустите этот блок.
                         </p>
                       </fieldset>
 
