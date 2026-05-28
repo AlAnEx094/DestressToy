@@ -479,7 +479,7 @@ function ContactIconLink({ href = '#', label, tooltip, children, onClick, extern
       className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 text-[#dfe5df] transition-colors hover:border-[#ff6a3d]/70 hover:bg-white/5 hover:text-white"
     >
       {children}
-      <span className="pointer-events-none absolute right-0 top-[calc(100%+10px)] z-50 max-w-[260px] whitespace-nowrap rounded-md border border-white/10 bg-[#151716] px-3 py-2 text-xs font-medium text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+      <span className="pointer-events-none absolute right-0 top-[calc(100%+10px)] z-50 w-max max-w-[220px] whitespace-normal rounded-md border border-white/10 bg-[#151716] px-3 py-2 text-xs font-medium leading-5 text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
         {tooltip}
       </span>
     </a>
@@ -1452,29 +1452,15 @@ export default function LandingPage() {
                   <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
                     <p className="text-sm font-medium text-white">Связаться напрямую</p>
                     <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Отвечаем с {RESPONSE_HOURS}. Для срочных вопросов доступны телефон, почта и мессенджеры.
+                      Отвечаем с {RESPONSE_HOURS}. Для быстрых вопросов удобнее написать в мессенджер.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
-                      <a
-                        href={CONTACT_PHONE_HREF}
-                        onClick={() => handleContactClick('phone', 'form_contact')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
-                      >
-                        Позвонить
-                      </a>
-                      <a
-                        href="#"
-                        onClick={(event) => handleEmailCopy(event, 'form_contact')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
-                      >
-                        Скопировать почту
-                      </a>
                       <a
                         href={TELEGRAM_CONTACT_URL}
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => handleContactClick('telegram', 'form_contact')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                        className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
                       >
                         Написать в Telegram
                       </a>
