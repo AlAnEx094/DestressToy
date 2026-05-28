@@ -492,28 +492,28 @@ export default function LandingPage() {
         className="sticky top-0 z-50 border-b border-white/10 bg-[#151716]"
       >
         <Container className="relative">
-          <div className="flex h-16 items-center justify-between gap-6">
+          <div className="flex h-16 items-center justify-between gap-4">
             <a
               href="#hero"
-              className="flex items-center gap-2.5"
+              className="flex shrink-0 items-center gap-2.5"
             >
               <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
               <span className="text-xl font-bold text-white tracking-tight">DeStressToys</span>
             </a>
 
-            <nav className="hidden items-center gap-10 md:flex">
+            <nav className="hidden items-center gap-5 lg:gap-7 md:flex">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-[15px] font-medium text-[#7c847d] transition-colors hover:text-white"
+                  className="text-[14px] font-medium text-[#7c847d] transition-colors hover:text-white"
                 >
                   {link.label}
                 </a>
               ))}
             </nav>
 
-            <div className="hidden items-center gap-4 text-sm lg:flex">
+            <div className="hidden items-center gap-3 text-sm xl:flex">
               <a href={CONTACT_EMAIL_HREF} onClick={() => handleContactClick('email', 'header')} className="text-[#7c847d] transition-colors hover:text-white">
                 {CONTACT_EMAIL}
               </a>
@@ -523,7 +523,7 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:block">
-              <PrimaryButton href="#pricing" className="px-5 py-2.5 text-sm">
+              <PrimaryButton href="#pricing" className="px-4 py-2.5 text-sm lg:px-5">
                 Рассчитать стоимость
               </PrimaryButton>
             </div>
@@ -1009,8 +1009,8 @@ export default function LandingPage() {
       <section id="comparison" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Сравнение</SectionLabel>
-          <div className="max-w-[820px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+          <div className="max-w-[980px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[2.85rem] font-bold leading-[1.08] tracking-[-0.02em] text-[#151716]">
               Обычный мерч используют один раз. Бренд-объект остаётся на виду.
             </h2>
             <p className="mt-6 text-lg leading-8 text-[#5a6060]">
