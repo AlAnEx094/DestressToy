@@ -200,31 +200,43 @@ const useCases = [
 
 const productFormats = [
   {
+    emoji: '🎭',
+    num: '01',
     title: 'Маскот бренда',
     body: 'Объёмный персонаж компании для мероприятий, подарков сотрудникам и клиентских коммуникаций.',
     fit: 'Когда у бренда уже есть герой или нужен узнаваемый символ.',
   },
   {
+    emoji: '🧸',
+    num: '02',
     title: 'Плюшевая игрушка',
     body: 'Классическая мягкая игрушка с фирменными цветами, вышивкой или печатью логотипа.',
     fit: 'Для подарков партнёрам, клиентам и команде.',
   },
   {
+    emoji: '🎨',
+    num: '03',
     title: 'Игрушка-персонаж',
     body: 'Кастомный герой по иллюстрации, логотипу, продукту или идее рекламной кампании.',
     fit: 'Для запусков, спецпроектов и брендов с характером.',
   },
   {
+    emoji: '🎪',
+    num: '04',
     title: 'Промо-игрушка',
     body: 'Яркий предмет для выставок, стендов, рассылок и раздатки, который хочется забрать с собой.',
     fit: 'Когда важны охват, запоминаемость и эмоция на первом контакте.',
   },
   {
+    emoji: '✦',
+    num: '05',
     title: 'Бренд-объект',
     body: 'Мягкая форма по продукту, символу или визуальному коду компании, а не типовой сувенир.',
     fit: 'Для ниш, где обычный мерч выглядит слишком ожидаемо.',
   },
   {
+    emoji: '🎁',
+    num: '06',
     title: 'Подарок для сотрудников',
     body: 'Тактильный корпоративный подарок для внутренних запусков, онбординга и памятных дат.',
     fit: 'Когда подарок должен остаться на столе, а не уйти в ящик.',
@@ -819,6 +831,82 @@ export default function LandingPage() {
         </Container>
       </section>
 
+      <section id="production" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Производство</SectionLabel>
+          <div className="max-w-[760px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
+              Как производятся ваши игрушки
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#dfe5df]">
+              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 200 штук и контролировать соответствие образцу.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+            <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
+              <img
+                src="/images/production/factory-hall.webp"
+                alt="Специализированная фабрика мягких игрушек — более 200 сотрудников, собственный цех"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="p-4">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                  Специализация
+                </p>
+                <p className="text-sm leading-6 text-[#dfe5df]">
+                  Специализированное производство — более 200 сотрудников. Тираж от 200 до 50 000 шт.
+                </p>
+              </div>
+            </article>
+
+            <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
+              <img
+                src="/images/production/sewing-shop.webp"
+                alt="Швейный цех фабрики мягких игрушек — ручная сборка партии"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="p-4">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                  Ручная сборка
+                </p>
+                <p className="text-sm leading-6 text-[#dfe5df]">
+                  Каждая игрушка шьётся вручную — единообразие партии гарантировано.
+                </p>
+              </div>
+            </article>
+
+            <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
+              <img
+                src="/images/production/quality-control.webp"
+                alt="Входной контроль качества на фабрике мягких игрушек — проверка перед отгрузкой"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="p-4">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                  Контроль качества
+                </p>
+                <p className="text-sm leading-6 text-[#dfe5df]">
+                  Входной контроль качества — каждая партия проходит проверку перед отгрузкой.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#7c847d]">
+            <span>✓ Образец перед запуском тиража</span>
+            <span>✓ Фото и видео с производства по запросу</span>
+            <span>✓ Договор фиксирует параметры до старта</span>
+          </div>
+        </Container>
+      </section>
+
       <section id="formats" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Форматы</SectionLabel>
@@ -835,11 +923,17 @@ export default function LandingPage() {
             {productFormats.map((format) => (
               <article
                 key={format.title}
-                className="rounded-xl border border-[#e5e0d8] bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
+                className="group relative overflow-hidden rounded-xl border border-[#e5e0d8] bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
               >
+                <span className="pointer-events-none absolute right-4 top-2 select-none text-[4rem] font-black leading-none text-[#f4efe8] transition-colors group-hover:text-[#ffe8df]">
+                  {format.num}
+                </span>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[#fff5f2] text-xl">
+                  {format.emoji}
+                </div>
                 <h3 className="text-lg font-bold leading-6 text-[#151716]">{format.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#5a6060]">{format.body}</p>
-                <p className="mt-4 border-t border-[#e5e0d8] pt-4 text-xs leading-5 text-[#7c847d]">
+                <p className="mt-2 text-sm leading-6 text-[#5a6060]">{format.body}</p>
+                <p className="mt-4 inline-block rounded-full border border-[#ff6a3d]/30 px-3 py-1 text-xs leading-5 text-[#ff6a3d]">
                   {format.fit}
                 </p>
               </article>
