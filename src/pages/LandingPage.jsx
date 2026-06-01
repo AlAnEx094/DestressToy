@@ -331,7 +331,7 @@ const METRIKA_ID = 108979976
 const CONTACT_PHONE = '+7 953 970-97-89'
 const CONTACT_PHONE_HREF = 'tel:+79539709789'
 const CONTACT_EMAIL = 'info@destresstoys.ru'
-const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOKaimmN-xgqBCQy-efE6Jo5-pFyieeix86sJ3PrxufNqwd3h_k'
+const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOIVeJ_-nVwb14TCvUKWE8ia3NJWgAsAJKxYqNzSgVzu2XK79cw'
 const TELEGRAM_CONTACT_URL = 'https://t.me/DestressToys_bot'
 const RESPONSE_HOURS = '8:00–18:00 по МСК'
 const COMPANY_CITY = 'Россия, г. Тула'
@@ -1488,6 +1488,33 @@ export default function LandingPage() {
             </div>
 
             <div className="rounded-[12px] border border-white/10 bg-white/5 p-8 md:p-10">
+              <div className="mb-6 rounded-md border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-medium text-white">Связаться напрямую</p>
+                <p className="mt-1 text-sm leading-6 text-[#7c847d]">
+                  Отвечаем с {RESPONSE_HOURS}. Для быстрых вопросов удобнее написать в мессенджер.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <a
+                    href={TELEGRAM_CONTACT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => handleContactClick('telegram', 'form_contact')}
+                    className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+                  >
+                    Написать в Telegram
+                  </a>
+                  <a
+                    href={MAX_CONTACT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => handleContactClick('max', 'form_contact')}
+                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+                  >
+                    Написать в MAX
+                  </a>
+                </div>
+              </div>
+
               {isSubmitted ? (
                 <div className="space-y-4">
                   <h3 className="text-2xl font-semibold text-white">
@@ -1542,33 +1569,6 @@ export default function LandingPage() {
                       placeholder="name@company.com"
                     />
                   </label>
-
-                  <div className="rounded-md border border-white/10 bg-white/[0.04] p-4">
-                    <p className="text-sm font-medium text-white">Связаться напрямую</p>
-                    <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                      Отвечаем с {RESPONSE_HOURS}. Для быстрых вопросов удобнее написать в мессенджер.
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <a
-                        href={TELEGRAM_CONTACT_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => handleContactClick('telegram', 'form_contact')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
-                      >
-                        Написать в Telegram
-                      </a>
-                      <a
-                        href={MAX_CONTACT_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => handleContactClick('max', 'form_contact')}
-                        className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
-                      >
-                        Написать в MAX
-                      </a>
-                    </div>
-                  </div>
 
                   <label className="block">
                     <span className="mb-2 block text-sm font-medium text-white">
