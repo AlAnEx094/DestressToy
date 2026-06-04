@@ -123,6 +123,7 @@ const pricingTiers = [
   { qty: 'от 1 000 шт', price: '700 ₽', perUnit: 'за штуку' },
   { qty: 'от 1 500 шт', price: '650 ₽', perUnit: 'за штуку' },
   { qty: 'от 2 000 шт', price: '600 ₽', perUnit: 'за штуку' },
+  { qty: 'от 3 000 шт', price: '390 ₽', perUnit: 'за штуку' },
 ]
 
 const plushPricingTiers = [
@@ -331,7 +332,7 @@ const METRIKA_ID = 108979976
 const CONTACT_PHONE = '+7 953 970-97-89'
 const CONTACT_PHONE_HREF = 'tel:+79539709789'
 const CONTACT_EMAIL = 'info@destresstoys.ru'
-const MAX_CONTACT_URL = 'https://max.ru/u/f9LHodD0cOIVeJ_-nVwb14TCvUKWE8ia3NJWgAsAJKxYqNzSgVzu2XK79cw'
+const MAX_CONTACT_URL = 'https://max.ru/id712807991969_bot'
 const TELEGRAM_CONTACT_URL = 'https://t.me/DestressToys_bot'
 const RESPONSE_HOURS = '8:00–18:00 по МСК'
 const COMPANY_CITY = 'Россия, г. Тула'
@@ -786,9 +787,9 @@ export default function LandingPage() {
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/hero-stage/cat.webp"      alt="" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/hero-stage/bear.webp"     alt="" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/hero-stage/dinosaur.webp" alt="" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+              <img src="/images/hero-stage/cat.webp"      alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/hero-stage/bear.webp"     alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/hero-stage/dinosaur.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
             </div>
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
@@ -808,10 +809,10 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-8 grid gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {galleryItems.map((item) => (
+            {galleryItems.map((item, index) => (
               <article
                 key={item.label}
-                className="overflow-hidden rounded-xl border border-[#e5e0d8] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]"
+                className={`overflow-hidden rounded-xl border border-[#e5e0d8] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]${index >= 4 ? ' hidden md:block' : ''}`}
               >
                 <div className="w-full aspect-[5/4] bg-[#f4efe8]">
                   <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
@@ -1041,13 +1042,45 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#7c847d]">
+            <span><span className="text-[#ff6a3d]">✓</span> Разработка формы под ваш бренд</span>
+            <span><span className="text-[#ff6a3d]">✓</span> Производство тиража</span>
+            <span><span className="text-[#ff6a3d]">✓</span> Упаковка</span>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-4">
             <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('pricing', 'final_cta')}>Рассчитать точную стоимость</PrimaryButton>
           </div>
         </Container>
       </section>
 
-      <section id="use_cases" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+      {/* Mobile-only contact block after pricing */}
+      <div className="md:hidden bg-[#151716] border-t border-white/10 px-5 py-8">
+        <p className="text-sm font-medium text-white">Есть вопрос по цене?</p>
+        <p className="mt-1 text-sm text-[#7c847d]">Ответим в мессенджере — быстро и без форм.</p>
+        <div className="mt-5 flex flex-col gap-3">
+          <a
+            href={TELEGRAM_CONTACT_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => handleContactClick('telegram', 'pricing_mobile')}
+            className="inline-flex w-full items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+          >
+            Написать в Telegram
+          </a>
+          <a
+            href={MAX_CONTACT_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => handleContactClick('max', 'pricing_mobile')}
+            className="inline-flex w-full items-center justify-center rounded-md border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
+          >
+            Написать в MAX
+          </a>
+        </div>
+      </div>
+
+      <section id="use_cases" className="hidden md:block bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Где используют</SectionLabel>
           <div className="max-w-[720px]">
@@ -1104,7 +1137,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="brand_gifts" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+      <section id="brand_gifts" className="hidden md:block bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <div className="grid items-center gap-8 md:gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
             <div className="order-2 md:order-1 max-w-[520px]">
@@ -1259,7 +1292,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="comparison" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+      <section id="comparison" className="hidden md:block bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Сравнение</SectionLabel>
           <div className="max-w-[980px]">
@@ -1382,7 +1415,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="texture" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+      <section id="texture" className="hidden md:block bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
             <div className="max-w-[540px]">
