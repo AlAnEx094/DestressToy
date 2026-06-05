@@ -27,21 +27,55 @@ const currencyOptions = {
   cny: { label: 'CNY', symbol: '¥', rateLabel: 'Курс CNY', perUnit: '¥/шт' },
 }
 
+const materialPresets = {
+  pu: {
+    supplierCurrency: 'cny',
+    exwUsd: 17,
+    weightGram: 150,
+    packUsd: 1.3,
+    moldUsd: 3000,
+    printSetupUsd: 0,
+    chinaDeliveryUsd: 500,
+    sampleUsd: 500,
+    markup: 2.5,
+    cnyRateRub: 10.89,
+    rateRub: 90,
+  },
+  plush: {
+    supplierCurrency: 'usd',
+    exwUsd: 3.5,
+    weightGram: 80,
+    packUsd: 0.3,
+    moldUsd: 0,
+    printSetupUsd: 0,
+    chinaDeliveryUsd: 80,
+    sampleUsd: 80,
+    markup: 2.5,
+    cnyRateRub: 10.89,
+    rateRub: 90,
+  },
+}
+
+const moldComplexityOptions = {
+  simple: { label: 'Простая форма', hint: '3 000 ¥', value: 3000 },
+  complex: { label: 'Сложная форма', hint: '7 000 ¥', value: 7000 },
+}
+
 const defaults = {
-  supplierCurrency: 'usd',
-  exwUsd: 1.5,
-  quantity: 200,
-  weightGram: 80,
-  packUsd: 0.2,
-  moldUsd: 600,
-  printSetupUsd: 120,
-  chinaDeliveryUsd: 80,
-  sampleUsd: 80,
+  supplierCurrency: 'cny',
+  exwUsd: 17,
+  quantity: 500,
+  weightGram: 150,
+  packUsd: 1.3,
+  moldUsd: 3000,
+  printSetupUsd: 0,
+  chinaDeliveryUsd: 500,
+  sampleUsd: 500,
   bankPct: 3,
   defectPct: 4,
-  rateRub: 76,
-  cnyRateRub: 10.5,
-  markup: 3,
+  rateRub: 90,
+  cnyRateRub: 10.89,
+  markup: 2.5,
   logistic: 'cargo',
 }
 
@@ -117,6 +151,8 @@ function Metric({ label, value, sub, accent = false }) {
 export default function CostCalculatorPage() {
   const [searchParams] = useSearchParams()
   const dealId = searchParams.get('dealId') || ''
+  const [material, setMaterial] = useState('pu')
+  const [moldComplexity, setMoldComplexity] = useState('simple')
   const [values, setValues] = useState(defaults)
   const [moneyInputs, setMoneyInputs] = useState({
     moldUsd: String(defaults.moldUsd),
@@ -133,6 +169,28 @@ export default function CostCalculatorPage() {
 
   const updateSupplierCurrency = (currency) => {
     setValues((current) => ({ ...current, supplierCurrency: currency }))
+    setCopied('')
+  }
+
+  const handleMaterialChange = (mat) => {
+    const preset = materialPresets[mat]
+    setMaterial(mat)
+    setMoldComplexity('simple')
+    setValues((current) => ({ ...current, ...preset }))
+    setMoneyInputs({
+      moldUsd: String(preset.moldUsd),
+      printSetupUsd: String(preset.printSetupUsd),
+      chinaDeliveryUsd: String(preset.chinaDeliveryUsd),
+      sampleUsd: String(preset.sampleUsd),
+    })
+    setCopied('')
+  }
+
+  const handleMoldComplexity = (complexity) => {
+    const moldValue = moldComplexityOptions[complexity].value
+    setMoldComplexity(complexity)
+    setValues((current) => ({ ...current, moldUsd: moldValue }))
+    setMoneyInputs((current) => ({ ...current, moldUsd: String(moldValue) }))
     setCopied('')
   }
 
@@ -203,8 +261,13 @@ export default function CostCalculatorPage() {
     }
   }, [values])
 
+  const materialLabel = material === 'pu'
+    ? `PU маскот (${moldComplexity === 'simple' ? 'простая форма 3 000 ¥' : 'сложная форма 7 000 ¥'})`
+    : 'Плюш 15 см'
+
   const crmText = [
     dealId ? `Сделка: ${dealId}` : null,
+    `Тип изделия: ${materialLabel}`,
     `Тираж: ${values.quantity} шт.`,
     `Валюта поставщика: ${currencyOptions[result.currency].label}`,
     `EXW: ${formatCurrency(values.exwUsd, result.currency)} / шт.`,
@@ -259,6 +322,41 @@ export default function CostCalculatorPage() {
           </Link>
         </header>
 
+        <section className="mb-4 rounded-lg border border-neutral-800 bg-neutral-900 p-5">
+          <div className="mb-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Тип изделия</div>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { key: 'pu', label: 'PU Маскот', hint: 'резина, форма, ~150г' },
+              { key: 'plush', label: 'Плюш', hint: 'мягкая игрушка, ~80г' },
+            ].map(({ key, label, hint }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => handleMaterialChange(key)}
+                className={`rounded-md border px-4 py-3 text-left transition-colors ${material === key ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+              >
+                <span className="block text-sm font-medium">{label}</span>
+                <span className="mt-1 block font-mono text-xs opacity-70">{hint}</span>
+              </button>
+            ))}
+          </div>
+          {material === 'pu' ? (
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {Object.entries(moldComplexityOptions).map(([key, option]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => handleMoldComplexity(key)}
+                  className={`rounded-md border px-4 py-3 text-left transition-colors ${moldComplexity === key ? 'border-lime-300/60 bg-lime-300/5 text-lime-200' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+                >
+                  <span className="block text-sm font-medium">{option.label}</span>
+                  <span className="mt-1 block font-mono text-xs opacity-70">{option.hint}</span>
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </section>
+
         <section className="grid gap-4 lg:grid-cols-[1fr_1fr]">
           <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
             <div className="mb-5 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Партия и производство</div>
@@ -276,10 +374,10 @@ export default function CostCalculatorPage() {
               ))}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0.3} max={values.supplierCurrency === 'cny' ? 80 : 8} step={values.supplierCurrency === 'cny' ? 0.5 : 0.1} onChange={(value) => update('exwUsd', value)} />
+              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0.3} max={values.supplierCurrency === 'cny' ? 100 : 10} step={values.supplierCurrency === 'cny' ? 0.5 : 0.1} onChange={(value) => update('exwUsd', value)} />
               <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={5000} step={50} onChange={(value) => update('quantity', value)} />
-              <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={20} max={500} step={10} onChange={(value) => update('weightGram', value)} />
-              <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={values.supplierCurrency === 'cny' ? 0.5 : 0.05} onChange={(value) => update('packUsd', value)} />
+              <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={20} max={600} step={10} onChange={(value) => update('weightGram', value)} />
+              <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={values.supplierCurrency === 'cny' ? 0.1 : 0.05} onChange={(value) => update('packUsd', value)} />
               <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('moldUsd', value)} />
               <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
               <NumberInput label="Доставка по Китаю" value={moneyInputs.chinaDeliveryUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('chinaDeliveryUsd', value)} />

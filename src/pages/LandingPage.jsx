@@ -504,6 +504,7 @@ export default function LandingPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
   const [pricingTab, setPricingTab] = useState('pu')
   const utmRef = useRef({})
 
@@ -553,20 +554,26 @@ export default function LandingPage() {
     })
 
     try {
-      await fetch('/api/lead', {
+      const response = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      trackEvent('lead_form_success', {
+        lead_id: leadId,
+        lead_source: 'form',
+        ...utmRef.current,
+      })
+      setIsSubmitted(true)
     } catch {
-      // fire-and-forget — don't block success UX on network errors
+      trackEvent('lead_form_error', {
+        lead_id: leadId,
+        lead_source: 'form',
+        ...utmRef.current,
+      })
+      setSubmitError(true)
     }
-    trackEvent('lead_form_success', {
-      lead_id: leadId,
-      lead_source: 'form',
-      ...utmRef.current,
-    })
-    setIsSubmitted(true)
   }
 
   const handleFaqToggle = (index) => {
@@ -1559,6 +1566,24 @@ export default function LandingPage() {
                     Ответ придёт на {formValues.email || 'указанный email'}. Для срочного вопроса можно позвонить по номеру{' '}
                     <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'success_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
                   </p>
+                </div>
+              ) : submitError ? (
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-semibold text-white">
+                    Не удалось отправить заявку
+                  </h3>
+                  <p className="text-base leading-7 text-[#7c847d]">
+                    Произошла техническая ошибка. Позвоните нам напрямую:{' '}
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'error_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>{' '}
+                    или напишите на{' '}
+                    <a href="mailto:info@destresstoys.ru" className="text-[#ff6a3d] underline">info@destresstoys.ru</a>.
+                  </p>
+                  <button
+                    onClick={() => setSubmitError(false)}
+                    className="text-sm text-[#7c847d] underline hover:text-white"
+                  >
+                    Попробовать снова
+                  </button>
                 </div>
               ) : (
                 <form className="space-y-5" onSubmit={handleSubmit}>
