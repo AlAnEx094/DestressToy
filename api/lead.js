@@ -3,6 +3,79 @@ import nodemailer from 'nodemailer'
 const AIRTABLE_BASE = 'appNUVkunRDc2WjS9'
 const AIRTABLE_TABLE = 'tbl1NgZx7QCp0fu5J'
 
+const AMO_BASE = 'https://leshaantipovmailru.amocrm.ru'
+const AMO_PIPELINE_ID = 9702630
+const AMO_STATUS_ID = 77344742
+const AMO_RESPONSIBLE_USER_ID = 12591990
+
+async function createAmoCRM(body) {
+  const token = process.env.AMOCRM_TOKEN
+  if (!token) return
+
+  const amoPost = async (path, data) => {
+    const r = await fetch(`${AMO_BASE}${path}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+      signal: AbortSignal.timeout(8000),
+    })
+    const text = await r.text()
+    try { return JSON.parse(text) } catch { return null }
+  }
+
+  const name = body.company || body.name || 'Не указано'
+
+  const customFields = []
+  if (body.email) customFields.push({ field_code: 'EMAIL', values: [{ value: body.email, enum_code: 'WORK' }] })
+  if (body.phone) customFields.push({ field_code: 'PHONE', values: [{ value: body.phone, enum_code: 'WORK' }] })
+
+  const contactData = await amoPost('/api/v4/contacts', [{ name, ...(customFields.length ? { custom_fields_values: customFields } : {}) }])
+  const contactId = contactData?._embedded?.contacts?.[0]?.id
+  if (!contactId) return
+
+  const dealData = await amoPost('/api/v4/leads', [{
+    name,
+    pipeline_id: AMO_PIPELINE_ID,
+    status_id: AMO_STATUS_ID,
+    _embedded: { contacts: [{ id: contactId }] },
+  }])
+  const dealId = dealData?._embedded?.leads?.[0]?.id
+  if (!dealId) return
+
+  const deadline = new Date()
+  deadline.setUTCDate(deadline.getUTCDate() + 1)
+  deadline.setUTCHours(7, 0, 0, 0)
+  const dow = deadline.getUTCDay()
+  if (dow === 6) deadline.setUTCDate(deadline.getUTCDate() + 2)
+  if (dow === 0) deadline.setUTCDate(deadline.getUTCDate() + 1)
+
+  await Promise.allSettled([
+    amoPost('/api/v4/tasks', [{
+      text: `📞 Позвонить / написать клиенту\n\n👤 ${name}\n📦 Тираж: ${body.quantity || '—'}\n💬 ${body.description || '—'}`,
+      complete_till: Math.floor(deadline.getTime() / 1000),
+      task_type_id: 1,
+      entity_id: dealId,
+      entity_type: 'leads',
+      responsible_user_id: AMO_RESPONSIBLE_USER_ID,
+    }]),
+    amoPost(`/api/v4/leads/${dealId}/notes`, [{
+      note_type: 'common',
+      params: {
+        text: [
+          `📦 Тираж: ${body.quantity || '—'}`,
+          `📝 Описание: ${body.description || '—'}`,
+          `🔗 UTM source: ${body.utm_source || '—'}`,
+          `📣 UTM campaign: ${body.utm_campaign || '—'}`,
+          `📊 UTM medium: ${body.utm_medium || '—'}`,
+          `📱 Telegram: ${body.telegram || '—'}`,
+          `📲 MAX: ${body.max || '—'}`,
+          `🆔 lead_id: ${body.lead_id || '—'}`,
+        ].join('\n'),
+      },
+    }]),
+  ])
+}
+
 async function saveToAirtable(body) {
   const pat = process.env.AIRTABLE_PAT
   if (!pat) return
@@ -165,51 +238,23 @@ export default async function handler(req, res) {
 
   const body = req.body || {}
 
-  // Save to Airtable — independent of notification channel
-  try {
-    await saveToAirtable(body)
-  } catch {
-    // Non-blocking
-  }
+  // n8n — fire-and-forget (preview generation only)
+  fetch('https://n8n.destresstoys.ru/webhook/new-lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(5000),
+  }).catch(() => {})
 
-  // MAX notification — primary channel (push works reliably)
-  try {
-    await notifyMax(body)
-  } catch {
-    // Non-blocking
-  }
+  // All critical tasks in parallel
+  await Promise.allSettled([
+    saveToAirtable(body),
+    notifyMax(body),
+    notifyTelegram(body),
+    sendOperatorEmail(body),
+    sendConfirmationEmail(body),
+    createAmoCRM(body),
+  ])
 
-  // Telegram — secondary duplicate channel
-  try {
-    await notifyTelegram(body)
-  } catch {
-    // Non-blocking
-  }
-
-  // Notification email to operator
-  try {
-    await sendOperatorEmail(body)
-  } catch {
-    // Non-blocking
-  }
-
-  // Confirmation email to the lead
-  try {
-    await sendConfirmationEmail(body)
-  } catch {
-    // Non-blocking
-  }
-
-  // Forward to n8n — secondary channel for CRM automation
-  try {
-    const response = await fetch('https://n8n.destresstoys.ru/webhook/new-lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-    const data = await response.json()
-    return res.status(response.status).json(data)
-  } catch {
-    return res.status(200).json({ status: 'ok', message: 'Заявка сохранена' })
-  }
+  return res.status(200).json({ status: 'ok', message: 'Заявка сохранена' })
 }
