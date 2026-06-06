@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 import CrossNav from '../components/CrossNav.jsx'
 
 const stageItems = [
-  { src: '/images/hero-stage/bear.webp',    alt: 'Кастомный медведь-маскот с логотипом — мягкая игрушка на заказ для бренда', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
-  { src: '/images/hero-stage/cat.webp',     alt: 'Кот-маскот с логотипом клиента — брендированная мягкая игрушка для корпоративного мерча', size: 155, x: 2, y: 6, z: 2, delay: '0.6s', float: '4.4s' },
-  { src: '/images/hero-stage/robot.webp',   alt: 'Робот-маскот с фирменным логотипом — кастомная игрушка на заказ для компании', size: 180, x: 58, y: 55, z: 2, delay: '0.9s', float: '3.5s' },
-  { src: '/images/hero-stage/dinosaur.webp',alt: 'Динозавр-маскот — кастомный антистресс-объект для корпоративного бренда', size: 155, x: 65, y: 5, z: 1, delay: '0.4s', float: '4.2s' },
+  { src: '/images/gallery/plush_bear.webp',   alt: 'Плюшевый медведь-маскот с логотипом — корпоративный подарок на заказ', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/gallery/plush_rabbit.webp', alt: 'Плюшевый кролик — кастомный мягкий маскот для брендинга', size: 155, x: 2, y: 6, z: 2, delay: '0.6s', float: '4.4s' },
+  { src: '/images/gallery/plush_fox.webp',    alt: 'Плюшевый кибер-лис — кастомный мягкий маскот для IT-брендинга', size: 180, x: 58, y: 55, z: 2, delay: '0.9s', float: '3.5s' },
 ]
 
 function ProductStage() {
@@ -101,21 +100,19 @@ const whyCards = [
 ]
 
 const galleryItems = [
-  { label: 'Маскот · подарки сотрудникам', title: 'Медведь-маскот', body: 'Дружелюбная форма для корпоративных подарков, промонаборов и внутренних мероприятий. Хорошо смотрится в нейтральных и фирменных цветах.', image: '/images/gallery/bear.webp', alt: 'Белый медведь-маскот — мягкая игрушка на заказ для корпоративных подарков' },
-  { label: 'Маскот · digital и IT', title: 'Кот-робот', body: 'Технологичный персонаж для IT, финтеха и digital-команд. Подходит для мерча, который хочется оставить на рабочем столе.', image: '/images/gallery/cat.webp', alt: 'Чёрный кот-робот — брендированная мягкая игрушка для IT-компании и корпоративного мерча' },
-  { label: 'Символ · мероприятия и стенды', title: 'Осьминог-маскот', body: 'Узнаваемая форма с высокой тактильностью. Легко ассоциируется с брендом — для event-стендов и раздатки на мероприятиях.', image: '/images/gallery/octopus.webp', alt: 'Голубой осьминог-маскот — кастомная мягкая игрушка для выставок, событий и промо-раздачи' },
-  { label: 'Персонаж · спецпроекты', title: 'Динозавр', body: 'Мягкий персонаж для запусков, детских направлений и брендов с ярким характером. Работает как запоминающийся бренд-объект.', image: '/images/gallery/dinosaur.webp', alt: 'Мятный динозавр — мягкий бренд-персонаж на заказ для промо-кампании' },
-  { label: 'Промо · выставки и рассылки', title: 'Утёнок', body: 'Позитивный образ для промо-акций, рассылок и подарков партнёрам. Быстро считывается и вызывает эмоциональный отклик.', image: '/images/gallery/duck.webp', alt: 'Жёлтый утёнок — брендированная мягкая игрушка для промо-рассылок, выставок и корпоративных подарков' },
-  { label: 'Форма · wellness и забота', title: 'Облачко', body: 'Спокойная минималистичная форма для HR, wellness-программ и заботливых клиентских коммуникаций.', image: '/images/gallery/cloud.webp', alt: 'Мягкое облачко — кастомная игрушка с логотипом для HR и wellness-программ' },
-  { label: 'Кастом · необычная форма', title: 'Арбуз', body: 'Яркая предметная форма для специальных кампаний, сезонных запусков и брендов, которым важно выделиться с первого взгляда.', image: '/images/gallery/watermelon.webp', alt: 'Арбуз-персонаж — нестандартная мягкая игрушка на заказ для промо-кампании' },
-  { label: 'Маскот · инновации', title: 'Космонавт', body: 'Аккуратный футуристичный маскот для технологичных продуктов, конференций и подарков команде или партнёрам.', image: '/images/gallery/cosmo.webp', alt: 'Космонавт-маскот — корпоративная мягкая игрушка на заказ для технологичного бренда и конференций' },
+  { label: 'Медведь · корпоративные подарки', title: 'Плюшевый медведь', body: 'Классический мягкий медведь с фирменной вышивкой логотипа. Подходит для подарков сотрудникам, партнёрам и клиентам.', image: '/images/gallery/plush_bear.webp', alt: 'Плюшевый медведь с вышивкой логотипа — кастомный мягкий маскот для корпоративных подарков' },
+  { label: 'Кролик · маскот бренда', title: 'Плюшевый кролик', body: 'Мягкий кролик с детализированными ушами — универсальный маскот для брендов, ориентированных на тепло и заботу.', image: '/images/gallery/plush_rabbit.webp', alt: 'Плюшевый кролик — кастомный мягкий маскот для брендинга и корпоративных подарков' },
+  { label: 'Лис · IT и digital', title: 'Кибер-лис', body: 'Технологичный персонаж в фирменных цветах. Подходит для IT, стартапов и digital-команд с характером.', image: '/images/gallery/plush_fox.webp', alt: 'Кибер-лис — плюшевый кастомный маскот для IT-компании и технологичного бренда' },
+  { label: 'Облачко · wellness и HR', title: 'Облачко', body: 'Мягкое облако с добрым лицом — для HR-программ, wellness-инициатив и заботливых корпоративных подарков.', image: '/images/gallery/plush_cloud.webp', alt: 'Плюшевое облачко — кастомный мягкий маскот для HR и wellness-программ' },
+  { label: 'Осьминог · события и стенды', title: 'Осьминог', body: 'Яркий многорукий персонаж для event-стендов и раздатки. Высокая тактильность и узнаваемость — запоминается с первого раза.', image: '/images/gallery/plush_octopus.webp', alt: 'Плюшевый осьминог — кастомный мягкий маскот для выставок и промо-мероприятий' },
+  { label: 'Ракета · запуски и спецпроекты', title: 'Ракета', body: 'Яркий футуристичный персонаж для запусков продуктов, конференций и брендов с амбициями.', image: '/images/gallery/plush_rocket.webp', alt: 'Плюшевая ракета — кастомный мягкий маскот для запусков и технологичных брендов' },
 ]
 
 const pricingTiers = [
-  { qty: 'от 500 шт', price: '850 ₽', perUnit: 'за штуку' },
-  { qty: 'от 1 000 шт', price: '700 ₽', perUnit: 'за штуку' },
-  { qty: 'от 2 000 шт', price: '600 ₽', perUnit: 'за штуку' },
-  { qty: 'от 3 000 шт', price: '390 ₽', perUnit: 'за штуку' },
+  { qty: 'от 300 шт', price: 'по запросу', perUnit: 'за штуку' },
+  { qty: 'от 500 шт', price: '1 200 ₽', perUnit: 'за штуку' },
+  { qty: 'от 1 000 шт', price: '1 000 ₽', perUnit: 'за штуку' },
+  { qty: 'от 2 000 шт', price: '850 ₽', perUnit: 'за штуку' },
 ]
 
 const processSteps = [
@@ -520,7 +517,7 @@ export default function LandingPage() {
       has_assets: Boolean(formValues.assetDelivery || formValues.reference),
       asset_delivery: formValues.assetDelivery,
       lead_source: 'form',
-      product_type: 'antistress',
+      product_type: 'plush',
       ...utmRef.current,
     }
 
@@ -532,7 +529,7 @@ export default function LandingPage() {
       has_reference: Boolean(formValues.reference),
       has_assets: Boolean(formValues.assetDelivery || formValues.reference),
       asset_delivery: formValues.assetDelivery,
-      product_type: 'antistress',
+      product_type: 'plush',
       ...utmRef.current,
     })
 
@@ -543,7 +540,7 @@ export default function LandingPage() {
         body: JSON.stringify(payload),
       })
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      trackEvent('antistress_lead_form_success', {
+      trackEvent('plush_lead_form_success', {
         lead_id: leadId,
         lead_source: 'form',
         ...utmRef.current,
@@ -744,12 +741,12 @@ export default function LandingPage() {
         <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
           <div className="grid w-full items-stretch gap-10 md:grid-cols-[1.2fr_0.95fr] md:gap-16">
             <div className="flex flex-col justify-center">
-              <SectionLabel>Кастомный мерч · тираж от 200 шт</SectionLabel>
+              <SectionLabel>Мягкие игрушки · тираж от 300 шт</SectionLabel>
               <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] text-white">
-                Мягкие игрушки и маскоты на заказ для вашего бренда
+                Мягкая игрушка с характером вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Антистресс из ПУ-пены или классические плюшевые — выберите формат под задачу. Тираж от 200 шт.
+                Плюшевый маскот под ваш бренд: форма, цвет, вышивка логотипа. Подходит для корпоративных подарков, детских направлений и event-раздатки. Тираж от 300 штук.
               </p>
 
               <div className="mt-8 md:mt-10">
@@ -757,7 +754,7 @@ export default function LandingPage() {
                   <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать стоимость</PrimaryButton>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  {['Тираж от 200 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
+                  {['Тираж от 300 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
                     <span key={i} className="text-sm text-[#7c847d] flex items-center gap-2">
                       {i > 0 && <span className="w-1 h-1 rounded-full bg-[#7c847d] inline-block" />}
                       {p}
@@ -782,7 +779,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <CrossNav variant="antistress" />
+      <CrossNav variant="plush" />
 
       <section id="gallery" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
         <Container>
@@ -926,50 +923,6 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-10 max-w-[720px]">
-            <h3 className="text-2xl font-bold leading-tight text-[#151716]">
-              Выберите материал под бюджет и впечатление
-            </h3>
-            <p className="mt-3 text-base leading-7 text-[#5a6060]">
-              После заявки подскажем, какой формат лучше подходит под форму, тираж и сроки.
-            </p>
-          </div>
-
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · ПУ-пена</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс из ПУ-пены</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 250 ₽/шт</p>
-              <ul className="mt-5 space-y-3">
-                {['Сжимается и возвращает форму — антистресс-эффект', 'Бархатистое покрытие, приятно держать', 'Любая форма: логотип, маскот, символ', 'Дольше остаётся в руках — больше касаний с брендом'].map((point) => (
-                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть цены →
-              </a>
-            </article>
-
-            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Плюш · классика</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Плюшевые игрушки</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 950 ₽/шт</p>
-              <ul className="mt-5 space-y-3">
-                {['Классический мягкий плюш с набивкой', 'Высокая воспринимаемая ценность — заметный подарок', 'Узнаваемый формат для любой аудитории', 'Подходит для подарков сотрудникам, клиентам и партнёрам'].map((point) => (
-                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть цены →
-              </a>
-            </article>
-          </div>
         </Container>
       </section>
 
@@ -985,7 +938,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <p className="mt-4 text-sm text-[#7c847d]">Сжимается, возвращает форму. Бархатистое покрытие. Антистресс-эффект.</p>
+          <p className="mt-4 text-sm text-[#7c847d]">Классическая мягкая игрушка. Плюшевый ворс. Вышивка логотипа.</p>
 
           <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
             {pricingTiers.map((tier) => (
@@ -1005,8 +958,10 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#7c847d]">
-            <span><span className="text-[#ff6a3d]">✓</span> Разработка формы под ваш бренд</span>
+          <p className="mt-4 text-xs text-[#7c847d]">Итоговая цена зависит от формы и комплектации. Точный расчёт — после заявки.</p>
+
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#7c847d]">
+            <span><span className="text-[#ff6a3d]">✓</span> Разработка выкройки под ваш бренд</span>
             <span><span className="text-[#ff6a3d]">✓</span> Производство тиража</span>
             <span><span className="text-[#ff6a3d]">✓</span> Упаковка</span>
           </div>
