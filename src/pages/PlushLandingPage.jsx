@@ -427,7 +427,7 @@ function Container({ children, className = '' }) {
 
 function SectionLabel({ children }) {
   return (
-    <p className="mb-4 text-xs font-medium uppercase tracking-[0.06em] text-[#ff6a3d]">
+    <p className="mb-4 text-xs font-medium uppercase tracking-[0.06em] text-[#9b7be8]">
       {children}
     </p>
   )
@@ -453,7 +453,7 @@ function PlaceholderBlock({ label, className = '', tone = 'dark' }) {
 function PrimaryButton({ as: Component = 'a', className = '', children, ...props }) {
   return (
     <Component
-      className={`inline-flex items-center justify-center rounded-md bg-[#ff6a3d] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#e85a2e] ${className}`}
+      className={`inline-flex items-center justify-center rounded-md bg-[#9b7be8] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#8469d0] ${className}`}
       {...props}
     >
       {children}
@@ -470,7 +470,7 @@ function ContactIconLink({ href = '#', label, tooltip, children, onClick, extern
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
       onClick={onClick}
-      className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 text-[#dfe5df] transition-colors hover:border-[#ff6a3d]/70 hover:bg-white/5 hover:text-white"
+      className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 text-[#dfe5df] transition-colors hover:border-[#9b7be8]/70 hover:bg-white/5 hover:text-white"
     >
       {children}
       <span className="pointer-events-none absolute right-0 top-[calc(100%+10px)] z-50 w-max max-w-[220px] whitespace-normal rounded-md border border-white/10 bg-[#151716] px-3 py-2 text-xs font-medium leading-5 text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
@@ -486,10 +486,21 @@ export default function LandingPage() {
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(false)
+  const [showStickyCta, setShowStickyCta] = useState(false)
   const utmRef = useRef({})
 
   useEffect(() => {
     utmRef.current = collectAttribution()
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolled = window.scrollY
+      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 300
+      setShowStickyCta(scrolled > window.innerHeight * 0.5 && !nearBottom)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const handleInputChange = (event) => {
@@ -800,7 +811,7 @@ export default function LandingPage() {
                   <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <div className="p-4 md:p-6">
-                  <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                  <p className="mb-1 text-xs uppercase tracking-widest text-[#9b7be8]">
                     {item.label}
                   </p>
                   <h3 className="text-base md:text-xl font-bold text-[#151716]">{item.title}</h3>
@@ -836,7 +847,7 @@ export default function LandingPage() {
                 decoding="async"
               />
               <div className="p-4">
-                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#9b7be8]">
                   Специализация
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
@@ -854,7 +865,7 @@ export default function LandingPage() {
                 decoding="async"
               />
               <div className="p-4">
-                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#9b7be8]">
                   Ручная сборка
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
@@ -872,7 +883,7 @@ export default function LandingPage() {
                 decoding="async"
               />
               <div className="p-4">
-                <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
+                <p className="mb-1 text-xs uppercase tracking-widest text-[#9b7be8]">
                   Контроль качества
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
@@ -916,7 +927,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-lg font-bold leading-6 text-[#151716]">{format.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#5a6060]">{format.body}</p>
-                <p className="mt-4 inline-block rounded-full border border-[#ff6a3d]/30 px-3 py-1 text-xs leading-5 text-[#ff6a3d]">
+                <p className="mt-4 inline-block rounded-full border border-[#9b7be8]/30 px-3 py-1 text-xs leading-5 text-[#9b7be8]">
                   {format.fit}
                 </p>
               </article>
@@ -944,15 +955,15 @@ export default function LandingPage() {
             {pricingTiers.map((tier) => (
               <div
                 key={tier.qty}
-                className={`rounded-xl border p-5 text-center relative ${tier.qty === 'от 500 шт' ? 'border-[#ff6a3d] bg-white/10' : 'border-white/10 bg-white/5'}`}
+                className={`rounded-xl border p-5 text-center relative ${tier.qty === 'от 500 шт' ? 'border-[#9b7be8] bg-white/10' : 'border-white/10 bg-white/5'}`}
               >
                 {tier.qty === 'от 500 шт' && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#ff6a3d] px-3 py-0.5 text-xs font-bold text-white whitespace-nowrap">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#9b7be8] px-3 py-0.5 text-xs font-bold text-white whitespace-nowrap">
                     Популярный
                   </span>
                 )}
                 <p className="text-sm text-[#7c847d]">{tier.qty}</p>
-                <p className="mt-2 text-[2rem] font-bold leading-none text-[#ff6a3d]">{tier.price}</p>
+                <p className="mt-2 text-[2rem] font-bold leading-none text-[#9b7be8]">{tier.price}</p>
                 <p className="mt-1 text-xs text-[#7c847d]">{tier.perUnit}</p>
               </div>
             ))}
@@ -965,9 +976,9 @@ export default function LandingPage() {
           <p className="mt-4 text-xs text-[#7c847d]">Итоговая цена зависит от формы и комплектации. Точный расчёт — после заявки.</p>
 
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#7c847d]">
-            <span><span className="text-[#ff6a3d]">✓</span> Разработка выкройки под ваш бренд</span>
-            <span><span className="text-[#ff6a3d]">✓</span> Производство тиража</span>
-            <span><span className="text-[#ff6a3d]">✓</span> Упаковка</span>
+            <span><span className="text-[#9b7be8]">✓</span> Разработка выкройки под ваш бренд</span>
+            <span><span className="text-[#9b7be8]">✓</span> Производство тиража</span>
+            <span><span className="text-[#9b7be8]">✓</span> Упаковка</span>
           </div>
 
           <div className="mt-6 flex flex-wrap gap-4">
@@ -986,7 +997,7 @@ export default function LandingPage() {
             target="_blank"
             rel="noreferrer"
             onClick={() => handleContactClick('telegram', 'pricing_mobile')}
-            className="inline-flex w-full items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+            className="inline-flex w-full items-center justify-center rounded-md bg-[#9b7be8] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#8469d0]"
           >
             Написать в Telegram
           </a>
@@ -1043,7 +1054,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-6">
               {processSteps.map((step) => (
                 <article key={step.number} className="relative min-w-0">
-                  <p className="text-[1.75rem] lg:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
+                  <p className="text-[1.75rem] lg:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#9b7be8]">
                     {step.number}
                   </p>
                   <h3 className="mt-3 text-base lg:text-2xl font-semibold leading-6 lg:leading-8 text-white">
@@ -1114,11 +1125,11 @@ export default function LandingPage() {
           <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {reviews.map((review) => (
               <article key={review.name} className="rounded-xl border border-[#e5e0d8] bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]">
-                <p className="text-[#ff6a3d] text-base">{review.rating || '★★★★★'}</p>
+                <p className="text-[#9b7be8] text-base">{review.rating || '★★★★★'}</p>
                 <p className="mt-3 text-base leading-7 text-[#151716]">«{review.text}»</p>
                 <div className="mt-5 pt-4 border-t border-[#e5e0d8]">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-sm font-bold text-[#ff6a3d]">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#9b7be8]/15 text-sm font-bold text-[#9b7be8]">
                       {review.name.charAt(0)}
                     </div>
                     <div>
@@ -1196,7 +1207,7 @@ export default function LandingPage() {
                       <span className="text-base md:text-lg font-semibold leading-6 md:leading-7 text-white">
                         {item.q}
                       </span>
-                      <span className="text-2xl leading-none text-[#ff6a3d]">
+                      <span className="text-2xl leading-none text-[#9b7be8]">
                         {isOpen ? '−' : '+'}
                       </span>
                     </button>
@@ -1235,7 +1246,7 @@ export default function LandingPage() {
                   {comparisonCols.map((col, index) => (
                     <th
                       key={col}
-                      className={`px-5 py-4 text-left font-semibold ${index === comparisonCols.length - 1 ? 'bg-[#ff6a3d]/10 font-bold text-[#ff6a3d] border-t-2 border-[#ff6a3d]' : ''}`}
+                      className={`px-5 py-4 text-left font-semibold ${index === comparisonCols.length - 1 ? 'bg-[#9b7be8]/10 font-bold text-[#9b7be8] border-t-2 border-[#9b7be8]' : ''}`}
                     >
                       {col}
                     </th>
@@ -1251,10 +1262,10 @@ export default function LandingPage() {
                     {row.values.map((value, index) => (
                       <td
                         key={`${row.label}-${index}`}
-                        className={`px-5 py-4 text-sm ${index === row.values.length - 1 ? 'bg-[#ff6a3d]/8' : 'text-[#5a6060]'}`}
+                        className={`px-5 py-4 text-sm ${index === row.values.length - 1 ? 'bg-[#9b7be8]/8' : 'text-[#5a6060]'}`}
                       >
                         {index === row.values.length - 1 ? (
-                          <span className="inline-flex items-center rounded-full bg-[#ff6a3d] px-3 py-0.5 text-xs font-bold text-white">
+                          <span className="inline-flex items-center rounded-full bg-[#9b7be8] px-3 py-0.5 text-xs font-bold text-white">
                             {value}
                           </span>
                         ) : value}
@@ -1272,25 +1283,25 @@ export default function LandingPage() {
                 key={card.title}
                 className={`rounded-xl border p-5 ${
                   card.tone === 'accent'
-                    ? 'border-[#ff6a3d] bg-white shadow-[0_18px_34px_rgba(255,106,61,0.14)]'
+                    ? 'border-[#9b7be8] bg-white shadow-[0_18px_34px_rgba(255,106,61,0.14)]'
                     : 'border-[#e5e0d8] bg-white'
                 }`}
               >
-                <p className={`text-xs font-semibold uppercase tracking-[0.08em] ${card.tone === 'accent' ? 'text-[#ff6a3d]' : 'text-[#7c847d]'}`}>
+                <p className={`text-xs font-semibold uppercase tracking-[0.08em] ${card.tone === 'accent' ? 'text-[#9b7be8]' : 'text-[#7c847d]'}`}>
                   {card.subtitle}
                 </p>
                 <h3 className="mt-2 text-xl font-bold leading-7 text-[#151716]">{card.title}</h3>
                 <ul className="mt-4 space-y-3">
                   {card.points.map((point) => (
                     <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
-                      <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${card.tone === 'accent' ? 'bg-[#ff6a3d]' : 'bg-[#d0c9bf]'}`} />
+                      <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${card.tone === 'accent' ? 'bg-[#9b7be8]' : 'bg-[#d0c9bf]'}`} />
                       <span>{point}</span>
                     </li>
                   ))}
                 </ul>
                 <p className={`mt-5 rounded-lg px-4 py-3 text-sm font-semibold leading-6 ${
                   card.tone === 'accent'
-                    ? 'bg-[#ff6a3d] text-white'
+                    ? 'bg-[#9b7be8] text-white'
                     : 'bg-[#f4efe8] text-[#5a6060]'
                 }`}>
                   {card.result}
@@ -1304,7 +1315,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-8 rounded-xl bg-[#ebe5dd] p-6 text-base text-[#5a6060]">
-            <span className="font-bold text-[#ff6a3d]">Вывод:</span> бренд-объект
+            <span className="font-bold text-[#9b7be8]">Вывод:</span> бренд-объект
             остаётся на столе неделями — каждый раз это контакт с вашим брендом без дополнительных вложений.
           </div>
         </Container>
@@ -1325,7 +1336,7 @@ export default function LandingPage() {
                 key={card.number}
                 className="bg-white border border-[#e5e0d8] rounded-xl p-5 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
               >
-                <p className="text-[2rem] md:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
+                <p className="text-[2rem] md:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#9b7be8]">
                   {card.number}
                 </p>
                 <h3 className="mt-6 text-2xl font-semibold leading-8 text-[#151716]">
@@ -1349,7 +1360,7 @@ export default function LandingPage() {
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
                 Мягкий плюшевый ворс, гипоаллергенный наполнитель и вышитый логотип — игрушка, которую приятно держать в руках. Подбирается под длительное использование и детальную передачу фирменного образа.
               </p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#9b7be8]">
                 Антистресс из ПУ-пены
               </p>
               <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
@@ -1365,7 +1376,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#9b7be8]">
                 Плюшевые игрушки
               </p>
               <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
@@ -1410,7 +1421,7 @@ export default function LandingPage() {
                 {['Ответим с 8:00 до 18:00 по МСК', 'Файлы можно прислать позже', 'Договор перед запуском тиража'].map(
                   (item) => (
                     <li key={item} className="flex gap-3">
-                      <span className="text-[#ff6a3d]">✓</span>
+                      <span className="text-[#9b7be8]">✓</span>
                       <span>{item}</span>
                     </li>
                   ),
@@ -1430,7 +1441,7 @@ export default function LandingPage() {
                 <div className="mt-4 space-y-4">
                   {afterRequestSteps.map((step, index) => (
                     <div key={step.title} className="flex gap-3">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-xs font-bold text-[#ff6a3d]">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#9b7be8]/15 text-xs font-bold text-[#9b7be8]">
                         {index + 1}
                       </span>
                       <div>
@@ -1455,7 +1466,7 @@ export default function LandingPage() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => handleContactClick('telegram', 'form_contact')}
-                    className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+                    className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#9b7be8] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#8469d0]"
                   >
                     Написать в Telegram
                   </a>
@@ -1480,7 +1491,7 @@ export default function LandingPage() {
                     Мы получили ваши данные и подготовим концепт под задачу
                     {formValues.company ? ` для ${formValues.company}` : ''}.
                     Ответ придёт на {formValues.email || 'указанный email'}. Для срочного вопроса можно позвонить по номеру{' '}
-                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'success_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'success_message')} className="text-[#9b7be8] underline">{CONTACT_PHONE}</a>.
                   </p>
                 </div>
               ) : submitError ? (
@@ -1490,9 +1501,9 @@ export default function LandingPage() {
                   </h3>
                   <p className="text-base leading-7 text-[#7c847d]">
                     Произошла техническая ошибка. Позвоните нам напрямую:{' '}
-                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'error_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>{' '}
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'error_message')} className="text-[#9b7be8] underline">{CONTACT_PHONE}</a>{' '}
                     или напишите на{' '}
-                    <a href="mailto:info@destresstoys.ru" className="text-[#ff6a3d] underline">info@destresstoys.ru</a>.
+                    <a href="mailto:info@destresstoys.ru" className="text-[#9b7be8] underline">info@destresstoys.ru</a>.
                   </p>
                   <button
                     onClick={() => setSubmitError(false)}
@@ -1511,7 +1522,7 @@ export default function LandingPage() {
                       required
                       value={formValues.name}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#9b7be8] focus:ring-2 focus:ring-[#9b7be8]/20"
                       placeholder="Ваше имя"
                     />
                   </label>
@@ -1526,7 +1537,7 @@ export default function LandingPage() {
                       required
                       value={formValues.company}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#9b7be8] focus:ring-2 focus:ring-[#9b7be8]/20"
                       placeholder="Название компании"
                     />
                   </label>
@@ -1539,7 +1550,7 @@ export default function LandingPage() {
                       required
                       value={formValues.email}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#9b7be8] focus:ring-2 focus:ring-[#9b7be8]/20"
                       placeholder="name@company.com"
                     />
                   </label>
@@ -1553,7 +1564,7 @@ export default function LandingPage() {
                       rows="4"
                       value={formValues.task}
                       onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
+                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#9b7be8] focus:ring-2 focus:ring-[#9b7be8]/20"
                       placeholder="Где будет использоваться бренд-объект и какой нужен тираж?"
                     />
                   </label>
@@ -1577,7 +1588,7 @@ export default function LandingPage() {
                                 value={option.value}
                                 checked={formValues.assetDelivery === option.value}
                                 onChange={handleInputChange}
-                                className="h-4 w-4 border-white/20 accent-[#ff6a3d]"
+                                className="h-4 w-4 border-white/20 accent-[#9b7be8]"
                               />
                               <span>{option.label}</span>
                             </label>
@@ -1593,34 +1604,34 @@ export default function LandingPage() {
                         <input id="quantity" name="quantity" type="text" placeholder="200 / 500 / 1000"
                           value={formValues.quantity}
                           onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#9b7be8] focus:outline-none transition-colors" />
                       </div>
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-[#7c847d] mb-1.5">Телефон</label>
                         <input id="phone" name="phone" type="tel" placeholder="+7"
                           value={formValues.phone}
                           onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#9b7be8] focus:outline-none transition-colors" />
                       </div>
                       <div className="col-span-2">
                         <label htmlFor="reference" className="block text-sm font-medium text-[#7c847d] mb-1.5">Ссылка / референс</label>
                         <input id="reference" name="reference" type="url" placeholder="Figma, Drive, сайт"
                           value={formValues.reference}
                           onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#9b7be8] focus:outline-none transition-colors" />
                       </div>
                     </div>
                   </details>
 
                   <label className="flex items-start gap-3 rounded-md bg-white/[0.04] px-4 py-3 text-sm text-[#7c847d] cursor-pointer">
                     <input type="checkbox" name="consent" required
-                      className="mt-0.5 h-4 w-4 rounded border-white/20 accent-[#ff6a3d]" />
+                      className="mt-0.5 h-4 w-4 rounded border-white/20 accent-[#9b7be8]" />
                     <span>Я согласен на обработку персональных данных</span>
                   </label>
 
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-md bg-[#ff6a3d] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+                    className="inline-flex w-full items-center justify-center rounded-md bg-[#9b7be8] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#8469d0]"
                   >
                     Получить расчёт стоимости
                   </button>
@@ -1670,16 +1681,16 @@ export default function LandingPage() {
             <div>
               <p className="font-semibold text-white">Контакты</p>
               <div className="mt-3 flex flex-col gap-2">
-                <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-base font-semibold text-white transition-colors hover:text-[#9b7be8]">
                   {CONTACT_PHONE}
                 </a>
-                <a href="#" onClick={(event) => handleEmailCopy(event, 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href="#" onClick={(event) => handleEmailCopy(event, 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#9b7be8]">
                   {CONTACT_EMAIL}
                 </a>
-                <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#9b7be8]">
                   Telegram
                 </a>
-                <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#9b7be8]">
                   MAX
                 </a>
                 <span>{RESPONSE_HOURS}</span>
@@ -1693,6 +1704,17 @@ export default function LandingPage() {
           </div>
         </Container>
       </footer>
+      {showStickyCta && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+          <a
+            href="#final_cta"
+            onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
+            className="block w-full rounded-md bg-[#9b7be8] py-3.5 text-center text-base font-semibold text-white"
+          >
+            Получить расчёт бесплатно
+          </a>
+        </div>
+      )}
     </main>
   )
 }

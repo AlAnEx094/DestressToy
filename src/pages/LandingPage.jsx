@@ -489,10 +489,21 @@ export default function LandingPage() {
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(false)
+  const [showStickyCta, setShowStickyCta] = useState(false)
   const utmRef = useRef({})
 
   useEffect(() => {
     utmRef.current = collectAttribution()
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolled = window.scrollY
+      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 300
+      setShowStickyCta(scrolled > window.innerHeight * 0.5 && !nearBottom)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const handleInputChange = (event) => {
@@ -985,7 +996,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+          <div className="mt-8 -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
             {[
               { emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, кошка, кролик' },
               { emoji: '🍔', category: 'Еда и напитки', examples: 'Гамбургер, авокадо, пончик, мороженое' },
@@ -998,7 +1009,7 @@ export default function LandingPage() {
             ].map((cat) => (
               <div
                 key={cat.category}
-                className="rounded-xl border border-[#e5e0d8] bg-white p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+                className="snap-start flex-shrink-0 w-[160px] rounded-xl border border-[#e5e0d8] bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:w-auto md:p-5"
               >
                 <span className="text-2xl">{cat.emoji}</span>
                 <p className="mt-2 text-sm font-semibold text-[#151716]">{cat.category}</p>
@@ -1811,6 +1822,17 @@ export default function LandingPage() {
           </div>
         </Container>
       </footer>
+      {showStickyCta && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+          <a
+            href="#final_cta"
+            onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
+            className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-white"
+          >
+            Получить расчёт бесплатно
+          </a>
+        </div>
+      )}
     </main>
   )
 }
