@@ -109,7 +109,7 @@ const galleryItems = [
 ]
 
 const pricingTiers = [
-  { qty: 'от 300 шт', price: 'по запросу', perUnit: 'за штуку' },
+  { qty: 'от 300 шт', price: 'от 1 500 ₽', perUnit: 'за штуку' },
   { qty: 'от 500 шт', price: '1 200 ₽', perUnit: 'за штуку' },
   { qty: 'от 1 000 шт', price: '1 000 ₽', perUnit: 'за штуку' },
   { qty: 'от 2 000 шт', price: '850 ₽', perUnit: 'за штуку' },
@@ -667,7 +667,7 @@ export default function LandingPage() {
 
             <div className="hidden md:block">
               <PrimaryButton href="#pricing" onClick={() => handleCtaClick('header', 'pricing')} className="px-4 py-2.5 text-sm lg:px-5">
-                Рассчитать стоимость
+                Получить расчёт бесплатно
               </PrimaryButton>
             </div>
 
@@ -729,7 +729,7 @@ export default function LandingPage() {
                     setMobileMenuOpen(false)
                   }}
                 >
-                  Рассчитать стоимость
+                  Получить расчёт бесплатно
                 </PrimaryButton>
               </nav>
             </div>
@@ -751,7 +751,7 @@ export default function LandingPage() {
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать стоимость</PrimaryButton>
+                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт бесплатно</PrimaryButton>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 300 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
@@ -958,6 +958,10 @@ export default function LandingPage() {
             ))}
           </div>
 
+          <p className="mt-3 text-center text-xs text-white/50">
+            * Цена тиража 300 шт зависит от формы и вышивки — уточним при расчёте
+          </p>
+
           <p className="mt-4 text-xs text-[#7c847d]">Итоговая цена зависит от формы и комплектации. Точный расчёт — после заявки.</p>
 
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#7c847d]">
@@ -998,7 +1002,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <section id="use_cases" className="hidden md:block bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+      <section id="use_cases" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Где используют</SectionLabel>
           <div className="max-w-[720px]">
@@ -1007,7 +1011,7 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
             {useCases.map((item) => (
               <article
                 key={item.title}
@@ -1055,7 +1059,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="brand_gifts" className="hidden md:block bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+      <section id="brand_gifts" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
           <div className="grid items-center gap-8 md:gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
             <div className="order-2 md:order-1 max-w-[520px]">
@@ -1082,7 +1086,7 @@ export default function LandingPage() {
               </div>
 
               <PrimaryButton href="#pricing" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
-                Рассчитать стоимость
+                Получить расчёт бесплатно
               </PrimaryButton>
             </div>
 
