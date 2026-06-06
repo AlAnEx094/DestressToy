@@ -49,7 +49,7 @@ function ProductStage() {
 
 const navLinks = [
   { label: 'Работы', href: '#gallery' },
-  { label: 'Форматы', href: '#formats' },
+  { label: 'Форматы', href: '#standard_forms' },
   { label: 'Цены', href: '#pricing' },
   { label: 'Процесс', href: '#process' },
   { label: 'Отзывы', href: '#reviews' },
@@ -928,10 +928,10 @@ export default function LandingPage() {
 
           <div className="mt-10 max-w-[720px]">
             <h3 className="text-2xl font-bold leading-tight text-[#151716]">
-              Выберите материал под бюджет и впечатление
+              Выберите формат под тираж и задачу
             </h3>
             <p className="mt-3 text-base leading-7 text-[#5a6060]">
-              После заявки подскажем, какой формат лучше подходит под форму, тираж и сроки.
+              Кастомная форма — для уникального маскота любой формы. Стандартная — для быстрого запуска с готовой формой и вашим логотипом.
             </p>
           </div>
 
@@ -954,21 +954,98 @@ export default function LandingPage() {
             </article>
 
             <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Плюш · классика</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Плюшевые игрушки</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 300 шт · от 1 200 ₽/шт</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Стандарт · готовые формы</p>
+              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Стандартные формы</h3>
+              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 270 ₽/шт</p>
               <ul className="mt-5 space-y-3">
-                {['Классический мягкий плюш с набивкой', 'Высокая воспринимаемая ценность — заметный подарок', 'Узнаваемый формат для любой аудитории', 'Подходит для подарков сотрудникам, клиентам и партнёрам'].map((point) => (
+                {['35+ готовых форм — животные, еда, спорт, транспорт', 'Нанесение логотипа вашего бренда', 'Тираж от 200 шт — ниже, чем для кастомных', 'Срок от 2 недель — в 2 раза быстрее'].map((point) => (
                   <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
                     <span>{point}</span>
                   </li>
                 ))}
               </ul>
-              <a href="/plush" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть плюш →
+              <a href="#standard_forms" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
+                Смотреть формы →
               </a>
             </article>
+          </div>
+        </Container>
+      </section>
+
+      <section id="standard_forms" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Стандартные формы</SectionLabel>
+          <div className="max-w-[720px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
+              Готовая форма с вашим логотипом — быстрее и доступнее
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#5a6060]">
+              Не нужна уникальная пресс-форма. Выберите из 35+ готовых форм и нанесите логотип вашего бренда. Тираж от 200 шт, срок от 2 недель — подходит для ограниченного бюджета или срочного запуска.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+            {[
+              { emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, кошка, кролик' },
+              { emoji: '🍔', category: 'Еда и напитки', examples: 'Гамбургер, авокадо, пончик, мороженое' },
+              { emoji: '🚗', category: 'Транспорт', examples: 'Автомобиль, автобус, эвакуатор' },
+              { emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
+              { emoji: '💊', category: 'Медицина / Юмор', examples: 'Мозг, капсула, губы и зубы' },
+              { emoji: '☁️', category: 'Природа', examples: 'Облако, капля воды, звезда, гриб' },
+              { emoji: '🏠', category: 'Офис / Быт', examples: 'Домик, дрель, микрофон, флакон' },
+              { emoji: '❤️', category: 'Символы', examples: 'Сердце, смайлик, якорь, единорог' },
+            ].map((cat) => (
+              <div
+                key={cat.category}
+                className="rounded-xl border border-[#e5e0d8] bg-white p-4 md:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+              >
+                <span className="text-2xl">{cat.emoji}</span>
+                <p className="mt-2 text-sm font-semibold text-[#151716]">{cat.category}</p>
+                <p className="mt-1 text-xs leading-5 text-[#5a6060]">{cat.examples}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <div className="rounded-xl bg-[#151716] p-6 md:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Ориентировочные цены</p>
+              <div className="mt-5 space-y-3">
+                {[
+                  { qty: 'от 200 шт', price: 'от 270 ₽/шт' },
+                  { qty: 'от 500 шт', price: 'от 200 ₽/шт' },
+                  { qty: 'от 1 000 шт', price: 'от 130 ₽/шт' },
+                ].map((row) => (
+                  <div key={row.qty} className="flex items-baseline justify-between border-b border-white/10 pb-3">
+                    <span className="text-sm text-[#7c847d]">{row.qty}</span>
+                    <span className="text-lg font-bold text-white">{row.price}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-xs text-[#7c847d]">Цена зависит от конкретной формы. Простые формы — дешевле, сложные — дороже. Точный расчёт — после выбора.</p>
+            </div>
+
+            <div className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+              <p className="text-sm font-bold text-[#151716]">Чем отличается от кастомной формы</p>
+              <ul className="mt-4 space-y-3">
+                {[
+                  'Тираж от 200 шт — не от 500',
+                  'Срок от 2 недель — не от 4–5',
+                  'Нет затрат на разработку пресс-формы',
+                  'Логотип методом тампопечати или нанесения',
+                  'Подходит для разовых акций и тестовых тиражей',
+                ].map((point) => (
+                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-4">
+            <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('standard_forms', 'final_cta')}>Выбрать форму и рассчитать стоимость</PrimaryButton>
           </div>
         </Container>
       </section>
