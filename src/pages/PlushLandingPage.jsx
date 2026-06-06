@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import CrossNav from '../components/CrossNav.jsx'
 
 const stageItems = [
-  { src: '/images/gallery/plush_bear.webp',   alt: 'Плюшевый медведь-маскот с логотипом — корпоративный подарок на заказ', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
-  { src: '/images/gallery/plush_rabbit.webp', alt: 'Плюшевый кролик — кастомный мягкий маскот для брендинга', size: 155, x: 2, y: 6, z: 2, delay: '0.6s', float: '4.4s' },
-  { src: '/images/gallery/plush_fox.webp',    alt: 'Плюшевый кибер-лис — кастомный мягкий маскот для IT-брендинга', size: 180, x: 58, y: 55, z: 2, delay: '0.9s', float: '3.5s' },
+  { src: '/images/hero-stage/plush_bear.webp',   alt: 'Плюшевый медведь-маскот с логотипом — корпоративный подарок на заказ', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
+  { src: '/images/hero-stage/plush_rabbit.webp', alt: 'Плюшевый кролик — кастомный мягкий маскот для брендинга', size: 155, x: 2, y: 6, z: 2, delay: '0.6s', float: '4.4s' },
+  { src: '/images/hero-stage/plush_fox.webp',    alt: 'Плюшевый кибер-лис — кастомный мягкий маскот для IT-брендинга', size: 180, x: 58, y: 55, z: 2, delay: '0.9s', float: '3.5s' },
 ]
 
 function ProductStage() {
@@ -767,9 +767,9 @@ export default function LandingPage() {
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/gallery/plush_rabbit.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/gallery/plush_bear.webp"   alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/gallery/plush_fox.webp"    alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+              <img src="/images/hero-stage/plush_rabbit.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/hero-stage/plush_bear.webp"   alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/hero-stage/plush_fox.webp"    alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
             </div>
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
