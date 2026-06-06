@@ -267,11 +267,11 @@ const reviews = [
 const faqItems = [
   {
     q: 'Какой минимальный тираж?',
-    a: 'От 200 штук. Для крупных тиражей (500+) доступны дополнительные скидки.',
+    a: 'От 500 штук. При тираже от 1 000 шт доступны дополнительные скидки.',
   },
   {
     q: 'Из чего делают объекты?',
-    a: 'Два формата на выбор. Антистресс из ПУ-пены: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Плюшевые: классический плюш с набивкой, мягкие и приятные на ощупь.',
+    a: 'Антистресс из ПУ-пены: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Если нужен плюшевый маскот — смотрите раздел мягких игрушек.',
   },
   {
     q: 'Сколько занимает производство?',
@@ -287,11 +287,11 @@ const faqItems = [
   },
   {
     q: 'Сколько стоит?',
-    a: 'Ориентировочные цены: от 1 250 ₽/шт при тираже 200 шт, от 850 ₽/шт при 500 шт, от 700 ₽/шт при 1 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
+    a: 'Ориентировочные цены: от 850 ₽/шт при тираже 500 шт, от 700 ₽/шт при 1 000 шт, от 600 ₽/шт при 2 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
   },
   {
     q: 'Где производятся игрушки?',
-    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Это позволяет делать тираж от 200 штук и выдерживать понятные производственные сроки.',
+    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Это позволяет делать тираж от 500 штук и выдерживать понятные производственные сроки.',
   },
 ]
 
@@ -744,12 +744,12 @@ export default function LandingPage() {
         <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
           <div className="grid w-full items-stretch gap-10 md:grid-cols-[1.2fr_0.95fr] md:gap-16">
             <div className="flex flex-col justify-center">
-              <SectionLabel>Кастомный мерч · тираж от 200 шт</SectionLabel>
+              <SectionLabel>Антистресс из ПУ-пены · тираж от 500 шт</SectionLabel>
               <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] text-white">
-                Мягкие игрушки и маскоты на заказ для вашего бренда
+                Антистресс-маскот из ПУ-пены для вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Корпоративный мерч в форме логотипа, маскота или любого символа бренда. Антистресс из ПУ-пены или классические плюшевые — выберите формат под задачу. Тираж от 200 шт.
+                Брендовый антистресс в форме вашего логотипа или маскота. Сжимается, возвращает форму, бархатистое покрытие. Тираж от 500 шт.
               </p>
 
               <div className="mt-8 md:mt-10">
@@ -757,7 +757,7 @@ export default function LandingPage() {
                   <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать стоимость</PrimaryButton>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  {['Тираж от 200 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
+                  {['Тираж от 500 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
                     <span key={i} className="text-sm text-[#7c847d] flex items-center gap-2">
                       {i > 0 && <span className="w-1 h-1 rounded-full bg-[#7c847d] inline-block" />}
                       {p}
@@ -825,7 +825,7 @@ export default function LandingPage() {
               Как производятся ваши игрушки
             </h2>
             <p className="mt-4 text-base leading-7 text-[#dfe5df]">
-              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 200 штук и контролировать соответствие образцу.
+              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 500 штук и контролировать соответствие образцу.
             </p>
           </div>
 
@@ -939,7 +939,7 @@ export default function LandingPage() {
             <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · ПУ-пена</p>
               <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс из ПУ-пены</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 250 ₽/шт</p>
+              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 500 шт · от 850 ₽/шт</p>
               <ul className="mt-5 space-y-3">
                 {['Сжимается и возвращает форму — антистресс-эффект', 'Бархатистое покрытие, приятно держать', 'Любая форма: логотип, маскот, символ', 'Дольше остаётся в руках — больше касаний с брендом'].map((point) => (
                   <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
@@ -956,7 +956,7 @@ export default function LandingPage() {
             <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Плюш · классика</p>
               <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Плюшевые игрушки</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 1 950 ₽/шт</p>
+              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 300 шт · от 1 200 ₽/шт</p>
               <ul className="mt-5 space-y-3">
                 {['Классический мягкий плюш с набивкой', 'Высокая воспринимаемая ценность — заметный подарок', 'Узнаваемый формат для любой аудитории', 'Подходит для подарков сотрудникам, клиентам и партнёрам'].map((point) => (
                   <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
@@ -965,8 +965,8 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть цены →
+              <a href="/plush" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
+                Смотреть плюш →
               </a>
             </article>
           </div>
@@ -1198,7 +1198,7 @@ export default function LandingPage() {
 
           <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-6">
             {[
-              { title: 'Минимальный тираж', value: 'от 200 шт.' },
+              { title: 'Минимальный тираж', value: 'от 500 шт.' },
               { title: 'Расчёт', value: 'за 1 день' },
               { title: 'Договор', value: 'перед запуском' },
               { title: 'Производство', value: 'около 15 дней' },
@@ -1385,10 +1385,10 @@ export default function LandingPage() {
             <div className="max-w-[540px]">
               <SectionLabel>Материал</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Два материала — одно качество.
+                ПУ-пена — материал, который работает.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                ПУ-пена и плюш — разные форматы, одинаковый стандарт производства. Оба материала подбираются под длительное использование и аккуратную передачу деталей бренда.
+                Мягкий пенополиуретан с бархатистым покрытием — сжимается, возвращает форму, держит цвет годами. Подбирается под длительное использование и аккуратную передачу деталей бренда.
               </p>
               <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
                 Антистресс из ПУ-пены

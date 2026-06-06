@@ -264,11 +264,11 @@ const reviews = [
 const faqItems = [
   {
     q: 'Какой минимальный тираж?',
-    a: 'От 200 штук. Для крупных тиражей (500+) доступны дополнительные скидки.',
+    a: 'От 300 штук. При тираже от 500 шт доступны дополнительные скидки.',
   },
   {
     q: 'Из чего делают объекты?',
-    a: 'Два формата на выбор. Антистресс из ПУ-пены: мягкий пенополиуретан с бархатистым покрытием, сжимается и возвращает форму. Плюшевые: классический плюш с набивкой, мягкие и приятные на ощупь.',
+    a: 'Классический плюш с мягким ворсом и гипоаллергенным наполнителем. Вышивка или термоперенос логотипа на поверхности. Если нужен антистресс из ПУ-пены — смотрите раздел антистресс-маскотов.',
   },
   {
     q: 'Сколько занимает производство?',
@@ -284,11 +284,11 @@ const faqItems = [
   },
   {
     q: 'Сколько стоит?',
-    a: 'Ориентировочные цены: от 1 250 ₽/шт при тираже 200 шт, от 850 ₽/шт при 500 шт, от 700 ₽/шт при 1 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
+    a: 'Ориентировочные цены: от 1 200 ₽/шт при тираже 500 шт, от 1 000 ₽/шт при 1 000 шт, от 850 ₽/шт при 2 000 шт. Точная стоимость зависит от формы и сложности — пришлём расчёт после заявки.',
   },
   {
     q: 'Где производятся игрушки?',
-    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Это позволяет делать тираж от 200 штук и выдерживать понятные производственные сроки.',
+    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Это позволяет делать тираж от 300 штук и выдерживать понятные производственные сроки.',
   },
 ]
 
@@ -767,9 +767,9 @@ export default function LandingPage() {
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/hero-stage/cat.webp"      alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/hero-stage/bear.webp"     alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/hero-stage/dinosaur.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
+              <img src="/images/gallery/plush_rabbit.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
+              <img src="/images/gallery/plush_bear.webp"   alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
+              <img src="/images/gallery/plush_fox.webp"    alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
             </div>
 
             <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
@@ -822,7 +822,7 @@ export default function LandingPage() {
               Как производятся ваши игрушки
             </h2>
             <p className="mt-4 text-base leading-7 text-[#dfe5df]">
-              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 200 штук и контролировать соответствие образцу.
+              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 300 штук и контролировать соответствие образцу.
             </p>
           </div>
 
@@ -1153,7 +1153,7 @@ export default function LandingPage() {
 
           <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-6">
             {[
-              { title: 'Минимальный тираж', value: 'от 200 шт.' },
+              { title: 'Минимальный тираж', value: 'от 300 шт.' },
               { title: 'Расчёт', value: 'за 1 день' },
               { title: 'Договор', value: 'перед запуском' },
               { title: 'Производство', value: 'около 15 дней' },
@@ -1340,10 +1340,10 @@ export default function LandingPage() {
             <div className="max-w-[540px]">
               <SectionLabel>Материал</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Два материала — одно качество.
+                Плюш — мягкость в деталях.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                ПУ-пена и плюш — разные форматы, одинаковый стандарт производства. Оба материала подбираются под длительное использование и аккуратную передачу деталей бренда.
+                Мягкий плюшевый ворс, гипоаллергенный наполнитель и вышитый логотип — игрушка, которую приятно держать в руках. Подбирается под длительное использование и детальную передачу фирменного образа.
               </p>
               <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">
                 Антистресс из ПУ-пены
