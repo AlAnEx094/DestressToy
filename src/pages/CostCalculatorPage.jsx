@@ -148,9 +148,22 @@ function Metric({ label, value, sub, accent = false }) {
   )
 }
 
+const CALC_TOKEN = 'dt26calc'
+
 export default function CostCalculatorPage() {
   const [searchParams] = useSearchParams()
   const dealId = searchParams.get('dealId') || ''
+
+  if (searchParams.get('t') !== CALC_TOKEN) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">Страница недоступна</p>
+          <Link to="/" className="mt-4 inline-block text-orange-500 text-sm underline">На главную</Link>
+        </div>
+      </div>
+    )
+  }
   const [material, setMaterial] = useState('pu')
   const [moldComplexity, setMoldComplexity] = useState('simple')
   const [values, setValues] = useState(defaults)
