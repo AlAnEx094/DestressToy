@@ -14,7 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/tools/cost-calculator" element={<CostCalculatorPage />} />
+        <Route path="/calc" element={<CostCalculatorPage />} />
       </Routes>
     </BrowserRouter>
   )
