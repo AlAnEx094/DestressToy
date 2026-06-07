@@ -756,7 +756,7 @@ export default function LandingPage() {
                 Мягкая игрушка с характером вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Плюшевый маскот под ваш бренд: форма, цвет, вышивка логотипа. Подходит для корпоративных подарков, детских направлений и event-раздатки. Тираж от 300 штук.
+                HR-менеджеры заказывают для онбординга и подарков сотрудникам. Ретейл и банки — как gift-with-purchase и маскот бренда. Тираж от 300 шт.
               </p>
 
               <div className="mt-8 md:mt-10">
@@ -788,8 +788,6 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
-
-      <CrossNav variant="plush" />
 
       <section id="gallery" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
         <Container>
@@ -823,6 +821,8 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
+
+      <CrossNav variant="plush" />
 
       <section id="production" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>

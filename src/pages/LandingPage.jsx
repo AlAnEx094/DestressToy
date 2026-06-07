@@ -759,7 +759,7 @@ export default function LandingPage() {
                 Антистресс-маскот из ПУ-пены для вашего бренда
               </h1>
               <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Брендовый антистресс в форме вашего логотипа или маскота. Сжимается, возвращает форму, бархатистое покрытие. Тираж от 500 шт.
+                Маркетологи финтех, IT и фармы заказывают для стендов и промо-наборов. Кастомная форма, бархатистое покрытие. Тираж от 500 шт.
               </p>
 
               <div className="mt-8 md:mt-10">
@@ -791,8 +791,6 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
-
-      <CrossNav variant="antistress" />
 
       <section id="gallery" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
         <Container>
@@ -826,6 +824,8 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
+
+      <CrossNav variant="antistress" />
 
       <section id="production" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
