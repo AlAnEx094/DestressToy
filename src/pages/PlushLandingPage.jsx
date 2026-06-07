@@ -175,7 +175,7 @@ const useCases = [
         <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
       </svg>
     ),
-    title: 'Gift-with-purchase',
+    title: 'Подарок к покупке',
     body: 'Игрушка к покупке увеличивает средний чек и возвращает клиента. Работает в ритейле, аптеках, F&B.',
   },
 ]
@@ -198,7 +198,7 @@ const productFormats = [
   {
     emoji: '🛍️',
     num: '03',
-    title: 'Gift-with-purchase',
+    title: 'Подарок к покупке',
     body: 'Плюш как подарок к покупке — для ретейла, FMCG и банков с маскотом.',
     fit: 'Когда подарок должен увеличить средний чек и остаться у клиента дома.',
   },
@@ -677,9 +677,13 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:block">
-              <PrimaryButton href="#pricing" onClick={() => handleCtaClick('header', 'pricing')} className="px-4 py-2.5 text-sm lg:px-5">
-                Получить расчёт бесплатно
-              </PrimaryButton>
+              <a
+                href="#pricing"
+                onClick={() => handleCtaClick('header', 'pricing')}
+                className="inline-flex items-center justify-center rounded-md bg-[#9b7be8] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#8469d0]"
+              >
+                Получить расчёт
+              </a>
             </div>
 
             <button
@@ -740,7 +744,7 @@ export default function LandingPage() {
                     setMobileMenuOpen(false)
                   }}
                 >
-                  Получить расчёт бесплатно
+                  Получить расчёт
                 </PrimaryButton>
               </nav>
             </div>
@@ -830,8 +834,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <CrossNav variant="plush" />
-
       <section id="production" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Производство</SectionLabel>
@@ -840,7 +842,7 @@ export default function LandingPage() {
               Как производятся ваши игрушки
             </h2>
             <p className="mt-4 text-base leading-7 text-[#dfe5df]">
-              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 300 штук и контролировать соответствие образцу.
+              Фабрика занимается исключительно мягкими игрушками — узкая специализация даёт стабильное качество и предсказуемые сроки. Каждая партия проходит контроль на соответствие согласованному образцу. Тираж от 300 штук.
             </p>
           </div>
 
@@ -1090,7 +1092,7 @@ export default function LandingPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                {['Онбординг', 'Маскот бренда', 'Gift-with-purchase', 'Подарки команде'].map(
+                {['Онбординг', 'Маскот бренда', 'Подарок к покупке', 'Подарки команде'].map(
                   (tag) => (
                     <span
                       key={tag}
@@ -1107,11 +1109,29 @@ export default function LandingPage() {
               </PrimaryButton>
             </div>
 
-            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] flex items-center justify-center">
+            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] grid grid-cols-2 gap-3 content-center">
               <img
-                src="/images/showcase_shelf.webp"
-                alt="Линейка кастомных мягких игрушек и бренд-маскотов DeStressToys для корпоративных подарков"
-                className="w-full max-h-[420px] rounded-xl object-contain"
+                src="/images/gallery/plush_bear.webp"
+                alt="Плюшевый медведь с вышивкой логотипа — кастомный корпоративный подарок"
+                className="w-full aspect-square rounded-xl object-cover"
+                loading="lazy"
+              />
+              <img
+                src="/images/gallery/plush_rabbit.webp"
+                alt="Плюшевый кролик — кастомный бренд-маскот для корпоративных подарков"
+                className="w-full aspect-square rounded-xl object-cover"
+                loading="lazy"
+              />
+              <img
+                src="/images/gallery/plush_fox.webp"
+                alt="Кибер-лис — плюшевый маскот для IT-бренда"
+                className="w-full aspect-square rounded-xl object-cover"
+                loading="lazy"
+              />
+              <img
+                src="/images/gallery/plush_cloud.webp"
+                alt="Плюшевое облачко — корпоративный подарок для HR и wellness"
+                className="w-full aspect-square rounded-xl object-cover"
                 loading="lazy"
               />
             </div>
@@ -1156,35 +1176,35 @@ export default function LandingPage() {
 
       <section id="trust" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
-          <SectionLabel>Доверие</SectionLabel>
-          <p className="text-sm uppercase tracking-[0.08em] text-[#5a6060]">
-            Работаем с IT-командами, ретейлом, производством и потребительскими брендами
-          </p>
+          <SectionLabel>Почему нам доверяют</SectionLabel>
+          <h2 className="text-[1.75rem] md:text-[2.5rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716] max-w-[600px]">
+            Работаем с HR, ретейлом, FMCG и банками
+          </h2>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-6 xl:gap-4">
+            {[
+              { title: 'Мин. тираж', value: 'от 300 шт' },
+              { title: 'Расчёт', value: 'за 1 день' },
+              { title: 'Договор', value: 'до старта' },
+              { title: 'Производство', value: '~15 дней' },
+              { title: 'Доставка', value: '25–30 дней' },
+              { title: 'Контроль', value: 'фото + видео' },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border border-[#e5e0d8] bg-white p-4 text-center shadow-[0_4px_16px_rgba(0,0,0,0.05)]">
+                <p className="text-2xl font-bold leading-none text-[#9b7be8]">{item.value}</p>
+                <p className="mt-2 text-xs leading-4 text-[#5a6060]">{item.title}</p>
+              </div>
+            ))}
+          </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            {['IT и SaaS', 'Потребительские бренды', 'Ретейл', 'Финтех', 'HR и обучение', 'Производство'].map((sector) => (
+            {['HR и онбординг', 'Ретейл и FMCG', 'Банки и финтех', 'Потребительские бренды', 'IT и SaaS', 'Корпоративные подарки'].map((sector) => (
               <span
                 key={sector}
                 className="rounded-[8px] border border-[#d0c9bf] bg-white px-4 py-2 text-sm font-medium text-[#151716]"
               >
                 {sector}
               </span>
-            ))}
-          </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-6">
-            {[
-              { title: 'Минимальный тираж', value: 'от 300 шт.' },
-              { title: 'Расчёт', value: 'за 1 день' },
-              { title: 'Договор', value: 'перед запуском' },
-              { title: 'Производство', value: 'около 15 дней' },
-              { title: 'Доставка', value: '25–30 дней' },
-              { title: 'Контроль', value: 'фото / видео' },
-            ].map((item) => (
-              <div key={item.title}>
-                <p className="text-sm text-[#5a6060]">{item.title}</p>
-                <p className="mt-2 text-2xl font-semibold text-[#151716]">{item.value}</p>
-              </div>
             ))}
           </div>
         </Container>
@@ -1361,51 +1381,31 @@ export default function LandingPage() {
             <div className="max-w-[540px]">
               <SectionLabel>Материал</SectionLabel>
               <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Плюш — мягкость в деталях.
+                Плюш — мягкость в каждой детали.
               </h2>
               <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Мягкий плюшевый ворс, гипоаллергенный наполнитель и вышитый логотип — игрушка, которую приятно держать в руках. Подбирается под длительное использование и детальную передачу фирменного образа.
+                Мягкий ворс, гипоаллергенный наполнитель и вышитый логотип. Игрушка, которую приятно держать — и которую не убирают в ящик.
               </p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#9b7be8]">
-                Антистресс из ПУ-пены
-              </p>
-              <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[#7c847d]">
                 {[
-                  'Покрытие: бархатистый полиуретан',
-                  'Наполнитель: медленно восстанавливающаяся пена',
-                  'Сжимается и возвращает форму — тактильный антистресс',
-                  'Долговечность: 3+ года активного использования',
-                ].map((detail) => (
-                  <li key={detail} className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#7c847d]" />
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.08em] text-[#9b7be8]">
-                Плюшевые игрушки
-              </p>
-              <ul className="mt-2 space-y-2 text-sm leading-6 text-[#7c847d]">
-                {[
-                  'Материал: мягкий плюшевый ворс',
+                  'Внешний слой: мягкий плюшевый ворс',
                   'Наполнитель: гипоаллергенный холлофайбер',
+                  'Логотип: вышивка или термоперенос',
                   'Высокая воспринимаемая ценность — premium-подарок',
-                  'Вышивка или принт логотипа на поверхности',
+                  'Долговечность: годы использования без потери формы',
+                  'Без латекса',
                 ].map((detail) => (
                   <li key={detail} className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#7c847d]" />
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#9b7be8]" />
                     <span>{detail}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs text-[#7c847d]/70">
-                Без латекса
-              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
-              <img src="/images/texture/texture-1.webp" alt="Мягкая плюшевая текстура для кастомных игрушек и бренд-маскотов DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
-              <img src="/images/texture/texture-2.webp" alt="Материал мягкой игрушки крупным планом — качество пошива и производства DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/gallery/plush_bear.webp" alt="Плюшевый медведь с логотипом — материал и качество пошива DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/gallery/plush_octopus.webp" alt="Плюшевый осьминог — кастомная мягкая игрушка крупным планом" className="w-full h-full object-cover rounded-xl" loading="lazy" />
             </div>
           </div>
         </Container>
@@ -1436,8 +1436,8 @@ export default function LandingPage() {
 
               <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
                 <img
-                  src="/images/cta/cta-hero.webp"
-                  alt="Кастомная мягкая игрушка с логотипом на рабочем столе — корпоративный подарок партнёру"
+                  src="/images/gallery/plush_rabbit.webp"
+                  alt="Плюшевый кролик с вышивкой логотипа — кастомный корпоративный подарок"
                   className="w-full h-[220px] object-cover rounded-lg"
                   loading="lazy"
                 />
@@ -1655,6 +1655,8 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
+
+      <CrossNav variant="plush" />
 
       <footer
         id="footer"

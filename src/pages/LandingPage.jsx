@@ -680,9 +680,13 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:block">
-              <PrimaryButton href="#pricing" onClick={() => handleCtaClick('header', 'pricing')} className="px-4 py-2.5 text-sm lg:px-5">
-                Получить расчёт бесплатно
-              </PrimaryButton>
+              <a
+                href="#pricing"
+                onClick={() => handleCtaClick('header', 'pricing')}
+                className="inline-flex items-center justify-center rounded-md bg-[#ff6a3d] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+              >
+                Получить расчёт
+              </a>
             </div>
 
             <button
@@ -743,7 +747,7 @@ export default function LandingPage() {
                     setMobileMenuOpen(false)
                   }}
                 >
-                  Получить расчёт бесплатно
+                  Получить расчёт
                 </PrimaryButton>
               </nav>
             </div>
@@ -832,8 +836,6 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
-
-      <CrossNav variant="antistress" />
 
       <section id="production" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
@@ -1034,14 +1036,14 @@ export default function LandingPage() {
 
           <div className="mt-8 -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
             {[
-              { img: '/images/forms/seal.webp', emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, кошка, кролик' },
-              { img: '/images/forms/cup.webp', emoji: '🍔', category: 'Еда и напитки', examples: 'Гамбургер, авокадо, пончик, стакан' },
-              { img: '/images/forms/bus.webp', emoji: '🚗', category: 'Транспорт', examples: 'Автомобиль, автобус, эвакуатор' },
-              { img: '/images/forms/ball.webp', emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
-              { img: '/images/forms/drop.webp', emoji: '💊', category: 'Медицина / Юмор', examples: 'Мозг, капсула, губы и зубы' },
-              { img: null, emoji: '☁️', category: 'Природа', examples: 'Облако, капля воды, звезда, гриб' },
-              { img: '/images/forms/mic.webp', emoji: '🏠', category: 'Офис / Быт', examples: 'Домик, дрель, микрофон, флакон' },
-              { img: null, emoji: '❤️', category: 'Символы', examples: 'Сердце, смайлик, якорь, единорог' },
+              { img: '/стандартные формы PU/Морской котик.png', emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, котик-тюлень, кролик' },
+              { img: '/стандартные формы PU/Стакан.png', emoji: '🍔', category: 'Еда и напитки', examples: 'Стакан, гамбургер, авокадо, пончик' },
+              { img: '/стандартные формы PU/Автобус.png', emoji: '🚗', category: 'Транспорт', examples: 'Автобус, автомобиль, эвакуатор' },
+              { img: '/стандартные формы PU/Мяч.png', emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
+              { img: '/стандартные формы PU/Зубы.png', emoji: '💊', category: 'Медицина / Юмор', examples: 'Зубы, мозг, капсула, губы' },
+              { img: '/стандартные формы PU/Капля.png', emoji: '☁️', category: 'Природа / Жидкости', examples: 'Капля, облако, звезда, гриб' },
+              { img: '/стандартные формы PU/Микрофон.png', emoji: '🏠', category: 'Офис / Быт', examples: 'Микрофон, домик, дрель, флакон' },
+              { img: '/стандартные формы PU/Баклажан.png', emoji: '❤️', category: 'Овощи / Прочее', examples: 'Баклажан, перец, морковь, сердце' },
             ].map((cat) => (
               <div
                 key={cat.category}
@@ -1143,7 +1145,19 @@ export default function LandingPage() {
             <span><span className="text-[#ff6a3d]">✓</span> Упаковка</span>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="mt-5 rounded-xl border border-white/10 bg-white/5 p-5">
+            <p className="text-sm font-semibold text-white">Нужно дешевле или быстрее?</p>
+            <p className="mt-1 text-sm text-[#7c847d]">Стандартные готовые формы — тираж от 200 шт, от 130–270 ₽/шт, срок от 2 недель. Логотип методом тампопечати.</p>
+            <a
+              href="#standard_forms"
+              onClick={() => handleCtaClick('pricing', 'standard_forms')}
+              className="mt-3 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline"
+            >
+              Смотреть стандартные формы →
+            </a>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-4">
             <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('pricing', 'final_cta')}>Рассчитать точную стоимость</PrimaryButton>
           </div>
         </Container>
@@ -1345,10 +1359,26 @@ export default function LandingPage() {
 
       <section id="trust" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
         <Container>
-          <SectionLabel>Доверие</SectionLabel>
-          <p className="text-sm uppercase tracking-[0.08em] text-[#5a6060]">
-            Работаем с IT-командами, ретейлом, производством и потребительскими брендами
-          </p>
+          <SectionLabel>Почему нам доверяют</SectionLabel>
+          <h2 className="text-[1.75rem] md:text-[2.5rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716] max-w-[600px]">
+            Работаем с IT, финтехом, фармой и ретейлом
+          </h2>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-6 xl:gap-4">
+            {[
+              { title: 'Мин. тираж', value: 'от 500 шт' },
+              { title: 'Расчёт', value: 'за 1 день' },
+              { title: 'Договор', value: 'до старта' },
+              { title: 'Производство', value: '~15 дней' },
+              { title: 'Доставка', value: '25–30 дней' },
+              { title: 'Контроль', value: 'фото + видео' },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border border-[#e5e0d8] bg-white p-4 text-center shadow-[0_4px_16px_rgba(0,0,0,0.05)]">
+                <p className="text-2xl font-bold leading-none text-[#ff6a3d]">{item.value}</p>
+                <p className="mt-2 text-xs leading-4 text-[#5a6060]">{item.title}</p>
+              </div>
+            ))}
+          </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
             {['IT и SaaS', 'Потребительские бренды', 'Ретейл', 'Финтех', 'HR и обучение', 'Производство'].map((sector) => (
@@ -1358,22 +1388,6 @@ export default function LandingPage() {
               >
                 {sector}
               </span>
-            ))}
-          </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-6">
-            {[
-              { title: 'Минимальный тираж', value: 'от 500 шт.' },
-              { title: 'Расчёт', value: 'за 1 день' },
-              { title: 'Договор', value: 'перед запуском' },
-              { title: 'Производство', value: 'около 15 дней' },
-              { title: 'Доставка', value: '25–30 дней' },
-              { title: 'Контроль', value: 'фото / видео' },
-            ].map((item) => (
-              <div key={item.title}>
-                <p className="text-sm text-[#5a6060]">{item.title}</p>
-                <p className="mt-2 text-2xl font-semibold text-[#151716]">{item.value}</p>
-              </div>
             ))}
           </div>
         </Container>
@@ -1844,6 +1858,8 @@ export default function LandingPage() {
           </div>
         </Container>
       </section>
+
+      <CrossNav variant="antistress" />
 
       <footer
         id="footer"
