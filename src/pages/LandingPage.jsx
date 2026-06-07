@@ -765,6 +765,13 @@ export default function LandingPage() {
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
                   <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт бесплатно</PrimaryButton>
+                  <a
+                    href="#standard_forms"
+                    onClick={() => handleCtaClick('hero', 'standard_forms')}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+                  >
+                    Стандартная форма — от 225 ₽/шт →
+                  </a>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 500 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
