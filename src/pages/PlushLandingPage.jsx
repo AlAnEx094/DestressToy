@@ -550,6 +550,7 @@ export default function LandingPage() {
         body: JSON.stringify(payload),
       })
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      trackEvent('lead_form_success', { lead_id: leadId, product: 'plush', ...utmRef.current })
       trackEvent('plush_lead_form_success', {
         lead_id: leadId,
         lead_source: 'form',
