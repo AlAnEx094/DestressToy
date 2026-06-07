@@ -18,7 +18,7 @@ function ProductStage() {
           width: 340, height: 340,
           left: '50%', top: '50%',
           transform: 'translate(-50%, -52%)',
-          background: 'radial-gradient(circle, rgba(255,106,61,0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(155,123,232,0.18) 0%, transparent 70%)',
           animation: 'stageGlow 4s ease-in-out infinite',
         }}
       />
@@ -182,46 +182,46 @@ const useCases = [
 
 const productFormats = [
   {
-    emoji: '🎭',
+    emoji: '🧸',
     num: '01',
     title: 'Маскот бренда',
-    body: 'Объёмный персонаж компании для мероприятий, подарков сотрудникам и клиентских коммуникаций.',
-    fit: 'Когда у бренда уже есть герой или нужен узнаваемый символ.',
+    body: 'Плюшевый персонаж с вышивкой логотипа. Кастомная форма под героя бренда или готовый силуэт.',
+    fit: 'Когда у бренда есть персонаж — или он нужен.',
   },
   {
-    emoji: '🧸',
+    emoji: '🎓',
     num: '02',
-    title: 'Плюшевая игрушка',
-    body: 'Классическая мягкая игрушка с фирменными цветами, вышивкой или печатью логотипа.',
-    fit: 'Для подарков партнёрам, клиентам и команде.',
+    title: 'Онбординг-подарок',
+    body: 'Мягкая игрушка в welcome kit для нового сотрудника. Уходит домой и остаётся в семье.',
+    fit: 'Для HR-команд, которые хотят тёплый первый день, а не стандартный пакет.',
   },
   {
-    emoji: '🎨',
+    emoji: '🛍️',
     num: '03',
-    title: 'Игрушка-персонаж',
-    body: 'Кастомный герой по иллюстрации, логотипу, продукту или идее рекламной кампании.',
-    fit: 'Для запусков, спецпроектов и брендов с характером.',
-  },
-  {
-    emoji: '🎪',
-    num: '04',
-    title: 'Промо-игрушка',
-    body: 'Яркий предмет для выставок, стендов, рассылок и раздатки, который хочется забрать с собой.',
-    fit: 'Когда важны охват, запоминаемость и эмоция на первом контакте.',
-  },
-  {
-    emoji: '✦',
-    num: '05',
-    title: 'Бренд-объект',
-    body: 'Мягкая форма по продукту, символу или визуальному коду компании, а не типовой сувенир.',
-    fit: 'Для ниш, где обычный мерч выглядит слишком ожидаемо.',
+    title: 'Gift-with-purchase',
+    body: 'Плюш как подарок к покупке — для ретейла, FMCG и банков с маскотом.',
+    fit: 'Когда подарок должен увеличить средний чек и остаться у клиента дома.',
   },
   {
     emoji: '🎁',
+    num: '04',
+    title: 'Корпоративный подарок',
+    body: 'Брендированная игрушка для команды, партнёров или ключевых клиентов.',
+    fit: 'На НГ, день компании или юбилей — подарок, который не убирают в ящик.',
+  },
+  {
+    emoji: '🎨',
+    num: '05',
+    title: 'Игрушка-персонаж',
+    body: 'Кастомный герой по иллюстрации, рекламной кампании или продукту бренда.',
+    fit: 'Для запусков, спецпроектов и брендов с выраженным характером.',
+  },
+  {
+    emoji: '✦',
     num: '06',
-    title: 'Подарок для сотрудников',
-    body: 'Тактильный корпоративный подарок для внутренних запусков, онбординга и памятных дат.',
-    fit: 'Когда подарок должен остаться на столе, а не уйти в ящик.',
+    title: 'Подарок клиентам',
+    body: 'Плюш вместо ручек и кружек — тактильный объект с эмоциональной ценностью.',
+    fit: 'Для брендов, где важна долгосрочная связь с клиентом.',
   },
 ]
 
@@ -776,7 +776,7 @@ export default function LandingPage() {
 
             {/* Mobile toy strip */}
             <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
-              <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
+              <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(155,123,232,0.15) 0%, transparent 70%)'}} />
               <img src="/images/hero-stage/plush_rabbit.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
               <img src="/images/hero-stage/plush_bear.webp"   alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
               <img src="/images/hero-stage/plush_fox.webp"    alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
@@ -1281,7 +1281,7 @@ export default function LandingPage() {
                 key={card.title}
                 className={`rounded-xl border p-5 ${
                   card.tone === 'accent'
-                    ? 'border-[#9b7be8] bg-white shadow-[0_18px_34px_rgba(255,106,61,0.14)]'
+                    ? 'border-[#9b7be8] bg-white shadow-[0_18px_34px_rgba(155,123,232,0.14)]'
                     : 'border-[#e5e0d8] bg-white'
                 }`}
               >
