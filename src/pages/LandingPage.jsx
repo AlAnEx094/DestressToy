@@ -832,64 +832,64 @@ export default function LandingPage() {
           <SectionLabel>Производство</SectionLabel>
           <div className="max-w-[760px]">
             <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-              Как производятся ваши игрушки
+              Как производится антистресс из ПУ-пены
             </h2>
             <p className="mt-4 text-base leading-7 text-[#dfe5df]">
-              Производство в Китае — не компромисс, а специализация. Фабрика выпускает только мягкие игрушки, это её основная компетенция. Именно поэтому мы можем предложить тираж от 500 штук и контролировать соответствие образцу.
+              Специализированное производство в Китае — пресс-формы, заливка ПУ-пены, покраска и упаковка под одной крышей. Контролируем качество каждой партии и гарантируем соответствие образцу.
             </p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
             <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
               <img
-                src="/images/production/factory-hall.webp"
-                alt="Специализированная фабрика мягких игрушек — более 200 сотрудников, собственный цех"
+                src="/images/production/pu-prod-1.webp"
+                alt="Реакторы-смесители ПУ-компонентов на производственной линии"
                 className="aspect-[4/3] w-full object-cover"
                 loading="lazy"
                 decoding="async"
               />
               <div className="p-4">
                 <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
-                  Специализация
+                  Смешивание компонентов
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
-                  Специализированное производство — более 200 сотрудников. Тираж от 200 до 50 000 шт.
+                  Реакторы смешивают изоцианат и полиол — базовые компоненты ПУ-пены в нужной пропорции.
                 </p>
               </div>
             </article>
 
             <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
               <img
-                src="/images/production/sewing-shop.webp"
-                alt="Швейный цех фабрики мягких игрушек — ручная сборка партии"
+                src="/images/production/pu-prod-2.webp"
+                alt="Заливка ПУ-пены в пресс-формы — производство антистресс-маскота"
                 className="aspect-[4/3] w-full object-cover"
                 loading="lazy"
                 decoding="async"
               />
               <div className="p-4">
                 <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
-                  Ручная сборка
+                  Заливка в пресс-форму
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
-                  Каждая игрушка шьётся вручную — единообразие партии гарантировано.
+                  Готовая смесь заливается в форму под ваш маскот. Форма определяет итоговый силуэт изделия.
                 </p>
               </div>
             </article>
 
             <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
               <img
-                src="/images/production/quality-control.webp"
-                alt="Входной контроль качества на фабрике мягких игрушек — проверка перед отгрузкой"
+                src="/images/production/pu-prod-3.webp"
+                alt="Автоматическая линия серийной заливки ПУ-пены"
                 className="aspect-[4/3] w-full object-cover"
                 loading="lazy"
                 decoding="async"
               />
               <div className="p-4">
                 <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
-                  Контроль качества
+                  Серийная линия
                 </p>
                 <p className="text-sm leading-6 text-[#dfe5df]">
-                  Входной контроль качества — каждая партия проходит проверку перед отгрузкой.
+                  Автоматическая линия обеспечивает одинаковую плотность и вес каждого изделия в тираже.
                 </p>
               </div>
             </article>
@@ -899,6 +899,35 @@ export default function LandingPage() {
             <span>✓ Образец перед запуском тиража</span>
             <span>✓ Фото и видео с производства по запросу</span>
             <span>✓ Договор фиксирует параметры до старта</span>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-[#151716] border-t border-white/[0.06] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Готовый тираж</SectionLabel>
+          <div className="max-w-[720px]">
+            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
+              От пресс-формы до вашего склада
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#dfe5df]">
+              Упаковываем, маркируем и отгружаем тираж под ключ. Брендированные коробки, контроль комплектности, документы для таможни.
+            </p>
+          </div>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+            {[
+              { src: '/images/production/batch-1.webp', alt: 'Брендированные антистресс-маскоты укладываются в коробки клиента', label: 'Брендированная упаковка', body: 'Логотип клиента на изделии и коробке. Каждая единица — готовый подарочный объект.' },
+              { src: '/images/production/batch-2.webp', alt: 'Готовые фирменные антистрессы в упаковочных коробках', label: 'Контроль тиража', body: 'Проверяем каждую партию на соответствие образцу до укладки в коробки.' },
+              { src: '/images/production/batch-3.webp', alt: 'Паллета с коробками брендированных антистрессов готова к отгрузке', label: 'Отгрузка', body: 'Паллеты укомплектованы, промаркированы и готовы к отправке на ваш склад.' },
+            ].map((item) => (
+              <article key={item.label} className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
+                <img src={item.src} alt={item.alt} className="aspect-[4/3] w-full object-cover" loading="lazy" decoding="async" />
+                <div className="p-4">
+                  <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">{item.label}</p>
+                  <p className="text-sm leading-6 text-[#dfe5df]">{item.body}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </Container>
       </section>
@@ -997,22 +1026,30 @@ export default function LandingPage() {
 
           <div className="mt-8 -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
             {[
-              { emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, кошка, кролик' },
-              { emoji: '🍔', category: 'Еда и напитки', examples: 'Гамбургер, авокадо, пончик, мороженое' },
-              { emoji: '🚗', category: 'Транспорт', examples: 'Автомобиль, автобус, эвакуатор' },
-              { emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
-              { emoji: '💊', category: 'Медицина / Юмор', examples: 'Мозг, капсула, губы и зубы' },
-              { emoji: '☁️', category: 'Природа', examples: 'Облако, капля воды, звезда, гриб' },
-              { emoji: '🏠', category: 'Офис / Быт', examples: 'Домик, дрель, микрофон, флакон' },
-              { emoji: '❤️', category: 'Символы', examples: 'Сердце, смайлик, якорь, единорог' },
+              { img: '/images/forms/seal.webp', emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, кошка, кролик' },
+              { img: '/images/forms/cup.webp', emoji: '🍔', category: 'Еда и напитки', examples: 'Гамбургер, авокадо, пончик, стакан' },
+              { img: '/images/forms/bus.webp', emoji: '🚗', category: 'Транспорт', examples: 'Автомобиль, автобус, эвакуатор' },
+              { img: '/images/forms/ball.webp', emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
+              { img: '/images/forms/drop.webp', emoji: '💊', category: 'Медицина / Юмор', examples: 'Мозг, капсула, губы и зубы' },
+              { img: null, emoji: '☁️', category: 'Природа', examples: 'Облако, капля воды, звезда, гриб' },
+              { img: '/images/forms/mic.webp', emoji: '🏠', category: 'Офис / Быт', examples: 'Домик, дрель, микрофон, флакон' },
+              { img: null, emoji: '❤️', category: 'Символы', examples: 'Сердце, смайлик, якорь, единорог' },
             ].map((cat) => (
               <div
                 key={cat.category}
-                className="snap-start flex-shrink-0 w-[160px] rounded-xl border border-[#e5e0d8] bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:w-auto md:p-5"
+                className="snap-start flex-shrink-0 w-[160px] rounded-xl border border-[#e5e0d8] bg-white overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:w-auto"
               >
-                <span className="text-2xl">{cat.emoji}</span>
-                <p className="mt-2 text-sm font-semibold text-[#151716]">{cat.category}</p>
-                <p className="mt-1 text-xs leading-5 text-[#5a6060]">{cat.examples}</p>
+                {cat.img ? (
+                  <img src={cat.img} alt={cat.category} className="w-full aspect-square object-cover" loading="lazy" decoding="async" />
+                ) : (
+                  <div className="w-full aspect-square flex items-center justify-center bg-[#f4efe8]">
+                    <span className="text-4xl">{cat.emoji}</span>
+                  </div>
+                )}
+                <div className="p-4">
+                  <p className="text-sm font-semibold text-[#151716]">{cat.category}</p>
+                  <p className="mt-1 text-xs leading-5 text-[#5a6060]">{cat.examples}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -1224,6 +1261,40 @@ export default function LandingPage() {
                 className="w-full max-h-[420px] rounded-xl object-contain"
                 loading="lazy"
               />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
+        <Container>
+          <SectionLabel>Кейс</SectionLabel>
+          <div className="overflow-hidden rounded-2xl border border-[#e5e0d8] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] md:flex">
+            <div className="md:w-1/2 shrink-0">
+              <img
+                src="/images/production/exhibition.webp"
+                alt="Брендированные ПУ-маскоты на корпоративном мероприятии — переговорный стол с фирменными фигурками"
+                className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="flex flex-col justify-center p-8 md:p-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Рекламное агентство · 3 000 шт</p>
+              <h3 className="mt-3 text-[1.4rem] md:text-[1.75rem] font-bold leading-[1.2] tracking-[-0.02em] text-[#151716]">
+                Маскот сложной формы для BAUMA Russia
+              </h3>
+              <p className="mt-4 text-base leading-7 text-[#5a6060]">
+                Агентство заказало 3 000 кастомных антистрессов для раздачи на стенде BAUMA Russia. Сложная форма, фирменный цвет, логотип тампопечатью. Образец — за 10 дней, тираж — в срок до начала выставки.
+              </p>
+              <ul className="mt-5 space-y-2">
+                {['Кастомная форма по эскизу клиента', 'Тираж 3 000 шт с брендированной упаковкой', 'Поставка за 28 дней от утверждения образца'].map((point) => (
+                  <li key={point} className="flex items-start gap-3 text-sm leading-6 text-[#5a6060]">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </Container>
