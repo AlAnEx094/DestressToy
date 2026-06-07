@@ -247,7 +247,7 @@ const reviews = [
     role: 'Бренд-менеджер, ретейл-сеть',
     city: 'Москва',
     text: 'Делали партию к 10-летию сети — 200 зайцев с вышивкой логотипа, в крафт-коробке с лентой. Раздавали партнёрам. Несколько написали потом: дети уже не отдают.',
-    qty: '200 шт',
+    qty: '300 шт',
     type: 'Корпоративный подарок',
   },
   {
@@ -495,7 +495,7 @@ export default function LandingPage() {
   useEffect(() => {
     const onScroll = () => {
       const scrolled = window.scrollY
-      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 300
+      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 600
       setShowStickyCta(scrolled > window.innerHeight * 0.5 && !nearBottom)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -762,6 +762,13 @@ export default function LandingPage() {
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
                   <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт бесплатно</PrimaryButton>
+                  <a
+                    href="#formats"
+                    onClick={() => handleCtaClick('hero', 'formats')}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+                  >
+                    Смотреть форматы →
+                  </a>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
                   {['Тираж от 300 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
@@ -1021,7 +1028,7 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
             {useCases.map((item) => (
               <article
                 key={item.title}
@@ -1563,7 +1570,7 @@ export default function LandingPage() {
                       value={formValues.task}
                       onChange={handleInputChange}
                       className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#9b7be8] focus:ring-2 focus:ring-[#9b7be8]/20"
-                      placeholder="Где будет использоваться бренд-объект и какой нужен тираж?"
+                      placeholder="Онбординг, корпоративный подарок или gift-with-purchase? Укажите тираж и аудиторию."
                     />
                   </label>
 
@@ -1662,7 +1669,7 @@ export default function LandingPage() {
               <p className="mt-4 max-w-[320px] leading-6">
                 Брендированные мягкие игрушки и антистресс-объекты для корпоративных подарков, событий и промо-наборов.
               </p>
-              <p className="mt-4">© 2025 DeStressToys</p>
+              <p className="mt-4">© 2026 DeStressToys</p>
             </div>
 
             <nav className="flex flex-col gap-3">

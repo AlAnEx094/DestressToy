@@ -20,12 +20,12 @@ export default function CrossNav({ variant }) {
         {!isAntistress ? (
           <div className="flex-1 text-center px-3 py-1">
             <p className="text-xs font-semibold text-stone-800">Мягкая плюшевая игрушка</p>
-            <p className="text-[11px] text-stone-500">от 300 шт · от 850 ₽/шт · подарок, HR, онбординг</p>
+            <p className="text-[11px] text-stone-500">от 300 шт · от 1 500 ₽/шт · подарок, HR, онбординг</p>
           </div>
         ) : (
           <Link to="/plush" className="flex-1 text-center px-3 py-1 rounded transition-colors hover:bg-stone-200">
             <p className="text-xs font-medium text-stone-500 hover:text-stone-800">Мягкая плюшевая игрушка →</p>
-            <p className="text-[11px] text-stone-400">от 300 шт · от 850 ₽/шт</p>
+            <p className="text-[11px] text-stone-400">от 300 шт · от 1 500 ₽/шт</p>
           </Link>
         )}
       </div>

@@ -498,7 +498,7 @@ export default function LandingPage() {
   useEffect(() => {
     const onScroll = () => {
       const scrolled = window.scrollY
-      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 300
+      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 600
       setShowStickyCta(scrolled > window.innerHeight * 0.5 && !nearBottom)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -1112,7 +1112,7 @@ export default function LandingPage() {
               Примерные цены на тираж
             </h2>
             <p className="mt-4 text-base leading-7 text-[#7c847d]">
-              Точная стоимость зависит от формы и сложности. Цены указаны для стандартных форм.
+              Точная стоимость зависит от формы и сложности. Цены ниже — для кастомной формы. Стандартная форма с лого — дешевле, смотрите раздел выше.
             </p>
           </div>
 
@@ -1183,7 +1183,7 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
             {useCases.map((item) => (
               <article
                 key={item.title}
@@ -1759,7 +1759,7 @@ export default function LandingPage() {
                       value={formValues.task}
                       onChange={handleInputChange}
                       className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
-                      placeholder="Где будет использоваться бренд-объект и какой нужен тираж?"
+                      placeholder="Стенд, промо-набор или подарок клиентам? Укажите тираж и дату мероприятия."
                     />
                   </label>
 
@@ -1858,7 +1858,7 @@ export default function LandingPage() {
               <p className="mt-4 max-w-[320px] leading-6">
                 Брендированные мягкие игрушки и антистресс-объекты для корпоративных подарков, событий и промо-наборов.
               </p>
-              <p className="mt-4">© 2025 DeStressToys</p>
+              <p className="mt-4">© 2026 DeStressToys</p>
             </div>
 
             <nav className="flex flex-col gap-3">
