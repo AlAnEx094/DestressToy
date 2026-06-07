@@ -62,6 +62,7 @@ async function createAmoCRM(body) {
       note_type: 'common',
       params: {
         text: [
+          `📦 Продукт: ${body.product_type === 'plush' ? 'Плюш' : 'ПУ-антистресс'}`,
           `📦 Тираж: ${body.quantity || '—'}`,
           `📝 Описание: ${body.description || '—'}`,
           `🔗 UTM source: ${body.utm_source || '—'}`,
@@ -86,6 +87,7 @@ async function saveToAirtable(body) {
     'Телефон': body.phone || '',
     'Описание': body.description || '',
     'Тираж': body.quantity || '',
+    'Продукт': body.product_type === 'plush' ? 'Плюш' : 'ПУ-антистресс',
     'UTM Source': body.utm_source || '',
     'UTM Campaign': body.utm_campaign || '',
     'lead_id': body.lead_id || '',
@@ -103,6 +105,10 @@ async function saveToAirtable(body) {
   })
 }
 
+function productLabel(body) {
+  return body.product_type === 'plush' ? '🧸 Плюш' : '🟠 ПУ-антистресс'
+}
+
 async function notifyMax(body) {
   const token = process.env.MAX_BOT_TOKEN
   const chatId = process.env.MAX_OPERATOR_CHAT_ID
@@ -115,7 +121,8 @@ async function notifyMax(body) {
   const description = body.description || '—'
   const source = body.utm_source ? ` (${body.utm_source})` : ''
 
-  const text = `🔔 Новая заявка с сайта${source}\n\n` +
+  const text = `🔔 Новая заявка с сайта${source}\n` +
+    `📦 Продукт: ${productLabel(body)}\n\n` +
     `👤 Компания/Имя: ${name}\n` +
     `📞 Телефон: ${phone}\n` +
     `✉️ Email: ${email}\n` +
@@ -144,7 +151,8 @@ async function notifyTelegram(body) {
   const description = body.description || '—'
   const source = body.utm_source ? ` (${body.utm_source})` : ''
 
-  const text = `🔔 *Новая заявка с сайта${source}*\n\n` +
+  const text = `🔔 *Новая заявка с сайта${source}*\n` +
+    `📦 *Продукт:* ${productLabel(body)}\n\n` +
     `👤 *Компания/Имя:* ${name}\n` +
     `📞 *Телефон:* ${phone}\n` +
     `✉️ *Email:* ${email}\n` +
@@ -188,12 +196,13 @@ async function sendOperatorEmail(body) {
   const quantity = body.quantity || '—'
   const description = body.description || '—'
   const source = body.utm_source || '—'
+  const product = body.product_type === 'plush' ? 'Плюш' : 'ПУ-антистресс'
 
   await makeTransport(smtpPassword).sendMail({
     from: '"DeStressToys" <info@destresstoys.ru>',
     to: 'info@destresstoys.ru',
-    subject: `Новая заявка: ${name}`,
-    text: `Имя/Компания: ${name}\nТелефон: ${phone}\nEmail: ${email}\nТираж: ${quantity}\nОписание: ${description}\nИсточник: ${source}`,
+    subject: `Новая заявка [${product}]: ${name}`,
+    text: `Продукт: ${product}\nИмя/Компания: ${name}\nТелефон: ${phone}\nEmail: ${email}\nТираж: ${quantity}\nОписание: ${description}\nИсточник: ${source}`,
   })
 }
 
