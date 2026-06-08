@@ -1607,8 +1607,8 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
-              <img src="/images/production/pu-prod-1.webp" alt="Производство ПУ-антистрессов — заготовки и покрытие" className="w-full h-full object-cover rounded-xl" loading="lazy" />
-              <img src="/images/production/pu-prod-2.webp" alt="Готовые ПУ-антистрессы с бархатистым покрытием" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/texture-1.webp" alt="Бархатистое покрытие ПУ-антистресса крупным планом — материал и качество DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/texture-2.webp" alt="ПУ-антистресс сжимается и восстанавливает форму — свойства материала" className="w-full h-full object-cover rounded-xl" loading="lazy" />
             </div>
           </div>
         </Container>
