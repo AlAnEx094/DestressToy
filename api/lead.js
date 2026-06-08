@@ -115,25 +115,13 @@ async function notifyTelegram(body) {
   const chatId = process.env.TELEGRAM_OPERATOR_CHAT_ID
   if (!token || !chatId) return
 
-  const name = body.company || body.name || '—'
-  const phone = body.phone || '—'
-  const email = body.email || '—'
-  const quantity = body.quantity || '—'
-  const description = body.description || '—'
   const source = body.utm_source ? ` (${body.utm_source})` : ''
-
-  const text = `🔔 *Новая заявка с сайта${source}*\n` +
-    `📦 *Продукт:* ${productLabel(body)}\n\n` +
-    `👤 *Компания/Имя:* ${name}\n` +
-    `📞 *Телефон:* ${phone}\n` +
-    `✉️ *Email:* ${email}\n` +
-    `📦 *Тираж:* ${quantity}\n` +
-    `💬 *Описание:* ${description}`
+  const text = `🔔 Новая заявка с сайта${source}\n📦 Продукт: ${productLabel(body)}\n\nДетали — в MAX и AmoCRM.`
 
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' }),
+    body: JSON.stringify({ chat_id: chatId, text }),
   })
 }
 
