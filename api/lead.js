@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
 
-const AIRTABLE_BASE = 'appNUVkunRDc2WjS9'
-const AIRTABLE_TABLE = 'tbl1NgZx7QCp0fu5J'
 
 const AMO_BASE = 'https://leshaantipovmailru.amocrm.ru'
 const AMO_PIPELINE_ID = 9702630
@@ -77,33 +75,6 @@ async function createAmoCRM(body) {
   ])
 }
 
-async function saveToAirtable(body) {
-  const pat = process.env.AIRTABLE_PAT
-  if (!pat) return
-
-  const fields = {
-    'Имя / Компания': body.company || body.name || '',
-    'Email': body.email || '',
-    'Телефон': body.phone || '',
-    'Описание': body.description || '',
-    'Тираж': body.quantity || '',
-    'Продукт': body.product_type === 'plush' ? 'Плюш' : 'ПУ-антистресс',
-    'UTM Source': body.utm_source || '',
-    'UTM Campaign': body.utm_campaign || '',
-    'lead_id': body.lead_id || '',
-    'Дата': body.submitted_at || new Date().toISOString(),
-    'Статус': 'Новая',
-  }
-
-  await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${AIRTABLE_TABLE}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${pat}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ fields }),
-  })
-}
 
 function productLabel(body) {
   return body.product_type === 'plush' ? '🧸 Плюш' : '🟠 ПУ-антистресс'
@@ -247,17 +218,7 @@ export default async function handler(req, res) {
 
   const body = req.body || {}
 
-  // n8n — fire-and-forget (preview generation only)
-  fetch('https://n8n.destresstoys.ru/webhook/new-lead', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(5000),
-  }).catch(() => {})
-
-  // All critical tasks in parallel
   await Promise.allSettled([
-    saveToAirtable(body),
     notifyMax(body),
     notifyTelegram(body),
     sendOperatorEmail(body),
