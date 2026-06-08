@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import CrossNav from '../components/CrossNav.jsx'
+import StickyProductTab from '../components/StickyProductTab.jsx'
 
 const stageItems = [
   { src: '/images/hero-stage/bear.webp',    alt: 'Кастомный медведь-маскот с логотипом — мягкая игрушка на заказ для бренда', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
@@ -754,6 +755,8 @@ export default function LandingPage() {
           ) : null}
         </Container>
       </header>
+
+      <StickyProductTab variant="antistress" />
 
       <section id="hero" className="bg-[#151716] flex flex-col min-h-[85vh] md:min-h-screen">
         <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
