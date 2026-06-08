@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import CrossNav from '../components/CrossNav.jsx'
 import StickyProductTab from '../components/StickyProductTab.jsx'
+import CookieBanner from '../components/CookieBanner.jsx'
 
 const stageItems = [
   { src: '/images/hero-stage/plush_bear.webp',   alt: 'Плюшевый медведь-маскот с логотипом — корпоративный подарок на заказ', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
@@ -1635,7 +1636,7 @@ export default function LandingPage() {
                   <label className="flex items-start gap-3 rounded-md bg-white/[0.04] px-4 py-3 text-sm text-[#7c847d] cursor-pointer">
                     <input type="checkbox" name="consent" required
                       className="mt-0.5 h-4 w-4 rounded border-white/20 accent-[#9b7be8]" />
-                    <span>Я согласен на обработку персональных данных</span>
+                    <span>Я согласен на обработку персональных данных в соответствии с <Link to="/privacy" className="underline hover:text-white transition-colors">политикой конфиденциальности</Link></span>
                   </label>
 
                   <button
@@ -1715,6 +1716,7 @@ export default function LandingPage() {
           </div>
         </Container>
       </footer>
+      <CookieBanner />
       {showStickyCta && (
         <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
           <a
