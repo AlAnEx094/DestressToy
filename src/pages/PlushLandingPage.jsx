@@ -1111,26 +1111,26 @@ export default function LandingPage() {
 
             <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] grid grid-cols-2 gap-3 content-center">
               <img
-                src="/images/gallery/plush_rocket.webp"
-                alt="Плюшевая ракета — кастомный маскот для запусков продуктов и IT-компаний"
+                src="/images/gallery/plush-brand-1.webp"
+                alt="Плюшевый корпоративный подарок с логотипом — кастомный маскот на заказ"
                 className="w-full aspect-square rounded-xl object-cover"
                 loading="lazy"
               />
               <img
-                src="/images/gallery/plush_octopus.webp"
-                alt="Плюшевый осьминог — кастомный маскот для выставок и промо-мероприятий"
+                src="/images/gallery/plush-brand-2.webp"
+                alt="Мягкая игрушка с вышивкой логотипа — корпоративный подарок DeStressToys"
                 className="w-full aspect-square rounded-xl object-cover"
                 loading="lazy"
               />
               <img
-                src="/images/gallery/plush_fox.webp"
-                alt="Кибер-лис — плюшевый маскот для IT-бренда"
+                src="/images/gallery/plush-brand-3.webp"
+                alt="Кастомная плюшевая игрушка для HR и онбординга"
                 className="w-full aspect-square rounded-xl object-cover"
                 loading="lazy"
               />
               <img
-                src="/images/gallery/plush_cloud.webp"
-                alt="Плюшевое облачко — корпоративный подарок для HR и wellness"
+                src="/images/gallery/plush-brand-4.webp"
+                alt="Фирменный плюшевый маскот — бренд остаётся в семье"
                 className="w-full aspect-square rounded-xl object-cover"
                 loading="lazy"
               />
@@ -1404,8 +1404,8 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
-              <img src="/images/production/sewing-shop.webp" alt="Цех пошива мягких игрушек — производство на фабрике" className="w-full h-full object-cover rounded-xl" loading="lazy" />
-              <img src="/images/gallery/plush_rabbit.webp" alt="Плюшевый кролик с вышивкой логотипа — текстура и качество материала" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/plush-texture-1.webp" alt="Текстура плюшевого материала крупным планом — мягкий ворс и вышивка логотипа" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <img src="/images/texture/plush-texture-2.webp" alt="Плюшевая игрушка с вышитым логотипом — качество пошива DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
             </div>
           </div>
         </Container>
@@ -1436,8 +1436,8 @@ export default function LandingPage() {
 
               <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
                 <img
-                  src="/images/gallery/plush_bear.webp"
-                  alt="Плюшевый медведь с вышивкой логотипа — кастомный корпоративный подарок"
+                  src="/images/cta/plush-cta.webp"
+                  alt="Плюшевая игрушка с логотипом в корпоративной упаковке — кастомный подарок DeStressToys"
                   className="w-full h-[220px] object-cover rounded-lg"
                   loading="lazy"
                 />
