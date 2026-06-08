@@ -694,7 +694,7 @@ export default function LandingPage() {
 
             <div className="hidden md:block">
               <a
-                href="#pricing"
+                href="#lead_form"
                 onClick={() => handleCtaClick('header', 'pricing')}
                 className="inline-flex items-center justify-center rounded-md bg-[#ff6a3d] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
               >
@@ -753,7 +753,7 @@ export default function LandingPage() {
                   <p className="mt-2 text-sm text-[#7c847d]">Ответим с {RESPONSE_HOURS}</p>
                 </div>
                 <PrimaryButton
-                  href="#pricing"
+                  href="#lead_form"
                   className="mt-2 w-full"
                   onClick={() => {
                     handleCtaClick('mobile_menu', 'pricing')
@@ -784,7 +784,7 @@ export default function LandingPage() {
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт</PrimaryButton>
+                  <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт</PrimaryButton>
                   <a
                     href="#standard_forms"
                     onClick={() => handleCtaClick('hero', 'standard_forms')}
@@ -1117,7 +1117,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-4">
-            <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('standard_forms', 'final_cta')}>Выбрать форму и получить расчёт</PrimaryButton>
+            <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('standard_forms', 'final_cta')}>Выбрать форму и получить расчёт</PrimaryButton>
           </div>
         </Container>
       </section>
@@ -1173,7 +1173,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-5 flex flex-wrap gap-4">
-            <PrimaryButton href="#final_cta" onClick={() => handleCtaClick('pricing', 'final_cta')}>Рассчитать точную стоимость</PrimaryButton>
+            <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('pricing', 'final_cta')}>Рассчитать точную стоимость</PrimaryButton>
           </div>
         </Container>
       </section>
@@ -1286,7 +1286,7 @@ export default function LandingPage() {
                 )}
               </div>
 
-              <PrimaryButton href="#pricing" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
+              <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
                 Получить расчёт
               </PrimaryButton>
             </div>
@@ -1678,7 +1678,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="rounded-[12px] border border-white/10 bg-white/5 p-8 md:p-10">
+            <div id="lead_form" className="rounded-[12px] border border-white/10 bg-white/5 p-8 md:p-10">
               <div className="mb-6 rounded-md border border-white/10 bg-white/[0.04] p-4">
                 <p className="text-sm font-medium text-white">Связаться напрямую</p>
                 <p className="mt-1 text-sm leading-6 text-[#7c847d]">
@@ -1934,7 +1934,7 @@ export default function LandingPage() {
       {showStickyCta && (
         <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
           <a
-            href="#final_cta"
+            href="#lead_form"
             onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
             className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-white"
           >
