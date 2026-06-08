@@ -498,13 +498,24 @@ export default function LandingPage() {
   }, [])
 
   useEffect(() => {
+    const ctaSection = document.getElementById('final_cta')
+    let ctaVisible = false
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { ctaVisible = entry.isIntersecting },
+      { threshold: 0.05 }
+    )
+    if (ctaSection) observer.observe(ctaSection)
+
     const onScroll = () => {
       const scrolled = window.scrollY
-      const nearBottom = document.body.scrollHeight - window.scrollY - window.innerHeight < 600
-      setShowStickyCta(scrolled > window.innerHeight * 0.5 && !nearBottom)
+      setShowStickyCta(scrolled > window.innerHeight * 0.5 && !ctaVisible)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      observer.disconnect()
+    }
   }, [])
 
   const handleInputChange = (event) => {
@@ -773,7 +784,7 @@ export default function LandingPage() {
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт бесплатно</PrimaryButton>
+                  <PrimaryButton href="#pricing" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт</PrimaryButton>
                   <a
                     href="#standard_forms"
                     onClick={() => handleCtaClick('hero', 'standard_forms')}
@@ -1276,7 +1287,7 @@ export default function LandingPage() {
               </div>
 
               <PrimaryButton href="#pricing" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
-                Получить расчёт бесплатно
+                Получить расчёт
               </PrimaryButton>
             </div>
 
@@ -1927,7 +1938,7 @@ export default function LandingPage() {
             onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
             className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-white"
           >
-            Получить расчёт бесплатно
+            Получить расчёт
           </a>
         </div>
       )}
