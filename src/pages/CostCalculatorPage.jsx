@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 const logisticOptions = {
@@ -6,7 +6,7 @@ const logisticOptions = {
     label: 'Карго',
     hint: '~$3.5/кг',
     pricePerKg: 3.5,
-    localDeliveryRub: 50,
+    localDeliveryRub: 0,
     brokerRub: 0,
     customsPct: 0,
     vatPct: 0,
@@ -38,7 +38,7 @@ const materialPresets = {
     chinaDeliveryUsd: 500,
     sampleUsd: 500,
     markup: 2.5,
-    cnyRateRub: 10.89,
+    cnyRateRub: 12,
     rateRub: 90,
   },
   plush: {
@@ -51,7 +51,7 @@ const materialPresets = {
     chinaDeliveryUsd: 80,
     sampleUsd: 80,
     markup: 2.5,
-    cnyRateRub: 10.89,
+    cnyRateRub: 12,
     rateRub: 90,
   },
 }
@@ -74,9 +74,10 @@ const defaults = {
   bankPct: 3,
   defectPct: 4,
   rateRub: 90,
-  cnyRateRub: 10.89,
+  cnyRateRub: 12,
   markup: 2.5,
   logistic: 'cargo',
+  localDeliveryRub: logisticOptions.cargo.localDeliveryRub,
 }
 
 function formatRub(value) {
@@ -98,13 +99,49 @@ function getNumber(value, fallback = 0) {
 }
 
 function Field({ label, value, suffix, min, max, step, onChange }) {
+  const numericValue = getNumber(value)
+  const sliderValue = Math.min(Math.max(numericValue, min), max)
+  const [inputValue, setInputValue] = useState(String(value))
+
+  useEffect(() => {
+    setInputValue(String(value))
+  }, [value])
+
+  const handleInputChange = (event) => {
+    const nextValue = event.target.value
+    const normalizedValue = nextValue.replace(',', '.')
+    setInputValue(nextValue)
+
+    if (nextValue === '') return
+    if (!/^\d*\.?\d*$/.test(normalizedValue)) return
+    if (normalizedValue === '.' || normalizedValue.endsWith('.')) return
+
+    onChange(getNumber(normalizedValue))
+  }
+
+  const handleInputBlur = () => {
+    const normalizedValue = inputValue.replace(',', '.')
+
+    if (normalizedValue === '' || normalizedValue === '.' || normalizedValue.endsWith('.')) {
+      setInputValue(String(value))
+    }
+  }
+
   return (
     <label className="block">
       <span className="mb-2 flex items-center justify-between gap-4">
         <span className="text-sm text-neutral-400">{label}</span>
-        <span className="font-mono text-sm font-semibold text-lime-300">
-          {value}
-          {suffix}
+        <span className="flex min-w-0 items-center rounded-md border border-neutral-800 bg-neutral-950/70 px-2">
+          <input
+            type="number"
+            min={min}
+            step={step}
+            value={inputValue}
+            onBlur={handleInputBlur}
+            onChange={handleInputChange}
+            className="min-h-8 w-24 bg-transparent text-right font-mono text-sm font-semibold text-lime-300 outline-none"
+          />
+          <span className="ml-2 shrink-0 text-xs text-neutral-500">{suffix}</span>
         </span>
       </span>
       <input
@@ -112,7 +149,7 @@ function Field({ label, value, suffix, min, max, step, onChange }) {
         min={min}
         max={max}
         step={step}
-        value={value}
+        value={sliderValue}
         onChange={(event) => onChange(getNumber(event.target.value))}
         className="w-full accent-lime-300"
       />
@@ -235,7 +272,7 @@ export default function CostCalculatorPage() {
     const defectRub = productionRub * (values.defectPct / 100)
     const bankRub = (productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub) * (values.bankPct / 100)
     const brokerRubPerUnit = logistic.brokerRub / quantity
-    const localRub = logistic.localDeliveryRub + brokerRubPerUnit
+    const localRub = values.localDeliveryRub + brokerRubPerUnit
 
     const costRub = productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub + bankRub + localRub
     const priceRub = costRub * values.markup
@@ -317,6 +354,15 @@ export default function CostCalculatorPage() {
 
   const marginColor = result.marginPct >= 50 ? 'bg-emerald-400' : result.marginPct >= 35 ? 'bg-lime-300' : result.marginPct >= 25 ? 'bg-amber-400' : 'bg-red-400'
   const maxBreakdown = Math.max(...result.breakdown.map(([, amount]) => amount), 1)
+  const updateLogistic = (logisticKey) => {
+    const option = logisticOptions[logisticKey]
+    setValues((current) => ({
+      ...current,
+      logistic: logisticKey,
+      localDeliveryRub: option.localDeliveryRub,
+    }))
+    setCopied('')
+  }
 
   return (
     <main className="min-h-screen bg-[#0f0f0f] px-4 py-8 text-white md:px-6 md:py-12">
@@ -387,9 +433,9 @@ export default function CostCalculatorPage() {
               ))}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0.3} max={values.supplierCurrency === 'cny' ? 100 : 10} step={values.supplierCurrency === 'cny' ? 0.5 : 0.1} onChange={(value) => update('exwUsd', value)} />
-              <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={5000} step={50} onChange={(value) => update('quantity', value)} />
-              <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={20} max={600} step={10} onChange={(value) => update('weightGram', value)} />
+              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 100 : 10} step={values.supplierCurrency === 'cny' ? 0.01 : 0.01} onChange={(value) => update('exwUsd', value)} />
+              <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={30000} step={50} onChange={(value) => update('quantity', value)} />
+              <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={0.1} max={600} step={0.1} onChange={(value) => update('weightGram', value)} />
               <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={values.supplierCurrency === 'cny' ? 0.1 : 0.05} onChange={(value) => update('packUsd', value)} />
               <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('moldUsd', value)} />
               <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
@@ -405,7 +451,7 @@ export default function CostCalculatorPage() {
                 <button
                   key={key}
                   type="button"
-                  onClick={() => update('logistic', key)}
+                  onClick={() => updateLogistic(key)}
                   className={`rounded-md border px-3 py-3 text-left transition-colors ${values.logistic === key ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
                 >
                   <span className="block text-sm font-medium">{option.label}</span>
@@ -421,6 +467,7 @@ export default function CostCalculatorPage() {
               <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
               <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
               <Field label="Банк / конвертация" value={values.bankPct} suffix="%" min={0} max={8} step={0.5} onChange={(value) => update('bankPct', value)} />
+              <Field label="Доставка по РФ / брокер" value={values.localDeliveryRub} suffix=" ₽/шт" min={0} max={200} step={1} onChange={(value) => update('localDeliveryRub', value)} />
             </div>
           </div>
         </section>

@@ -1,0 +1,11 @@
+.env
+.env.*
+.firecrawl/
+artifacts/
+docs/
+outputs/
+convert_images.js
+screenshot.js
+.playwright-cli/
+.claude/
+.codex/
