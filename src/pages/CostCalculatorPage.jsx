@@ -4,8 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 const logisticOptions = {
   cargo: {
     label: 'Карго',
-    hint: '~$3.5/кг',
-    pricePerKg: 3.5,
+    hint: 'ставка по плотности',
     localDeliveryRub: 0,
     brokerRub: 0,
     customsPct: 0,
@@ -13,12 +12,7 @@ const logisticOptions = {
   },
   white: {
     label: 'Белая',
-    hint: 'НДС + брокер',
-    pricePerKg: 2.2,
-    localDeliveryRub: 80,
-    brokerRub: 20000,
-    customsPct: 0.05,
-    vatPct: 0.2,
+    hint: 'таможня + пошлина + НДС',
   },
 }
 
@@ -37,6 +31,9 @@ const materialPresets = {
     printSetupUsd: 0,
     chinaDeliveryUsd: 500,
     sampleUsd: 500,
+    cargoRateUsd: 3.1,
+    cargoPackUsd: 8,
+    dimL: 12, dimW: 10, dimH: 10,
     markup: 2.5,
     cnyRateRub: 12,
     rateRub: 90,
@@ -50,10 +47,21 @@ const materialPresets = {
     printSetupUsd: 0,
     chinaDeliveryUsd: 80,
     sampleUsd: 80,
+    cargoRateUsd: 5.5,
+    cargoPackUsd: 5,
+    dimL: 17, dimW: 14, dimH: 12,
     markup: 2.5,
     cnyRateRub: 12,
     rateRub: 90,
   },
+}
+
+const deliveryZones = {
+  msk:     { label: 'Москва',          rate: 80,  base: 300 },
+  spb:     { label: 'Питер',           rate: 40,  base: 500 },
+  ural:    { label: 'Урал / Поволжье', rate: 55,  base: 500 },
+  siberia: { label: 'Сибирь',          rate: 70,  base: 500 },
+  dv:      { label: 'Дальний Восток',  rate: 110, base: 600 },
 }
 
 const moldComplexityOptions = {
@@ -71,6 +79,9 @@ const defaults = {
   printSetupUsd: 0,
   chinaDeliveryUsd: 500,
   sampleUsd: 500,
+  cargoRateUsd: 3.1,
+  cargoPackUsd: 8,
+  dimL: 12, dimW: 10, dimH: 10,
   bankPct: 3,
   defectPct: 4,
   rateRub: 90,
@@ -78,6 +89,19 @@ const defaults = {
   markup: 2.5,
   logistic: 'cargo',
   localDeliveryRub: logisticOptions.cargo.localDeliveryRub,
+}
+
+const whiteDefaults = {
+  freightRateUsd: 3.0,
+  freightRateType: 'kg',
+  currencyCommissionPct: 2,
+  customsDutyPct: 0,
+  brokerRub: 25000,
+  svhRub: 7000,
+  rfDeliveryWhiteRub: 15000,
+  certRub: 0,
+  certVolumeQty: 1000,
+  taxMode: 'usn',
 }
 
 function formatRub(value) {
@@ -201,15 +225,26 @@ export default function CostCalculatorPage() {
       </div>
     )
   }
+
   const [material, setMaterial] = useState('pu')
   const [moldComplexity, setMoldComplexity] = useState('simple')
   const [values, setValues] = useState(defaults)
+  const [whiteParams, setWhiteParams] = useState(whiteDefaults)
   const [moneyInputs, setMoneyInputs] = useState({
     moldUsd: String(defaults.moldUsd),
     printSetupUsd: String(defaults.printSetupUsd),
     chinaDeliveryUsd: String(defaults.chinaDeliveryUsd),
     sampleUsd: String(defaults.sampleUsd),
+    cargoPackUsd: String(defaults.cargoPackUsd),
   })
+  const [whiteMoneyInputs, setWhiteMoneyInputs] = useState({
+    brokerRub: String(whiteDefaults.brokerRub),
+    svhRub: String(whiteDefaults.svhRub),
+    rfDeliveryWhiteRub: String(whiteDefaults.rfDeliveryWhiteRub),
+    certRub: String(whiteDefaults.certRub),
+    certVolumeQty: String(whiteDefaults.certVolumeQty),
+  })
+  const [deliveryZone, setDeliveryZone] = useState('spb')
   const [copied, setCopied] = useState('')
 
   const update = (key, value) => {
@@ -222,6 +257,18 @@ export default function CostCalculatorPage() {
     setCopied('')
   }
 
+  const updateWhite = (key, val) => {
+    setWhiteParams((prev) => ({ ...prev, [key]: val }))
+    setCopied('')
+  }
+
+  const updateWhiteMoney = (key, value) => {
+    const normalized = value.replace(',', '.')
+    if (!/^\d*\.?\d*$/.test(normalized)) return
+    setWhiteMoneyInputs((current) => ({ ...current, [key]: normalized }))
+    updateWhite(key, normalized === '' ? 0 : getNumber(normalized))
+  }
+
   const handleMaterialChange = (mat) => {
     const preset = materialPresets[mat]
     setMaterial(mat)
@@ -232,6 +279,7 @@ export default function CostCalculatorPage() {
       printSetupUsd: String(preset.printSetupUsd),
       chinaDeliveryUsd: String(preset.chinaDeliveryUsd),
       sampleUsd: String(preset.sampleUsd),
+      cargoPackUsd: String(preset.cargoPackUsd),
     })
     setCopied('')
   }
@@ -253,67 +301,180 @@ export default function CostCalculatorPage() {
   }
 
   const result = useMemo(() => {
-    const logistic = logisticOptions[values.logistic]
     const currency = currencyOptions[values.supplierCurrency] ? values.supplierCurrency : 'usd'
     const supplierRateRub = currency === 'cny' ? values.cnyRateRub : values.rateRub
     const quantity = Math.max(values.quantity, 1)
     const totalKg = (quantity * values.weightGram) / 1000
-    const chargedKg = totalKg * 1.15
+    const chargedKg = totalKg
 
+    // ─── CARGO CALCULATION (unchanged) ───────────────────────────────────────
     const productionForeign = values.exwUsd + values.packUsd
     const oneTimeForeign = values.moldUsd + values.printSetupUsd + values.chinaDeliveryUsd + values.sampleUsd
     const oneTimePerUnitForeign = oneTimeForeign / quantity
-    const logisticsUsd = (chargedKg * logistic.pricePerKg) / quantity
+    const cargoLogisticsUsd = (chargedKg * values.cargoRateUsd) / quantity
+    const cargoPackRub = (values.cargoPackUsd / quantity) * values.rateRub
     const productionRub = productionForeign * supplierRateRub
     const oneTimePerUnitRub = oneTimePerUnitForeign * supplierRateRub
-    const logisticsRub = logisticsUsd * values.rateRub
-    const customsRub = (productionRub + oneTimePerUnitRub) * logistic.customsPct
-    const vatRub = (productionRub + oneTimePerUnitRub + logisticsRub + customsRub) * logistic.vatPct
-    const defectRub = productionRub * (values.defectPct / 100)
-    const bankRub = (productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub) * (values.bankPct / 100)
-    const brokerRubPerUnit = logistic.brokerRub / quantity
-    const localRub = values.localDeliveryRub + brokerRubPerUnit
+    const cargoLogisticsRub = cargoLogisticsUsd * values.rateRub
+    const cargoDefectRub = productionRub * (values.defectPct / 100)
+    const cargoBankRub = (productionRub + oneTimePerUnitRub + cargoLogisticsRub + cargoPackRub + cargoDefectRub) * (values.bankPct / 100)
+    const cargoLocalRub = values.localDeliveryRub
+    const cargoCostRub = productionRub + oneTimePerUnitRub + cargoLogisticsRub + cargoPackRub + cargoDefectRub + cargoBankRub + cargoLocalRub
+    const cargoPriceRub = cargoCostRub * values.markup
+    const cargoProfitRub = cargoPriceRub - cargoCostRub
+    const cargoMarginPct = cargoPriceRub > 0 ? (cargoProfitRub / cargoPriceRub) * 100 : 0
 
-    const costRub = productionRub + oneTimePerUnitRub + logisticsRub + customsRub + vatRub + defectRub + bankRub + localRub
-    const priceRub = costRub * values.markup
-    const profitRub = priceRub - costRub
-    const marginPct = priceRub > 0 ? (profitRub / priceRub) * 100 : 0
-
-    const breakdown = [
+    const cargoBreakdown = [
       ['Производство EXW', values.exwUsd * supplierRateRub],
       ['Упаковка', values.packUsd * supplierRateRub],
       ['Форма / оснастка', (values.moldUsd / quantity) * supplierRateRub],
       ['Печать / подготовка', (values.printSetupUsd / quantity) * supplierRateRub],
       ['Доставка по Китаю', (values.chinaDeliveryUsd / quantity) * supplierRateRub],
       ['Образец', (values.sampleUsd / quantity) * supplierRateRub],
-      ['Логистика до РФ', logisticsRub],
-      ['Таможня', customsRub],
-      ['НДС', vatRub],
-      ['Брак / риск', defectRub],
-      ['Банк / конвертация', bankRub],
-      ['Доставка по РФ / брокер', localRub],
+      ['Логистика до РФ', cargoLogisticsRub],
+      ['Упаковка карго', cargoPackRub],
+      ['Брак / риск', cargoDefectRub],
+      ['Банк / конвертация', cargoBankRub],
+      ['Доставка по РФ / брокер', cargoLocalRub],
     ].filter(([, amount]) => amount > 0.01)
+
+    // ─── WHITE CALCULATION ────────────────────────────────────────────────────
+    // Freight to border (total, RUB) — ТК ЕАЭС: ТС включает транспорт до границы
+    let freightTotalRub
+    if (whiteParams.freightRateType === 'kg') {
+      freightTotalRub = totalKg * whiteParams.freightRateUsd * values.rateRub
+    } else {
+      const volM3 = quantity * (values.dimL * values.dimW * values.dimH) / 1_000_000
+      freightTotalRub = volM3 * whiteParams.freightRateUsd * values.rateRub
+    }
+    const whiteFreightPerUnit = freightTotalRub / quantity
+
+    // Таможенная стоимость (ТС) = цена товара + фрахт до границы (метод 1, ст.39 ТК ЕАЭС)
+    const tsTotalRub = (values.exwUsd + values.packUsd) * quantity * supplierRateRub + freightTotalRub
+    const tsPerUnit = tsTotalRub / quantity
+
+    // Пошлина
+    const dutyPerUnit = tsPerUnit * (whiteParams.customsDutyPct / 100)
+
+    // НДС при импорте: (ТС + пошлина) × 20% (НК РФ ст.160, без акцизов для игрушек)
+    const vatPerUnit = (tsPerUnit + dutyPerUnit) * 0.20
+
+    // Валютная комиссия банка (на оплату поставщику: EXW + упаковка)
+    const currCommPerUnit = productionRub * (whiteParams.currencyCommissionPct / 100)
+
+    // Брак / риск (на производственную стоимость)
+    const whiteDefectPerUnit = productionRub * (values.defectPct / 100)
+
+    // Фиксированные затраты на партию ÷ тираж
+    const whiteFix = whiteParams.brokerRub + whiteParams.svhRub + whiteParams.rfDeliveryWhiteRub
+    const fixedPerUnit = whiteFix / quantity
+
+    // Сертификация амортизируется по объёму серии, НЕ по текущей партии
+    const certPerUnit = whiteParams.certVolumeQty > 0 ? whiteParams.certRub / whiteParams.certVolumeQty : 0
+
+    // НДС: ОСНО — к вычету (не в себестоимости); УСН — в себестоимости
+    const vatInCost = whiteParams.taxMode === 'usn' ? vatPerUnit : 0
+
+    const whiteCostRub = productionRub + oneTimePerUnitRub + whiteFreightPerUnit
+      + dutyPerUnit + vatInCost + currCommPerUnit
+      + whiteDefectPerUnit + fixedPerUnit + certPerUnit
+    const whitePriceRub = whiteCostRub * values.markup
+    const whiteProfitRub = whitePriceRub - whiteCostRub
+    const whiteMarginPct = whitePriceRub > 0 ? (whiteProfitRub / whitePriceRub) * 100 : 0
+
+    const whiteBreakdown = [
+      ['Производство EXW', values.exwUsd * supplierRateRub],
+      ['Упаковка', values.packUsd * supplierRateRub],
+      ['Форма / оснастка', (values.moldUsd / quantity) * supplierRateRub],
+      ['Печать / подготовка', (values.printSetupUsd / quantity) * supplierRateRub],
+      ['Доставка по Китаю', (values.chinaDeliveryUsd / quantity) * supplierRateRub],
+      ['Образец', (values.sampleUsd / quantity) * supplierRateRub],
+      ['Фрахт до границы', whiteFreightPerUnit],
+      ['Пошлина', dutyPerUnit],
+      ...(whiteParams.taxMode === 'usn'
+        ? [['НДС (УСН — в себестоимости)', vatPerUnit]]
+        : []),
+      ['Валютная комиссия', currCommPerUnit],
+      ['Брак / риск', whiteDefectPerUnit],
+      ['Брокер + СВХ + доставка РФ', fixedPerUnit],
+      ['Сертификация / шт', certPerUnit],
+    ].filter(([, amount]) => amount > 0.01)
+
+    // ─── BREAK-EVEN ───────────────────────────────────────────────────────────
+    // Одноразовые затраты (форма, образец) одинаковы → сокращаются
+    // N = whiteFix / (cargo_variable_per_unit - white_variable_per_unit - certPerUnit)
+    // cargo_var = cargoLogisticsRub + cargoPackPerUnit + cargoDefect + cargoBank (без одноразовых)
+    const cargoVarPerUnit = cargoLogisticsRub + cargoPackRub + cargoDefectRub + cargoBankRub
+    const whiteVarPerUnit = whiteFreightPerUnit + dutyPerUnit + vatInCost + currCommPerUnit + whiteDefectPerUnit
+    const beDenom = cargoVarPerUnit - whiteVarPerUnit - certPerUnit
+    const breakEvenQty = beDenom > 1 ? Math.ceil(whiteFix / beDenom) : null
+
+    // ─── ACTIVE RESULT ────────────────────────────────────────────────────────
+    const isWhite = values.logistic === 'white'
 
     return {
       chargedKg,
       currency,
       supplierRateRub,
       supplierCostForeign: productionForeign + oneTimePerUnitForeign,
-      logisticsUsd,
-      costRub,
-      priceRub,
-      profitRub,
-      marginPct,
-      totalCostRub: costRub * quantity,
-      totalPriceRub: priceRub * quantity,
-      totalProfitRub: profitRub * quantity,
-      breakdown,
+      logisticsUsd: isWhite ? whiteFreightPerUnit / values.rateRub : cargoLogisticsUsd,
+      costRub: isWhite ? whiteCostRub : cargoCostRub,
+      priceRub: isWhite ? whitePriceRub : cargoPriceRub,
+      profitRub: isWhite ? whiteProfitRub : cargoProfitRub,
+      marginPct: isWhite ? whiteMarginPct : cargoMarginPct,
+      totalCostRub: (isWhite ? whiteCostRub : cargoCostRub) * quantity,
+      totalPriceRub: (isWhite ? whitePriceRub : cargoPriceRub) * quantity,
+      totalProfitRub: (isWhite ? whiteProfitRub : cargoProfitRub) * quantity,
+      breakdown: isWhite ? whiteBreakdown : cargoBreakdown,
+      // White intermediate values (always computed)
+      white: {
+        tsTotalRub,
+        tsPerUnit,
+        dutyPerUnit,
+        vatPerUnit,
+        vatInCost,
+        fixedPerUnit,
+        certPerUnit,
+        freightPerUnit: whiteFreightPerUnit,
+        currCommPerUnit,
+        defectPerUnit: whiteDefectPerUnit,
+        whiteCostRub,
+        whitePriceRub,
+        breakEvenQty,
+        isOsno: whiteParams.taxMode === 'osno',
+      },
+      // Cargo values (always computed, for comparison)
+      cargo: {
+        cargoCostRub,
+        cargoPriceRub,
+        productionRub,
+        oneTimePerUnitRub,
+        cargoLogisticsRub,
+        cargoPackRub,
+        cargoDefectRub,
+        cargoBankRub,
+        cargoLocalRub,
+        cargoBreakdown,
+      },
     }
-  }, [values])
+  }, [values, whiteParams])
+
+  const deliveryResult = useMemo(() => {
+    const zone = deliveryZones[deliveryZone]
+    const quantity = Math.max(values.quantity, 1)
+    const physicalKg = (quantity * values.weightGram) / 1000
+    const volKg = quantity * (values.dimL * values.dimW * values.dimH) / 5000
+    const chargedKg = Math.max(physicalKg, volKg)
+    const totalRub = chargedKg * zone.rate + zone.base
+    const perUnitRub = totalRub / quantity
+    return { physicalKg, volKg, chargedKg, totalRub, perUnitRub, isVolBased: volKg > physicalKg }
+  }, [values.quantity, values.weightGram, values.dimL, values.dimW, values.dimH, deliveryZone])
 
   const materialLabel = material === 'pu'
     ? `PU маскот (${moldComplexity === 'simple' ? 'простая форма 3 000 ¥' : 'сложная форма 7 000 ¥'})`
     : 'Плюш 15 см'
+
+  const isWhite = values.logistic === 'white'
 
   const crmText = [
     dealId ? `Сделка: ${dealId}` : null,
@@ -325,6 +486,10 @@ export default function CostCalculatorPage() {
     result.currency === 'cny' ? `Курс USD для логистики: ${values.rateRub} ₽` : null,
     `Вес: ${values.weightGram} г / шт. (${Math.round(result.chargedKg)} кг расчётный вес)`,
     `Логистика: ${logisticOptions[values.logistic].label}`,
+    isWhite ? `Таможенная стоимость: ${formatRub(result.white.tsPerUnit)} / шт. (${formatRub(result.white.tsTotalRub)} партия)` : null,
+    isWhite ? `Пошлина: ${formatRub(result.white.dutyPerUnit)} / шт. (${whiteParams.customsDutyPct}%)` : null,
+    isWhite ? `НДС: ${formatRub(result.white.vatPerUnit)} / шт. (${whiteParams.taxMode === 'osno' ? 'ОСНО — к вычету' : 'УСН — в себестоимости'})` : null,
+    isWhite ? `Фикс. затраты / шт (брокер+СВХ+РФ): ${formatRub(result.white.fixedPerUnit)}` : null,
     `Себестоимость: ${formatRub(result.costRub)} / шт.`,
     `Цена клиенту: ${formatRub(result.priceRub)} / шт.`,
     `Сумма КП: ${formatRub(result.totalPriceRub)}`,
@@ -354,12 +519,12 @@ export default function CostCalculatorPage() {
 
   const marginColor = result.marginPct >= 50 ? 'bg-emerald-400' : result.marginPct >= 35 ? 'bg-lime-300' : result.marginPct >= 25 ? 'bg-amber-400' : 'bg-red-400'
   const maxBreakdown = Math.max(...result.breakdown.map(([, amount]) => amount), 1)
+
   const updateLogistic = (logisticKey) => {
-    const option = logisticOptions[logisticKey]
     setValues((current) => ({
       ...current,
       logistic: logisticKey,
-      localDeliveryRub: option.localDeliveryRub,
+      ...(logisticKey === 'cargo' ? { localDeliveryRub: logisticOptions.cargo.localDeliveryRub } : {}),
     }))
     setCopied('')
   }
@@ -381,6 +546,7 @@ export default function CostCalculatorPage() {
           </Link>
         </header>
 
+        {/* Тип изделия */}
         <section className="mb-4 rounded-lg border border-neutral-800 bg-neutral-900 p-5">
           <div className="mb-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Тип изделия</div>
           <div className="grid grid-cols-2 gap-2">
@@ -416,7 +582,9 @@ export default function CostCalculatorPage() {
           ) : null}
         </section>
 
+        {/* Партия + Логистика */}
         <section className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+          {/* Партия и производство */}
           <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
             <div className="mb-5 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Партия и производство</div>
             <div className="mb-5 grid grid-cols-2 gap-2">
@@ -433,17 +601,21 @@ export default function CostCalculatorPage() {
               ))}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 100 : 10} step={values.supplierCurrency === 'cny' ? 0.01 : 0.01} onChange={(value) => update('exwUsd', value)} />
+              <Field label="EXW цена" value={values.exwUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 100 : 10} step={0.01} onChange={(value) => update('exwUsd', value)} />
               <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={30000} step={50} onChange={(value) => update('quantity', value)} />
               <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={0.1} max={600} step={0.1} onChange={(value) => update('weightGram', value)} />
-              <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={values.supplierCurrency === 'cny' ? 0.1 : 0.05} onChange={(value) => update('packUsd', value)} />
+              <Field label="Упаковка" value={values.packUsd} suffix={` ${currencyOptions[values.supplierCurrency].perUnit}`} min={0} max={values.supplierCurrency === 'cny' ? 20 : 2} step={0.05} onChange={(value) => update('packUsd', value)} />
               <NumberInput label="Форма / оснастка" value={moneyInputs.moldUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('moldUsd', value)} />
               <NumberInput label="Печать / подготовка" value={moneyInputs.printSetupUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('printSetupUsd', value)} />
               <NumberInput label="Доставка по Китаю" value={moneyInputs.chinaDeliveryUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('chinaDeliveryUsd', value)} />
               <NumberInput label="Образец / sample" value={moneyInputs.sampleUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('sampleUsd', value)} />
+              {values.logistic === 'cargo' ? (
+                <NumberInput label="Упаковка карго" value={moneyInputs.cargoPackUsd} suffix="$" onChange={(value) => updateMoneyInput('cargoPackUsd', value)} />
+              ) : null}
             </div>
           </div>
 
+          {/* Логистика и продажа */}
           <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
             <div className="mb-5 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Логистика и продажа</div>
             <div className="mb-5 grid grid-cols-2 gap-2">
@@ -459,19 +631,132 @@ export default function CostCalculatorPage() {
                 </button>
               ))}
             </div>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
-              {values.supplierCurrency === 'cny' ? (
-                <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
-              ) : null}
-              <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
-              <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
-              <Field label="Банк / конвертация" value={values.bankPct} suffix="%" min={0} max={8} step={0.5} onChange={(value) => update('bankPct', value)} />
-              <Field label="Доставка по РФ / брокер" value={values.localDeliveryRub} suffix=" ₽/шт" min={0} max={200} step={1} onChange={(value) => update('localDeliveryRub', value)} />
-            </div>
+
+            {values.logistic === 'cargo' ? (
+              <div className="grid gap-5 sm:grid-cols-2">
+                <Field label="Ставка карго" value={values.cargoRateUsd} suffix=" $/кг" min={1} max={10} step={0.1} onChange={(value) => update('cargoRateUsd', value)} />
+                <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
+                {values.supplierCurrency === 'cny' ? (
+                  <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
+                ) : null}
+                <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
+                <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
+                <Field label="Банк / конвертация" value={values.bankPct} suffix="%" min={0} max={8} step={0.5} onChange={(value) => update('bankPct', value)} />
+                <Field label="Доставка по РФ / брокер" value={values.localDeliveryRub} suffix=" ₽/шт" min={0} max={200} step={1} onChange={(value) => update('localDeliveryRub', value)} />
+              </div>
+            ) : (
+              /* WHITE scheme params */
+              <div className="grid gap-5 sm:grid-cols-2">
+                {/* Freight rate type toggle */}
+                <div className="sm:col-span-2">
+                  <div className="mb-2 text-sm text-neutral-400">Тип ставки фрахта</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[['kg', '$/кг (авиа/жд)'], ['m3', '$/м³ (морской)']].map(([k, l]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => updateWhite('freightRateType', k)}
+                        className={`rounded-md border px-3 py-2 text-sm transition-colors ${whiteParams.freightRateType === k ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+                      >
+                        {l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <Field
+                  label={`Ставка фрахта до границы`}
+                  value={whiteParams.freightRateUsd}
+                  suffix={whiteParams.freightRateType === 'kg' ? ' $/кг' : ' $/м³'}
+                  min={0}
+                  max={whiteParams.freightRateType === 'kg' ? 20 : 1000}
+                  step={whiteParams.freightRateType === 'kg' ? 0.1 : 10}
+                  onChange={(v) => updateWhite('freightRateUsd', v)}
+                />
+                <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
+                {values.supplierCurrency === 'cny' ? (
+                  <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
+                ) : null}
+                <Field label="Валютная комиссия" value={whiteParams.currencyCommissionPct} suffix=" %" min={0} max={10} step={0.1} onChange={(v) => updateWhite('currencyCommissionPct', v)} />
+                <Field label="Ставка пошлины" value={whiteParams.customsDutyPct} suffix=" %" min={0} max={30} step={0.5} onChange={(v) => updateWhite('customsDutyPct', v)} />
+                {/* Tax mode toggle */}
+                <div className="sm:col-span-2">
+                  <div className="mb-2 text-sm text-neutral-400">Режим налогообложения</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[['usn', 'УСН (НДС в с/с)'], ['osno', 'ОСНО (НДС к вычету)']].map(([k, l]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => updateWhite('taxMode', k)}
+                        className={`rounded-md border px-3 py-2 text-sm transition-colors ${whiteParams.taxMode === k ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+                      >
+                        {l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
+                <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
+                {/* Fixed costs */}
+                <NumberInput label="Брокер" value={whiteMoneyInputs.brokerRub} suffix="₽" onChange={(v) => updateWhiteMoney('brokerRub', v)} />
+                <NumberInput label="СВХ" value={whiteMoneyInputs.svhRub} suffix="₽" onChange={(v) => updateWhiteMoney('svhRub', v)} />
+                <div className="sm:col-span-2">
+                  <NumberInput label="Доставка по РФ (фиксир.)" value={whiteMoneyInputs.rfDeliveryWhiteRub} suffix="₽" onChange={(v) => updateWhiteMoney('rfDeliveryWhiteRub', v)} />
+                </div>
+                <div className="sm:col-span-2">
+                  <NumberInput label="Сертификация" value={whiteMoneyInputs.certRub} suffix="₽" onChange={(v) => updateWhiteMoney('certRub', v)} />
+                </div>
+                {whiteParams.certRub > 0 ? (
+                  <div className="sm:col-span-2">
+                    <NumberInput label="Объём серии для амортизации серт." value={whiteMoneyInputs.certVolumeQty} suffix="шт" step={100} onChange={(v) => updateWhiteMoney('certVolumeQty', v)} />
+                  </div>
+                ) : null}
+              </div>
+            )}
           </div>
         </section>
 
+        {/* White intermediate values */}
+        {isWhite ? (
+          <section className="mt-4 rounded-lg border border-neutral-700 bg-neutral-900 p-5">
+            <div className="mb-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Таможенная стоимость и платежи</div>
+            <div className="grid gap-0 divide-y divide-neutral-800">
+              {[
+                ['ТС (таможенная стоимость) — всего', formatRub(result.white.tsTotalRub), 'за всю партию'],
+                ['ТС / шт', formatRub(result.white.tsPerUnit), 'база для пошлины и НДС'],
+                ['Пошлина / шт', formatRub(result.white.dutyPerUnit), `${whiteParams.customsDutyPct}% от ТС`],
+                null, // separator for VAT
+                ['Фрахт до границы / шт', formatRub(result.white.freightPerUnit), `${whiteParams.freightRateType === 'kg' ? whiteParams.freightRateUsd + ' $/кг' : whiteParams.freightRateUsd + ' $/м³'}`],
+                ['Валютная комиссия / шт', formatRub(result.white.currCommPerUnit), `${whiteParams.currencyCommissionPct}% от оплаты поставщику`],
+                ['Фикс. затраты / шт', formatRub(result.white.fixedPerUnit), `${formatRub(whiteParams.brokerRub + whiteParams.svhRub + whiteParams.rfDeliveryWhiteRub)} ÷ ${values.quantity} шт`],
+                result.white.certPerUnit > 0.01 ? ['Сертификация / шт', formatRub(result.white.certPerUnit), `${formatRub(whiteParams.certRub)} ÷ ${whiteParams.certVolumeQty} шт серии`] : null,
+              ].filter(Boolean).map(([label, val, hint]) => (
+                <div key={label} className="flex items-center justify-between gap-4 py-2.5">
+                  <div>
+                    <span className="text-sm text-neutral-300">{label}</span>
+                    {hint ? <span className="ml-2 text-xs text-neutral-600">{hint}</span> : null}
+                  </div>
+                  <span className="font-mono text-sm font-semibold text-white">{val}</span>
+                </div>
+              ))}
+              {/* VAT row — special styling for ОСНО */}
+              <div className="flex items-center justify-between gap-4 py-2.5">
+                <div>
+                  <span className={`text-sm ${result.white.isOsno ? 'text-amber-300' : 'text-neutral-300'}`}>
+                    НДС при ввозе / шт
+                  </span>
+                  <span className="ml-2 text-xs text-neutral-600">
+                    {result.white.isOsno ? 'ОСНО — к вычету, не в себестоимости' : 'УСН — включён в себестоимость'}
+                  </span>
+                </div>
+                <span className={`font-mono text-sm font-semibold ${result.white.isOsno ? 'text-amber-300' : 'text-white'}`}>
+                  {formatRub(result.white.vatPerUnit)}
+                </span>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {/* Metrics */}
         <section className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Metric label="Себестоимость / шт" value={formatRub(result.costRub)} sub={`${formatCurrency(result.supplierCostForeign, result.currency)} поставщик / шт`} />
           <Metric label="Цена клиенту / шт" value={formatRub(result.priceRub)} sub={`наценка ×${values.markup.toFixed(1)}`} accent />
@@ -479,6 +764,7 @@ export default function CostCalculatorPage() {
           <Metric label="Прибыль партии" value={formatRub(result.totalProfitRub)} sub={`${Math.round(result.marginPct)}% маржа`} />
         </section>
 
+        {/* Margin bar */}
         <section className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900 p-5">
           <div className="mb-3 flex items-center justify-between gap-4">
             <span className="text-sm text-neutral-400">Чистая маржа</span>
@@ -494,9 +780,15 @@ export default function CostCalculatorPage() {
           ) : null}
         </section>
 
+        {/* Breakdown + CRM */}
         <section className="mt-4 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900">
-            <div className="border-b border-neutral-800 px-5 py-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Структура себестоимости / шт</div>
+            <div className="border-b border-neutral-800 px-5 py-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">
+              Структура себестоимости / шт
+              {isWhite && result.white.isOsno ? (
+                <span className="ml-3 text-amber-400 normal-case">НДС не включён (ОСНО)</span>
+              ) : null}
+            </div>
             <div>
               {result.breakdown.map(([label, amount]) => (
                 <div key={label} className="grid grid-cols-[minmax(0,1fr)_120px_92px] items-center gap-3 border-b border-neutral-800 px-5 py-3 last:border-b-0 max-[560px]:grid-cols-[minmax(0,1fr)_82px]">
@@ -541,6 +833,145 @@ export default function CostCalculatorPage() {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* Comparison table — only shown when white is selected */}
+        {isWhite ? (
+          <section className="mt-4 rounded-lg border border-neutral-700 bg-neutral-900 overflow-hidden">
+            <div className="border-b border-neutral-800 px-5 py-4 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">
+              Сравнение: Карго vs Белая
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-800">
+                    <th className="px-5 py-3 text-left font-mono text-xs text-neutral-500">Компонент</th>
+                    <th className="px-4 py-3 text-right font-mono text-xs text-neutral-500">Карго</th>
+                    <th className="px-4 py-3 text-right font-mono text-xs text-lime-400">Белая</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800">
+                  {[
+                    ['Производство EXW', result.cargo.productionRub - values.packUsd * result.supplierRateRub, result.white.freightPerUnit !== result.white.freightPerUnit ? 0 : values.exwUsd * result.supplierRateRub],
+                    ['Упаковка', values.packUsd * result.supplierRateRub, values.packUsd * result.supplierRateRub],
+                    ['Одноразовые затраты / шт', result.cargo.oneTimePerUnitRub, result.cargo.oneTimePerUnitRub],
+                    ['Логистика до РФ', result.cargo.cargoLogisticsRub, result.white.freightPerUnit],
+                    ['Упаковка карго', result.cargo.cargoPackRub, 0],
+                    ['Пошлина', 0, result.white.dutyPerUnit],
+                    ['НДС при ввозе', 0, result.white.vatPerUnit],
+                    ['Валютная комиссия / банк', result.cargo.cargoBankRub, result.white.currCommPerUnit],
+                    ['Брак / риск', result.cargo.cargoDefectRub, result.white.defectPerUnit],
+                    ['Брокер + СВХ + доставка РФ', result.cargo.cargoLocalRub, result.white.fixedPerUnit],
+                    ['Сертификация / шт', 0, result.white.certPerUnit],
+                  ].map(([label, cargoAmt, whiteAmt]) => {
+                    const hasValues = cargoAmt > 0.01 || whiteAmt > 0.01
+                    if (!hasValues) return null
+                    const isVat = label === 'НДС при ввозе'
+                    return (
+                      <tr key={label} className="hover:bg-neutral-800/40">
+                        <td className="px-5 py-2.5 text-neutral-300">
+                          {label}
+                          {isVat && result.white.isOsno ? (
+                            <span className="ml-2 text-xs text-amber-400">к вычету</span>
+                          ) : isVat ? (
+                            <span className="ml-2 text-xs text-neutral-500">в с/с</span>
+                          ) : null}
+                        </td>
+                        <td className="px-4 py-2.5 text-right font-mono text-neutral-400">
+                          {cargoAmt > 0.01 ? formatRub(cargoAmt) : '—'}
+                        </td>
+                        <td className={`px-4 py-2.5 text-right font-mono ${isVat && result.white.isOsno ? 'text-amber-300' : 'text-white'}`}>
+                          {whiteAmt > 0.01 ? formatRub(whiteAmt) : '—'}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 border-neutral-700 bg-neutral-800/50">
+                    <td className="px-5 py-3 text-sm font-semibold text-white">ИТОГО / шт</td>
+                    <td className="px-4 py-3 text-right font-mono font-semibold text-neutral-300">{formatRub(result.cargo.cargoCostRub)}</td>
+                    <td className="px-4 py-3 text-right font-mono font-semibold text-lime-300">{formatRub(result.white.whiteCostRub)}</td>
+                  </tr>
+                  {result.white.isOsno ? (
+                    <tr className="border-t border-neutral-800 bg-amber-400/5">
+                      <td className="px-5 py-2.5 text-xs text-amber-300" colSpan={3}>
+                        ОСНО: НДС {formatRub(result.white.vatPerUnit)}/шт уплачен на таможне, принимается к вычету — не влияет на себестоимость, но замораживает оборотные средства.
+                      </td>
+                    </tr>
+                  ) : null}
+                </tfoot>
+              </table>
+            </div>
+
+            {/* Break-even */}
+            <div className="border-t border-neutral-800 px-5 py-4">
+              {result.white.breakEvenQty !== null && result.white.breakEvenQty > 0 && result.white.breakEvenQty < 100000 ? (
+                <div className="rounded-md border border-lime-300/30 bg-lime-300/5 px-4 py-3">
+                  <p className="text-sm text-neutral-300">
+                    Точка безубыточности белой схемы:{' '}
+                    <span className="font-semibold text-lime-300">
+                      при тираже ≥ {result.white.breakEvenQty.toLocaleString('ru-RU')} шт
+                    </span>
+                    {' '}белая схема дешевле карго на данных параметрах.
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-md border border-amber-400/30 bg-amber-400/5 px-4 py-3">
+                  <p className="text-sm text-amber-300">
+                    На текущих параметрах белая схема дороже карго при любом тираже.
+                    Проверьте ставку фрахта, пошлину и ставку карго.
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        ) : null}
+
+        {/* RF Delivery estimator */}
+        <section className="mt-4 rounded-lg border border-neutral-700 bg-neutral-900 p-5">
+          <div className="mb-1 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Оценка доставки по РФ</div>
+          <p className="mb-5 text-xs text-neutral-600">Клиент платит отдельно. Используй для быстрого квотирования.</p>
+
+          <div className="mb-5 grid grid-cols-3 gap-2 sm:grid-cols-5">
+            {Object.entries(deliveryZones).map(([key, zone]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setDeliveryZone(key)}
+                className={`rounded-md border px-3 py-2.5 text-left transition-colors ${deliveryZone === key ? 'border-lime-300 bg-lime-300/10 text-lime-300' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
+              >
+                <span className="block text-xs font-medium">{zone.label}</span>
+                <span className="mt-0.5 block font-mono text-[10px] opacity-60">{zone.rate} ₽/кг</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mb-5">
+            <div className="mb-3 text-xs text-neutral-500">Габариты упаковки 1 шт (см)</div>
+            <div className="grid grid-cols-3 gap-3">
+              <Field label="Длина" value={values.dimL} suffix=" см" min={1} max={120} step={1} onChange={(v) => update('dimL', v)} />
+              <Field label="Ширина" value={values.dimW} suffix=" см" min={1} max={120} step={1} onChange={(v) => update('dimW', v)} />
+              <Field label="Высота" value={values.dimH} suffix=" см" min={1} max={120} step={1} onChange={(v) => update('dimH', v)} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Metric label="Физический вес" value={`${deliveryResult.physicalKg.toFixed(1)} кг`} sub="вес товара" />
+            <Metric
+              label="Объёмный вес"
+              value={`${deliveryResult.volKg.toFixed(1)} кг`}
+              sub={deliveryResult.isVolBased ? 'берётся в расчёт ▲' : 'меньше физического'}
+            />
+            <Metric label="Стоимость доставки" value={formatRub(deliveryResult.totalRub)} sub={deliveryZones[deliveryZone].label} />
+            <Metric label="На штуку" value={formatRub(deliveryResult.perUnitRub)} sub="для справки" />
+          </div>
+
+          {deliveryResult.isVolBased ? (
+            <p className="mt-4 rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-sm text-amber-200">
+              Объёмный вес ({deliveryResult.volKg.toFixed(1)} кг) больше физического ({deliveryResult.physicalKg.toFixed(1)} кг) — ТК выставит счёт по объёму.
+            </p>
+          ) : null}
         </section>
       </div>
     </main>
