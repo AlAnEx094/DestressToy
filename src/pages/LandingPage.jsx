@@ -493,10 +493,17 @@ export default function LandingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [showStickyCta, setShowStickyCta] = useState(false)
+  const [cookiesOk, setCookiesOk] = useState(() => !!localStorage.getItem('cookies_ok'))
   const utmRef = useRef({})
 
   useEffect(() => {
     utmRef.current = collectAttribution()
+  }, [])
+
+  useEffect(() => {
+    const handler = () => setCookiesOk(true)
+    window.addEventListener('cookies_accepted', handler)
+    return () => window.removeEventListener('cookies_accepted', handler)
   }, [])
 
   useEffect(() => {
@@ -517,6 +524,59 @@ export default function LandingPage() {
     return () => {
       window.removeEventListener('scroll', onScroll)
       observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const fired = new Set()
+    const observers = []
+    const leadForm = document.getElementById('lead_form')
+
+    const fireOnce = (name) => {
+      if (fired.has(name)) return
+      fired.add(name)
+      trackEvent(name, { ...utmRef.current })
+    }
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      const observeSection = (element, eventName) => {
+        if (!element) return
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return
+            fireOnce(eventName)
+            observer.disconnect()
+          },
+          { threshold: 0.15 }
+        )
+        observer.observe(element)
+        observers.push(observer)
+      }
+
+      observeSection(document.getElementById('pricing'), 'pricing_view')
+      observeSection(leadForm, 'form_view')
+    }
+
+    const onScroll = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      if (maxScroll <= 0) return
+      const progress = window.scrollY / maxScroll
+
+      if (progress >= 0.5) fireOnce('scroll_50')
+      if (progress >= 0.75) fireOnce('scroll_75')
+    }
+
+    const onFocusIn = (event) => {
+      if (event.target?.matches?.('input, textarea, select')) fireOnce('form_start')
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    if (leadForm) leadForm.addEventListener('focusin', onFocusIn)
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect())
+      window.removeEventListener('scroll', onScroll)
+      if (leadForm) leadForm.removeEventListener('focusin', onFocusIn)
     }
   }, [])
 
@@ -1936,7 +1996,7 @@ export default function LandingPage() {
         </Container>
       </footer>
       <CookieBanner />
-      {showStickyCta && (
+      {showStickyCta && cookiesOk && (
         <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
           <a
             href="#lead_form"
