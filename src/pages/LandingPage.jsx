@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import CrossNav from '../components/CrossNav.jsx'
 import StickyProductTab from '../components/StickyProductTab.jsx'
 import CookieBanner from '../components/CookieBanner.jsx'
+import GalleryLightbox from '../components/GalleryLightbox.jsx'
 
 const stageItems = [
   { src: '/images/hero-stage/bear.webp',    alt: 'Кастомный медведь-маскот с логотипом — мягкая игрушка на заказ для бренда', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
@@ -487,6 +488,7 @@ function ContactIconLink({ href = '#', label, tooltip, children, onClick, extern
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
+  const [galleryLightboxItem, setGalleryLightboxItem] = useState(null)
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(false)
@@ -828,27 +830,30 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-8 grid gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {galleryItems.map((item, index) => (
+          <div className="mt-8 grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-4">
+            {galleryItems.map((item) => (
               <article
                 key={item.label}
-                className={`overflow-hidden rounded-xl border border-[#e5e0d8] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]${index >= 4 ? ' hidden md:block' : ''}`}
+                className="overflow-hidden rounded-xl border border-[#e5e0d8] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]"
               >
-                <div className="w-full aspect-[5/4] bg-[#f4efe8]">
-                  <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
-                </div>
-                <div className="p-4 md:p-6">
-                  <p className="mb-1 text-xs uppercase tracking-widest text-[#ff6a3d]">
-                    {item.label}
-                  </p>
-                  <h3 className="text-base md:text-xl font-bold text-[#151716]">{item.title}</h3>
-                  <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#5a6060]">
-                    {item.body}
-                  </p>
-                </div>
+                <button type="button" onClick={() => setGalleryLightboxItem(item)} className="block w-full text-left cursor-pointer">
+                  <div className="w-full aspect-[5/4] bg-[#f4efe8]">
+                    <img src={item.image} alt={item.alt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                  </div>
+                  <div className="p-3 md:p-6">
+                    <p className="mb-1 hidden text-xs uppercase tracking-widest text-[#ff6a3d] md:block">
+                      {item.label}
+                    </p>
+                    <h3 className="text-sm md:text-xl font-bold text-[#151716]">{item.title}</h3>
+                    <p className="mt-1 hidden md:block text-sm leading-relaxed text-[#5a6060]">
+                      {item.body}
+                    </p>
+                  </div>
+                </button>
               </article>
             ))}
           </div>
+          <GalleryLightbox item={galleryLightboxItem} accentColor="#ff6a3d" onClose={() => setGalleryLightboxItem(null)} />
         </Container>
       </section>
 
