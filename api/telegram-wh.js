@@ -25,16 +25,16 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  // Отвечаем Telegram сразу — не ждём n8n
-  res.status(200).json({ ok: true })
-
   try {
     await fetch(N8N_WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body || {}),
+      signal: AbortSignal.timeout(8000),
     })
   } catch {
-    // n8n недоступен — сообщение потеряется, но Telegram не будет ретраить
+    // n8n недоступен — продолжаем, Telegram получит 200
   }
+
+  res.status(200).json({ ok: true })
 }
