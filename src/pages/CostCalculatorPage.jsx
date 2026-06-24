@@ -28,6 +28,7 @@ const materialPresets = {
     printSetupUsd: 0,
     chinaDeliveryRateCny: 3,
     sampleUsd: 500,
+    sampleAirDeliveryUsd: 40,
     cargoRateUsd: 3.1,
     cargoPackUsd: 8,
     dimL: 12, dimW: 10, dimH: 10,
@@ -44,6 +45,7 @@ const materialPresets = {
     printSetupUsd: 0,
     chinaDeliveryRateCny: 3,
     sampleUsd: 80,
+    sampleAirDeliveryUsd: 40,
     cargoRateUsd: 5.5,
     cargoPackUsd: 5,
     dimL: 17, dimW: 14, dimH: 12,
@@ -76,6 +78,7 @@ const defaults = {
   printSetupUsd: 0,
   chinaDeliveryRateCny: 3,
   sampleUsd: 500,
+  sampleAirDeliveryUsd: 40,
   cargoRateUsd: 3.1,
   cargoPackUsd: 8,
   dimL: 12, dimW: 10, dimH: 10,
@@ -107,6 +110,7 @@ const ruDefaults = {
   moldRub: 0,
   printSetupRub: 0,
   sampleRub: 0,
+  sampleDeliveryRub: 0,
 }
 
 function formatRub(value) {
@@ -409,6 +413,7 @@ export default function CostCalculatorPage() {
     moldUsd: String(defaults.moldUsd),
     printSetupUsd: String(defaults.printSetupUsd),
     sampleUsd: String(defaults.sampleUsd),
+    sampleAirDeliveryUsd: String(defaults.sampleAirDeliveryUsd),
     cargoPackUsd: String(defaults.cargoPackUsd),
   })
   const [whiteMoneyInputs, setWhiteMoneyInputs] = useState({
@@ -440,7 +445,7 @@ export default function CostCalculatorPage() {
   const [deliveryDays, setDeliveryDays] = useState(37)
   const [ruParams, setRuParams] = useState(ruDefaults)
   const [ruMoneyInputs, setRuMoneyInputs] = useState({
-    priceRub: '500', packRub: '50', moldRub: '0', printSetupRub: '0', sampleRub: '0',
+    priceRub: '500', packRub: '50', moldRub: '0', printSetupRub: '0', sampleRub: '0', sampleDeliveryRub: '0',
   })
 
   const update = (key, value) => {
@@ -474,6 +479,7 @@ export default function CostCalculatorPage() {
       moldUsd: String(preset.moldUsd),
       printSetupUsd: String(preset.printSetupUsd),
       sampleUsd: String(preset.sampleUsd),
+      sampleAirDeliveryUsd: String(preset.sampleAirDeliveryUsd),
       cargoPackUsd: String(preset.cargoPackUsd),
     })
     setCopied('')
@@ -562,13 +568,25 @@ export default function CostCalculatorPage() {
     return `Срок: ${parts.join(' + ')}${total}.`
   })()
 
-  // Sample note for texts
-  const sampleLine = (() => {
+  // Sample price for client: (factory cost + air delivery) × markup, all in RUB
+  const sampleClientPriceRub = (() => {
     if (supplierOrigin === 'china' && values.sampleUsd > 0) {
-      return `Тестовый образец: ${formatCurrency(values.sampleUsd, result.currency)} — оплачивается отдельно до запуска производства.`
+      const factoryCostRub = values.sampleUsd * result.supplierRateRub
+      const airRub = getNumber(values.sampleAirDeliveryUsd) * values.rateRub
+      return (factoryCostRub + airRub) * values.markup
     }
     if (supplierOrigin === 'russia' && ruParams.sampleRub > 0) {
-      return `Тестовый образец: ${formatRub(ruParams.sampleRub)} — оплачивается отдельно до запуска производства.`
+      return (ruParams.sampleRub + getNumber(ruParams.sampleDeliveryRub)) * values.markup
+    }
+    return 0
+  })()
+
+  const sampleLine = (() => {
+    if (supplierOrigin === 'china' && values.sampleUsd > 0) {
+      return `Тестовый образец: ${formatRub(sampleClientPriceRub)} — оплачивается отдельно до запуска производства.`
+    }
+    if (supplierOrigin === 'russia' && ruParams.sampleRub > 0) {
+      return `Тестовый образец: ${formatRub(sampleClientPriceRub)} — оплачивается отдельно до запуска производства.`
     }
     return null
   })()
@@ -911,7 +929,11 @@ export default function CostCalculatorPage() {
                   <Field label="Доставка по Китаю" value={values.chinaDeliveryRateCny} suffix=" ¥/кг" min={0} max={15} step={0.5} onChange={(value) => update('chinaDeliveryRateCny', value)} />
                   <div>
                     <NumberInput label="Образец / sample" value={moneyInputs.sampleUsd} suffix={currencyOptions[values.supplierCurrency].symbol} onChange={(value) => updateMoneyInput('sampleUsd', value)} />
-                    <p className="mt-1 text-xs text-neutral-600">Оплачивается отдельно — не в цене партии</p>
+                    <p className="mt-1 text-xs text-neutral-600">Не в цене партии</p>
+                  </div>
+                  <div>
+                    <NumberInput label="Авиадоставка образца" value={moneyInputs.sampleAirDeliveryUsd} suffix="$" onChange={(value) => updateMoneyInput('sampleAirDeliveryUsd', value)} />
+                    <p className="mt-1 text-xs text-neutral-600">DHL / SF Express до клиента</p>
                   </div>
                   {values.logistic === 'cargo' ? (
                     <NumberInput label="Упаковка карго" value={moneyInputs.cargoPackUsd} suffix="$" onChange={(value) => updateMoneyInput('cargoPackUsd', value)} />
@@ -929,7 +951,11 @@ export default function CostCalculatorPage() {
                 <NumberInput label="Печать / подготовка" value={ruMoneyInputs.printSetupRub} suffix="₽" onChange={(v) => updateRu('printSetupRub', v)} />
                 <div>
                   <NumberInput label="Образец" value={ruMoneyInputs.sampleRub} suffix="₽" onChange={(v) => updateRu('sampleRub', v)} />
-                  <p className="mt-1 text-xs text-neutral-600">Оплачивается отдельно — не в цене партии</p>
+                  <p className="mt-1 text-xs text-neutral-600">Не в цене партии</p>
+                </div>
+                <div>
+                  <NumberInput label="Доставка образца" value={ruMoneyInputs.sampleDeliveryRub} suffix="₽" onChange={(v) => updateRu('sampleDeliveryRub', v)} />
+                  <p className="mt-1 text-xs text-neutral-600">Курьер до клиента</p>
                 </div>
                 <Field label="Тираж" value={values.quantity} suffix=" шт" min={50} max={30000} step={50} onChange={(value) => update('quantity', value)} />
                 <Field label="Вес 1 шт" value={values.weightGram} suffix=" г" min={0.1} max={600} step={0.1} onChange={(value) => update('weightGram', value)} />
@@ -1107,12 +1133,23 @@ export default function CostCalculatorPage() {
         </section>
 
         {/* Sample note */}
-        {sampleLine ? (
+        {sampleClientPriceRub > 0 ? (
           <div className="mt-3 rounded-md border border-neutral-700 bg-neutral-900 px-4 py-3">
-            <p className="text-sm text-neutral-400">
-              <span className="mr-2 font-mono text-xs uppercase tracking-wide text-neutral-500">Образец</span>
-              {sampleLine}
-            </p>
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className="font-mono text-xs uppercase tracking-wide text-neutral-500">Образец — клиенту</span>
+              <span className="font-mono text-lg font-semibold text-white">{formatRub(sampleClientPriceRub)}</span>
+              {supplierOrigin === 'china' && values.sampleUsd > 0 ? (
+                <span className="text-xs text-neutral-600">
+                  ({formatCurrency(values.sampleUsd, result.currency)} завод + ${getNumber(values.sampleAirDeliveryUsd)} авиа) × ×{values.markup.toFixed(1)}
+                </span>
+              ) : null}
+              {supplierOrigin === 'russia' && ruParams.sampleRub > 0 ? (
+                <span className="text-xs text-neutral-600">
+                  ({formatRub(ruParams.sampleRub)} завод + {formatRub(getNumber(ruParams.sampleDeliveryRub))} доставка) × ×{values.markup.toFixed(1)}
+                </span>
+              ) : null}
+            </div>
+            <p className="mt-1 text-xs text-neutral-600">Оплачивается отдельно до запуска производства</p>
           </div>
         ) : null}
 
