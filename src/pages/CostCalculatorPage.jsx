@@ -32,7 +32,7 @@ const materialPresets = {
     cargoRateUsd: 3.1,
     cargoPackUsd: 8,
     dimL: 12, dimW: 10, dimH: 10,
-    markup: 2.5,
+    markup: 2,
     cnyRateRub: 12,
     rateRub: 90,
   },
@@ -86,7 +86,7 @@ const defaults = {
   defectPct: 4,
   rateRub: 90,
   cnyRateRub: 12,
-  markup: 2.5,
+  markup: 2,
   logistic: 'cargo',
   localDeliveryRub: 0,
 }
@@ -1140,12 +1140,12 @@ export default function CostCalculatorPage() {
               <span className="font-mono text-lg font-semibold text-white">{formatRub(sampleClientPriceRub)}</span>
               {supplierOrigin === 'china' && values.sampleUsd > 0 ? (
                 <span className="text-xs text-neutral-600">
-                  ({formatCurrency(values.sampleUsd, result.currency)} завод + ${getNumber(values.sampleAirDeliveryUsd)} авиа) × ×{values.markup.toFixed(1)}
+                  ({formatCurrency(values.sampleUsd, result.currency)} завод + ${getNumber(values.sampleAirDeliveryUsd)} авиа) ×{values.markup.toFixed(1)}
                 </span>
               ) : null}
               {supplierOrigin === 'russia' && ruParams.sampleRub > 0 ? (
                 <span className="text-xs text-neutral-600">
-                  ({formatRub(ruParams.sampleRub)} завод + {formatRub(getNumber(ruParams.sampleDeliveryRub))} доставка) × ×{values.markup.toFixed(1)}
+                  ({formatRub(ruParams.sampleRub)} завод + {formatRub(getNumber(ruParams.sampleDeliveryRub))} доставка) ×{values.markup.toFixed(1)}
                 </span>
               ) : null}
             </div>
