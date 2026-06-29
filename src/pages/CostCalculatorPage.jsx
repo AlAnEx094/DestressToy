@@ -7,6 +7,11 @@ const logisticOptions = {
     hint: 'ставка по плотности',
     localDeliveryRub: 0,
   },
+  air: {
+    label: 'Авиакарго',
+    hint: '$50/кг · 5–6 дней',
+    localDeliveryRub: 0,
+  },
   white: {
     label: 'Белая',
     hint: 'таможня + пошлина + НДС',
@@ -22,9 +27,9 @@ const materialPresets = {
   pu: {
     supplierCurrency: 'cny',
     exwUsd: 17,
-    weightGram: 150,
+    weightGram: 80,
     packUsd: 1.3,
-    moldUsd: 3000,
+    moldUsd: 5000,
     printSetupUsd: 0,
     chinaDeliveryRateCny: 3,
     sampleUsd: 500,
@@ -63,18 +68,14 @@ const deliveryZones = {
   dv:      { label: 'Дальний Восток',  rate: 110, base: 600 },
 }
 
-const moldComplexityOptions = {
-  simple: { label: 'Простая форма', hint: '3 000 ¥', value: 3000 },
-  complex: { label: 'Сложная форма', hint: '7 000 ¥', value: 7000 },
-}
 
 const defaults = {
   supplierCurrency: 'cny',
   exwUsd: 17,
   quantity: 500,
-  weightGram: 150,
+  weightGram: 80,
   packUsd: 1.3,
-  moldUsd: 3000,
+  moldUsd: 5000,
   printSetupUsd: 0,
   chinaDeliveryRateCny: 3,
   sampleUsd: 500,
@@ -320,7 +321,30 @@ function computeForQuantity(qty, values, whiteParams) {
   const beDenom = cargoVarPerUnit - whiteVarPerUnit - certPerUnit
   const breakEvenQty = beDenom > 1 ? Math.ceil(whiteFix / beDenom) : null
 
+  // Air cargo: $50/kg, minimum 1 kg, no cargo packaging
+  const airChargedKg = Math.max(totalKg, 1)
+  const airLogisticsRub = (airChargedKg / quantity) * 50 * values.rateRub
+  const airDefectRub = productionRub * (values.defectPct / 100)
+  const airBankRub = (productionRub + oneTimePerUnitRub + airLogisticsRub + airDefectRub) * (values.bankPct / 100)
+  const airLocalRub = values.localDeliveryRub
+  const airCostRub = productionRub + oneTimePerUnitRub + chinaDeliveryPerUnitRub + airLogisticsRub + airDefectRub + airBankRub + airLocalRub
+  const airPriceRub = airCostRub * values.markup
+  const airProfitRub = airPriceRub - airCostRub
+  const airMarginPct = airPriceRub > 0 ? (airProfitRub / airPriceRub) * 100 : 0
+  const airBreakdown = [
+    ['Производство EXW', values.exwUsd * supplierRateRub],
+    ['Упаковка', values.packUsd * supplierRateRub],
+    ['Форма / оснастка', (values.moldUsd / quantity) * supplierRateRub],
+    ['Печать / подготовка', (values.printSetupUsd / quantity) * supplierRateRub],
+    ['Доставка по Китаю', chinaDeliveryPerUnitRub],
+    ['Авиакарго ($50/кг)', airLogisticsRub],
+    ['Брак / риск', airDefectRub],
+    ['Банк / конвертация', airBankRub],
+    ['Доставка по РФ / брокер', airLocalRub],
+  ].filter(([, amount]) => amount > 0.01)
+
   const isWhite = values.logistic === 'white'
+  const isAir = values.logistic === 'air'
 
   return {
     quantity,
@@ -328,15 +352,15 @@ function computeForQuantity(qty, values, whiteParams) {
     currency,
     supplierRateRub,
     supplierCostForeign: productionForeign + oneTimePerUnitForeign,
-    logisticsUsd: isWhite ? whiteFreightPerUnit / values.rateRub : cargoLogisticsUsd,
-    costRub: isWhite ? whiteCostRub : cargoCostRub,
-    priceRub: isWhite ? whitePriceRub : cargoPriceRub,
-    profitRub: isWhite ? whiteProfitRub : cargoProfitRub,
-    marginPct: isWhite ? whiteMarginPct : cargoMarginPct,
-    totalCostRub: (isWhite ? whiteCostRub : cargoCostRub) * quantity,
-    totalPriceRub: (isWhite ? whitePriceRub : cargoPriceRub) * quantity,
-    totalProfitRub: (isWhite ? whiteProfitRub : cargoProfitRub) * quantity,
-    breakdown: isWhite ? whiteBreakdown : cargoBreakdown,
+    logisticsUsd: isWhite ? whiteFreightPerUnit / values.rateRub : isAir ? (airChargedKg / quantity) * 50 : cargoLogisticsUsd,
+    costRub: isWhite ? whiteCostRub : isAir ? airCostRub : cargoCostRub,
+    priceRub: isWhite ? whitePriceRub : isAir ? airPriceRub : cargoPriceRub,
+    profitRub: isWhite ? whiteProfitRub : isAir ? airProfitRub : cargoProfitRub,
+    marginPct: isWhite ? whiteMarginPct : isAir ? airMarginPct : cargoMarginPct,
+    totalCostRub: (isWhite ? whiteCostRub : isAir ? airCostRub : cargoCostRub) * quantity,
+    totalPriceRub: (isWhite ? whitePriceRub : isAir ? airPriceRub : cargoPriceRub) * quantity,
+    totalProfitRub: (isWhite ? whiteProfitRub : isAir ? airProfitRub : cargoProfitRub) * quantity,
+    breakdown: isWhite ? whiteBreakdown : isAir ? airBreakdown : cargoBreakdown,
     white: {
       tsTotalRub, tsPerUnit, dutyPerUnit, vatPerUnit, vatInCost,
       fixedPerUnit, certPerUnit, freightPerUnit: whiteFreightPerUnit,
@@ -348,6 +372,7 @@ function computeForQuantity(qty, values, whiteParams) {
       cargoCostRub, cargoPriceRub, productionRub, oneTimePerUnitRub,
       cargoLogisticsRub, cargoPackRub, cargoDefectRub, cargoBankRub, cargoLocalRub, cargoBreakdown,
     },
+    air: isAir ? { airCostRub, airPriceRub, airLogisticsRub, airChargedKg, airBreakdown } : null,
   }
 }
 
@@ -406,7 +431,6 @@ export default function CostCalculatorPage() {
   }
 
   const [material, setMaterial] = useState('pu')
-  const [moldComplexity, setMoldComplexity] = useState('simple')
   const [values, setValues] = useState(defaults)
   const [whiteParams, setWhiteParams] = useState(whiteDefaults)
   const [moneyInputs, setMoneyInputs] = useState({
@@ -473,7 +497,6 @@ export default function CostCalculatorPage() {
   const handleMaterialChange = (mat) => {
     const preset = materialPresets[mat]
     setMaterial(mat)
-    setMoldComplexity('simple')
     setValues((current) => ({ ...current, ...preset }))
     setMoneyInputs({
       moldUsd: String(preset.moldUsd),
@@ -482,14 +505,6 @@ export default function CostCalculatorPage() {
       sampleAirDeliveryUsd: String(preset.sampleAirDeliveryUsd),
       cargoPackUsd: String(preset.cargoPackUsd),
     })
-    setCopied('')
-  }
-
-  const handleMoldComplexity = (complexity) => {
-    const moldValue = moldComplexityOptions[complexity].value
-    setMoldComplexity(complexity)
-    setValues((current) => ({ ...current, moldUsd: moldValue }))
-    setMoneyInputs((current) => ({ ...current, moldUsd: String(moldValue) }))
     setCopied('')
   }
 
@@ -514,6 +529,8 @@ export default function CostCalculatorPage() {
       logistic: logisticKey,
       ...(logisticKey === 'cargo' ? { localDeliveryRub: 0 } : {}),
     }))
+    if (logisticKey === 'air') setDeliveryDays(6)
+    else if (logisticKey === 'cargo') setDeliveryDays(37)
     setCopied('')
   }
 
@@ -550,9 +567,7 @@ export default function CostCalculatorPage() {
     return { physicalKg, volKg, chargedKg, totalRub, perUnitRub, isVolBased: volKg > physicalKg }
   }, [values.quantity, values.weightGram, values.dimL, values.dimW, values.dimH, deliveryZone])
 
-  const materialLabel = material === 'pu'
-    ? `PU маскот (${moldComplexity === 'simple' ? 'простая форма 3 000 ¥' : 'сложная форма 7 000 ¥'})`
-    : 'Плюш 15 см'
+  const materialLabel = material === 'pu' ? 'PU маскот' : 'Плюш 15 см'
 
   const isWhite = supplierOrigin === 'china' && values.logistic === 'white'
 
@@ -865,7 +880,7 @@ export default function CostCalculatorPage() {
               <div className="mb-2 font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Тип изделия</div>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { key: 'pu', label: 'PU Маскот', hint: 'резина, форма, ~150г' },
+                  { key: 'pu', label: 'PU Маскот', hint: 'резина, форма, ~80г' },
                   { key: 'plush', label: 'Плюш', hint: 'мягкая игрушка, ~80г' },
                 ].map(({ key, label, hint }) => (
                   <button
@@ -879,21 +894,6 @@ export default function CostCalculatorPage() {
                   </button>
                 ))}
               </div>
-              {material === 'pu' ? (
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  {Object.entries(moldComplexityOptions).map(([key, option]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => handleMoldComplexity(key)}
-                      className={`rounded-md border px-4 py-3 text-left transition-colors ${moldComplexity === key ? 'border-lime-300/60 bg-lime-300/5 text-lime-200' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`}
-                    >
-                      <span className="block text-sm font-medium">{option.label}</span>
-                      <span className="mt-1 block font-mono text-xs opacity-70">{option.hint}</span>
-                    </button>
-                  ))}
-                </div>
-              ) : null}
             </>
           ) : null}
         </section>
@@ -990,7 +990,7 @@ export default function CostCalculatorPage() {
 
             {supplierOrigin === 'china' ? (
               <>
-                <div className="mb-5 grid grid-cols-2 gap-2">
+                <div className="mb-5 grid grid-cols-3 gap-2">
                   {Object.entries(logisticOptions).map(([key, option]) => (
                     <button
                       key={key}
@@ -1007,6 +1007,21 @@ export default function CostCalculatorPage() {
                 {values.logistic === 'cargo' ? (
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Field label="Ставка карго" value={values.cargoRateUsd} suffix=" $/кг" min={1} max={10} step={0.1} onChange={(value) => update('cargoRateUsd', value)} />
+                    <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
+                    {values.supplierCurrency === 'cny' ? (
+                      <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
+                    ) : null}
+                    <Field label="Наценка" value={values.markup} suffix="×" min={1.3} max={6} step={0.1} onChange={(value) => update('markup', value)} />
+                    <Field label="Брак / риски" value={values.defectPct} suffix="%" min={0} max={15} step={1} onChange={(value) => update('defectPct', value)} />
+                    <Field label="Банк / конвертация" value={values.bankPct} suffix="%" min={0} max={8} step={0.5} onChange={(value) => update('bankPct', value)} />
+                    <Field label="Доставка по РФ / брокер" value={values.localDeliveryRub} suffix=" ₽/шт" min={0} max={200} step={1} onChange={(value) => update('localDeliveryRub', value)} />
+                  </div>
+                ) : values.logistic === 'air' ? (
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="sm:col-span-2 rounded-md border border-sky-400/30 bg-sky-400/10 px-4 py-3">
+                      <p className="text-sm text-sky-300">Ставка: <strong>$50/кг</strong> · мин. 1 кг · срок 5–6 дней</p>
+                      <p className="mt-1 text-xs text-sky-400/70">Фиксированный тариф. Логистика считается от max(вес партии, 1 кг).</p>
+                    </div>
                     <Field label="Курс USD" value={values.rateRub} suffix=" ₽" min={45} max={130} step={1} onChange={(value) => update('rateRub', value)} />
                     {values.supplierCurrency === 'cny' ? (
                       <Field label="Курс CNY" value={values.cnyRateRub} suffix=" ₽" min={5} max={25} step={0.1} onChange={(value) => update('cnyRateRub', value)} />
