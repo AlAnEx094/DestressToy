@@ -57,6 +57,12 @@ function getFields(record) {
 
 function mapRecord(record) {
   const fields = getFields(record)
+  let inputs = {}
+  try {
+    inputs = fields['inputsJson'] ? JSON.parse(fields['inputsJson']) : {}
+  } catch {
+    inputs = {}
+  }
   return {
     id: record.id,
     dealId: fields['Сделка ID'] || '',
@@ -77,6 +83,7 @@ function mapRecord(record) {
     leadTimeDays: fields['Срок дней'] || 0,
     comment: fields['Комментарий'] || '',
     createdAt: fields['Дата расчёта'] || record.createdTime || '',
+    inputs,
   }
 }
 
@@ -123,7 +130,15 @@ async function createCalculation(body) {
     'Прибыль партии ₽': Number(result.totalProfitRub || 0),
     'Маржа %': Number(result.marginPct || 0),
     'Дата расчёта': now,
-    'inputsJson': JSON.stringify({ values, whiteParams: body.whiteParams || {}, supplier }, null, 2),
+    'inputsJson': JSON.stringify({
+      values,
+      whiteParams: body.whiteParams || {},
+      ruParams: body.ruParams || {},
+      supplier,
+      supplierOrigin: body.supplierOrigin || 'china',
+      deliveryDays: Number(body.deliveryDays || 0),
+      material: body.material || '',
+    }, null, 2),
     'resultJson': JSON.stringify(result, null, 2),
     'crmText': body.crmText || '',
     'clientText': body.clientText || '',

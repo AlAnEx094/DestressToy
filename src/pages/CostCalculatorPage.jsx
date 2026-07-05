@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
 const logisticOptions = {
@@ -462,6 +462,7 @@ export default function CostCalculatorPage() {
   const [loadingSaved, setLoadingSaved] = useState(false)
   const [clientName, setClientName] = useState('')
   const [saveAttempted, setSaveAttempted] = useState(false)
+  const autoLoadedDealRef = useRef(null)
 
   // New state
   const [supplierOrigin, setSupplierOrigin] = useState('china') // 'china' | 'russia'
@@ -671,6 +672,64 @@ export default function CostCalculatorPage() {
     setSaveError('')
   }
 
+  // Restore the editor (values / whiteParams / ruParams / supplier fields) from a saved record
+  // so opening the calculator link from a CRM note shows that supplier's numbers, not defaults.
+  const applySavedRecord = (record) => {
+    const inputs = record?.inputs
+    if (!inputs || typeof inputs !== 'object') return
+
+    const nextOrigin = inputs.supplierOrigin || 'china'
+    setSupplierOrigin(nextOrigin)
+    if (inputs.material) setMaterial(inputs.material)
+
+    if (inputs.values && typeof inputs.values === 'object') {
+      const nextValues = { ...defaults, ...inputs.values }
+      setValues(nextValues)
+      setMoneyInputs({
+        moldUsd: String(nextValues.moldUsd ?? defaults.moldUsd),
+        printSetupUsd: String(nextValues.printSetupUsd ?? defaults.printSetupUsd),
+        sampleUsd: String(nextValues.sampleUsd ?? defaults.sampleUsd),
+        sampleAirDeliveryUsd: String(nextValues.sampleAirDeliveryUsd ?? defaults.sampleAirDeliveryUsd),
+        cargoPackUsd: String(nextValues.cargoPackUsd ?? defaults.cargoPackUsd),
+      })
+    }
+
+    if (inputs.whiteParams && typeof inputs.whiteParams === 'object') {
+      const nextWhite = { ...whiteDefaults, ...inputs.whiteParams }
+      setWhiteParams(nextWhite)
+      setWhiteMoneyInputs({
+        brokerRub: String(nextWhite.brokerRub ?? whiteDefaults.brokerRub),
+        svhRub: String(nextWhite.svhRub ?? whiteDefaults.svhRub),
+        rfDeliveryWhiteRub: String(nextWhite.rfDeliveryWhiteRub ?? whiteDefaults.rfDeliveryWhiteRub),
+        certRub: String(nextWhite.certRub ?? whiteDefaults.certRub),
+        certVolumeQty: String(nextWhite.certVolumeQty ?? whiteDefaults.certVolumeQty),
+      })
+    }
+
+    if (inputs.ruParams && typeof inputs.ruParams === 'object') {
+      const nextRu = { ...ruDefaults, ...inputs.ruParams }
+      setRuParams(nextRu)
+      setRuMoneyInputs({
+        priceRub: String(nextRu.priceRub ?? ruDefaults.priceRub),
+        packRub: String(nextRu.packRub ?? ruDefaults.packRub),
+        moldRub: String(nextRu.moldRub ?? ruDefaults.moldRub),
+        printSetupRub: String(nextRu.printSetupRub ?? ruDefaults.printSetupRub),
+        sampleRub: String(nextRu.sampleRub ?? ruDefaults.sampleRub),
+        sampleDeliveryRub: String(nextRu.sampleDeliveryRub ?? ruDefaults.sampleDeliveryRub),
+      })
+    }
+
+    if (inputs.supplier && typeof inputs.supplier === 'object') {
+      setSupplier((current) => ({ ...current, ...inputs.supplier }))
+    }
+
+    if (Number(inputs.deliveryDays) > 0) {
+      setDeliveryDays(Number(inputs.deliveryDays))
+    }
+
+    setCopied('')
+  }
+
   const loadSavedCalculations = async () => {
     if (!dealId) return
     setLoadingSaved(true)
@@ -681,7 +740,13 @@ export default function CostCalculatorPage() {
       })
       const data = await response.json().catch(() => ({}))
       if (!response.ok || !data.ok) throw new Error(data.error || 'Не удалось загрузить расчёты')
-      setSavedCalculations(data.records || [])
+      const records = data.records || []
+      setSavedCalculations(records)
+      if (autoLoadedDealRef.current !== dealId) {
+        autoLoadedDealRef.current = dealId
+        const selected = records.find((r) => r.status === 'выбран')
+        if (selected) applySavedRecord(selected)
+      }
     } catch (error) {
       setSaveError(error.message || 'Не удалось загрузить расчёты')
     } finally {
@@ -700,6 +765,7 @@ export default function CostCalculatorPage() {
     supplier,
     supplierOrigin,
     deliveryDays,
+    material,
     materialLabel: supplierOrigin === 'russia' ? 'Российский производитель' : materialLabel,
     values,
     whiteParams,
@@ -761,6 +827,7 @@ export default function CostCalculatorPage() {
       setSavedCalculations((current) => current.map((item) => (
         item.id === data.record.id ? data.record : item.status === 'выбран' ? { ...item, status: 'черновик' } : item
       )))
+      applySavedRecord(data.record)
       setSaveStatus('selected')
     } catch (error) {
       setSaveStatus('')
