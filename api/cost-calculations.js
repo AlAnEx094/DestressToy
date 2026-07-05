@@ -1,13 +1,17 @@
 import { timingSafeEqual } from 'crypto'
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || 'appNUVkunRDc2WjS9'
+// Deliberately not process.env.AIRTABLE_BASE_ID — that name is already claimed by
+// dtkb_importer for a different Airtable base and would silently point here at the
+// wrong base if both are ever loaded from the same .env.
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_CALCULATOR_BASE_ID || 'appNUVkunRDc2WjS9'
 const CALCULATIONS_TABLE = process.env.AIRTABLE_CALCULATIONS_TABLE || 'Расчёты поставщиков'
 const AMO_BASE = 'https://leshaantipovmailru.amocrm.ru'
 
 function verifyAccess(req) {
   const token = process.env.CALCULATOR_ACCESS_TOKEN || ''
   const legacyToken = process.env.CALCULATOR_LEGACY_TOKEN || ''
-  const incoming = req.headers['x-calculator-access'] || req.query?.access || ''
+  // Header only — a query-string token would end up in access logs, proxies, and browser history.
+  const incoming = req.headers['x-calculator-access'] || ''
   if (!incoming) return false
   try {
     const left = Buffer.from(String(incoming))
@@ -161,10 +165,17 @@ async function updateCalculationStatus(recordId, status) {
   return mapRecord(data)
 }
 
-async function clearSelectedCalculations(dealId, exceptRecordId) {
+// Only unselects other saved versions of the SAME variant (re-approving a revised
+// quote). Different variants of one deal (e.g. two sizes from the same factory)
+// can stay selected at the same time — a deal may have several selected line items.
+async function clearSelectedCalculations(dealId, exceptRecordId, variantName) {
   if (!dealId) return
   const records = await listCalculations(dealId)
-  const selectedRecords = records.filter((record) => record.status === 'выбран' && record.id !== exceptRecordId)
+  const selectedRecords = records.filter((record) => (
+    record.status === 'выбран'
+    && record.id !== exceptRecordId
+    && (record.variantName || '') === (variantName || '')
+  ))
   await Promise.all(selectedRecords.map((record) => updateCalculationStatus(record.id, 'черновик')))
 }
 
@@ -231,15 +242,16 @@ async function createAmoFollowUpTask(dealId, daysFromNow = 3) {
   }
 }
 
-async function addAmoNote(dealId, calculation) {
+async function addAmoNote(dealId, calculations) {
   const token = process.env.AMOCRM_TOKEN
   if (!token || !dealId || !/^\d+$/.test(String(dealId))) return { skipped: true }
 
   const siteBase = process.env.SITE_URL || 'https://destresstoys.ru'
   const calcUrl = `${siteBase}/calc?t=dt26calc&dealId=${dealId}`
+  const list = Array.isArray(calculations) ? calculations : [calculations]
+  const multi = list.length > 1
 
-  const text = [
-    '🧮 Выбран расчёт поставщика',
+  const variantLines = (calculation) => [
     `Поставщик: ${calculation.supplierName || '—'}`,
     `Вариант: ${calculation.variantName || '—'}`,
     `Себестоимость: ${Math.round(calculation.costRub).toLocaleString('ru-RU')} ₽/шт`,
@@ -248,6 +260,16 @@ async function addAmoNote(dealId, calculation) {
     `Прибыль: ${Math.round(calculation.totalProfitRub).toLocaleString('ru-RU')} ₽`,
     `Маржа: ${Math.round(calculation.marginPct)}%`,
     calculation.supplierUrl ? `Ссылка поставщика: ${calculation.supplierUrl}` : null,
+  ].filter(Boolean)
+
+  const totalPriceRub = list.reduce((sum, c) => sum + (c.totalPriceRub || 0), 0)
+  const totalProfitRub = list.reduce((sum, c) => sum + (c.totalProfitRub || 0), 0)
+
+  const text = [
+    multi ? `🧮 Выбраны варианты расчёта (${list.length})` : '🧮 Выбран расчёт поставщика',
+    ...list.flatMap((calculation, i) => (multi ? [`— Вариант ${i + 1} —`, ...variantLines(calculation)] : variantLines(calculation))),
+    multi ? `Итого сумма КП: ${Math.round(totalPriceRub).toLocaleString('ru-RU')} ₽` : null,
+    multi ? `Итого прибыль: ${Math.round(totalProfitRub).toLocaleString('ru-RU')} ₽` : null,
     '',
     `📊 Калькулятор сделки: ${calcUrl}`,
   ].filter((line) => line !== null).join('\n')
@@ -292,13 +314,15 @@ export default async function handler(req, res) {
     if (!recordId) return res.status(400).json({ error: 'recordId is required' })
     const record = await updateCalculationStatus(recordId, 'выбран')
     const resolvedDealId = dealId || record.dealId
-    await clearSelectedCalculations(resolvedDealId, record.id)
+    await clearSelectedCalculations(resolvedDealId, record.id, record.variantName)
+    const allSelected = (await listCalculations(resolvedDealId)).filter((r) => r.status === 'выбран')
+    const totalPriceRub = allSelected.reduce((sum, r) => sum + (r.totalPriceRub || 0), 0)
     const [amo, dealUpdate, followUp] = await Promise.all([
-      addAmoNote(resolvedDealId, record),
-      updateAmoDeal(resolvedDealId, record.totalPriceRub),
+      addAmoNote(resolvedDealId, allSelected),
+      updateAmoDeal(resolvedDealId, totalPriceRub),
       createAmoFollowUpTask(resolvedDealId, 3),
     ])
-    return res.status(200).json({ ok: true, record, amo, dealUpdate, followUp })
+    return res.status(200).json({ ok: true, record, allSelected, amo, dealUpdate, followUp })
   } catch (error) {
     return res.status(500).json({ ok: false, error: error.message || 'Unknown error' })
   }

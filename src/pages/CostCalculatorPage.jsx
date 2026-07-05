@@ -473,6 +473,14 @@ export default function CostCalculatorPage() {
     priceRub: '500', packRub: '50', moldRub: '0', printSetupRub: '0', sampleRub: '0', sampleDeliveryRub: '0',
   })
 
+  const [buyer, setBuyer] = useState({ name: '', inn: '', kpp: '', address: '' })
+  const [documents, setDocuments] = useState([])
+  const [loadingDocuments, setLoadingDocuments] = useState(false)
+  const [documentError, setDocumentError] = useState('')
+  const [generatingDocType, setGeneratingDocType] = useState('')
+  const [lastDocument, setLastDocument] = useState(null)
+  const [documentCopied, setDocumentCopied] = useState(false)
+
   const update = (key, value) => {
     setValues((current) => ({ ...current, [key]: value }))
     setCopied('')
@@ -754,8 +762,49 @@ export default function CostCalculatorPage() {
     }
   }
 
+  const loadDocuments = async () => {
+    if (!dealId) return
+    setLoadingDocuments(true)
+    setDocumentError('')
+    try {
+      const response = await fetch(`/api/documents?dealId=${encodeURIComponent(dealId)}`, {
+        headers: { 'x-calculator-access': accessToken },
+      })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.ok) throw new Error(data.error || 'Не удалось загрузить документы')
+      setDocuments(data.records || [])
+    } catch (error) {
+      setDocumentError(error.message || 'Не удалось загрузить документы')
+    } finally {
+      setLoadingDocuments(false)
+    }
+  }
+
+  const generateDocument = async (type) => {
+    if (!dealId) return
+    setGeneratingDocType(type)
+    setDocumentError('')
+    setDocumentCopied(false)
+    try {
+      const response = await fetch('/api/documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-calculator-access': accessToken },
+        body: JSON.stringify({ dealId, type, buyer }),
+      })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok || !data.ok) throw new Error(data.error || `Не удалось сформировать ${type}`)
+      setLastDocument(data)
+      await loadDocuments()
+    } catch (error) {
+      setDocumentError(error.message || `Не удалось сформировать ${type}`)
+    } finally {
+      setGeneratingDocType('')
+    }
+  }
+
   useEffect(() => {
     loadSavedCalculations()
+    loadDocuments()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dealId, accessToken])
 
@@ -1343,6 +1392,88 @@ export default function CostCalculatorPage() {
             {saveStatus === 'selected' ? (
               <p className="border-t border-neutral-800 px-5 py-3 text-sm text-lime-300">Выбранный расчёт отмечен и записан заметкой в amoCRM, если dealId является amo lead id.</p>
             ) : null}
+          </section>
+        ) : null}
+
+        {/* Documents: КП / Счёт / УПД generated from selected variants of this deal */}
+        {dealId ? (
+          <section className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900 p-5">
+            <div className="mb-4">
+              <div className="font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">Документы</div>
+              <p className="mt-1 text-xs leading-5 text-neutral-500">
+                Собирается из всех расчётов сделки со статусом «выбран» (может быть несколько вариантов одного завода). УПД — черновик для сверки номера; подписание и отправка контрагенту — через СБИС отдельно.
+              </p>
+            </div>
+
+            <div className="mb-4 grid gap-4 sm:grid-cols-2">
+              <TextInput label="Покупатель: наименование" value={buyer.name} placeholder="ООО Ромашка" onChange={(v) => setBuyer((c) => ({ ...c, name: v }))} />
+              <TextInput label="Покупатель: ИНН" value={buyer.inn} placeholder="7701234567" onChange={(v) => setBuyer((c) => ({ ...c, inn: v.replace(/[^\d]/g, '') }))} />
+              <TextInput label="Покупатель: КПП" value={buyer.kpp} placeholder="770101001" onChange={(v) => setBuyer((c) => ({ ...c, kpp: v.replace(/[^\d]/g, '') }))} />
+              <TextInput label="Покупатель: адрес" value={buyer.address} placeholder="г. Москва, ул. ..." onChange={(v) => setBuyer((c) => ({ ...c, address: v }))} />
+            </div>
+
+            <div className="mb-4 flex flex-wrap gap-2">
+              {['КП', 'Счёт', 'УПД'].map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => generateDocument(type)}
+                  disabled={generatingDocType !== ''}
+                  className="inline-flex min-h-10 items-center justify-center rounded-md bg-lime-300 px-4 text-sm font-semibold text-neutral-950 transition-colors hover:bg-lime-200 disabled:cursor-wait disabled:opacity-60"
+                >
+                  {generatingDocType === type ? 'Формирую...' : `Сформировать ${type}`}
+                </button>
+              ))}
+            </div>
+
+            {documentError ? (
+              <p className="mb-4 rounded-md border border-red-400/30 bg-red-400/10 px-3 py-2 text-sm text-red-200">{documentError}</p>
+            ) : null}
+
+            {lastDocument ? (
+              <div className="mb-4">
+                <div className="mb-2 flex items-center justify-between gap-4">
+                  <span className="font-mono text-xs uppercase tracking-[0.12em] text-neutral-500">{lastDocument.type} № {lastDocument.number}</span>
+                  <button
+                    type="button"
+                    onClick={async () => { await navigator.clipboard.writeText(lastDocument.text); setDocumentCopied(true) }}
+                    className="inline-flex min-h-8 items-center justify-center rounded-md border border-neutral-700 px-3 text-xs font-semibold text-white transition-colors hover:border-lime-300 hover:text-lime-300"
+                  >
+                    {documentCopied ? 'Скопировано' : 'Скопировать'}
+                  </button>
+                </div>
+                <pre className="whitespace-pre-wrap rounded-md bg-neutral-950 p-4 font-mono text-xs leading-5 text-neutral-300">{lastDocument.text}</pre>
+              </div>
+            ) : null}
+
+            {documents.length ? (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[600px] text-sm">
+                  <thead>
+                    <tr className="border-b border-neutral-800">
+                      <th className="px-3 py-2 text-left font-mono text-xs text-neutral-500">Номер</th>
+                      <th className="px-3 py-2 text-left font-mono text-xs text-neutral-500">Тип</th>
+                      <th className="px-3 py-2 text-right font-mono text-xs text-neutral-500">Сумма</th>
+                      <th className="px-3 py-2 text-left font-mono text-xs text-neutral-500">Статус</th>
+                      <th className="px-3 py-2 text-left font-mono text-xs text-neutral-500">Дата</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-800">
+                    {documents.map((doc) => (
+                      <tr key={doc.id}>
+                        <td className="px-3 py-2 font-mono text-white">{doc.number}</td>
+                        <td className="px-3 py-2 text-neutral-300">{doc.type}</td>
+                        <td className="px-3 py-2 text-right font-mono text-lime-300">{formatRub(doc.totalRub)}</td>
+                        <td className="px-3 py-2 text-neutral-400">{doc.status}</td>
+                        <td className="px-3 py-2 text-neutral-500">{formatDateTime(doc.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-sm text-neutral-500">{loadingDocuments ? 'Загружаю документы...' : 'По этой сделке ещё нет сформированных документов.'}</p>
+            )}
           </section>
         ) : null}
 
