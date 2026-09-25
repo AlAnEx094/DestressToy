@@ -161,6 +161,7 @@ async function sendOperatorEmail(body) {
     from: '"DeStressToys" <info@destresstoys.ru>',
     to: 'info@destresstoys.ru',
     subject: `Новая заявка [${product}]: ${name}`,
+    headers: { 'Auto-Submitted': 'auto-generated' },
     text: `Продукт: ${product}\nИмя/Компания: ${name}\nТелефон: ${phone}\nEmail: ${email}\nТираж: ${quantity}\nОписание: ${description}\nИсточник: ${source}`,
   })
 }
@@ -182,6 +183,7 @@ async function sendConfirmationEmail(body) {
     from: '"DeStressToys" <info@destresstoys.ru>',
     to: toEmail,
     subject: 'Заявка принята — DeStressToys',
+    headers: { 'Auto-Submitted': 'auto-generated' },
     text: `${safeName},\n\nВаша заявка принята. Мы свяжемся с вами в течение 1 рабочего дня.\n\nС уважением,\nКоманда DeStressToys\ninfo@destresstoys.ru`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a">
@@ -199,6 +201,21 @@ async function sendConfirmationEmail(body) {
   })
 }
 
+// Dual write during the move off amoCRM: the lead also goes to the new CRM (dt-crm).
+// Never blocks or breaks the form: short timeout, errors are only logged.
+async function forwardToCrm(body) {
+  const url = process.env.CRM_INTAKE_URL
+  const secret = process.env.CRM_INTAKE_SECRET
+  if (!url || !secret) return
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Intake-Secret': secret },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(5000),
+  })
+  if (!r.ok) console.error('dt-crm intake failed', r.status)
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -212,6 +229,7 @@ export default async function handler(req, res) {
     sendOperatorEmail(body),
     sendConfirmationEmail(body),
     createAmoCRM(body),
+    forwardToCrm(body),
   ])
 
   return res.status(200).json({ status: 'ok', message: 'Заявка сохранена' })
