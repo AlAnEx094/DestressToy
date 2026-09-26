@@ -1,6 +1,9 @@
 import { timingSafeEqual } from 'node:crypto'
 
-const METHODS = new Set(['sendMessage', 'getWebhookInfo', 'setWebhook', 'deleteWebhook'])
+const METHODS = new Set([
+  'sendMessage', 'sendPhoto', 'sendDocument', 'sendMediaGroup',
+  'getWebhookInfo', 'setWebhook', 'deleteWebhook',
+])
 
 function validWebhookUrl(value) {
   if (typeof value !== 'string') return false
