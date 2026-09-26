@@ -424,7 +424,7 @@ function trackEvent(eventName, params = {}) {
 
 function Container({ children, className = '' }) {
   return (
-    <div className={`mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1280px] px-gut-m md:px-gut-t xl:px-gut-d ${className}`}>
       {children}
     </div>
   )
@@ -432,7 +432,7 @@ function Container({ children, className = '' }) {
 
 function SectionLabel({ children }) {
   return (
-    <p className="mb-4 text-xs font-medium uppercase tracking-[0.06em] text-[#ff6a3d]">
+    <p className="mb-4 text-xs font-medium uppercase tracking-[0.06em] text-accent-deep">
       {children}
     </p>
   )
@@ -458,7 +458,7 @@ function PlaceholderBlock({ label, className = '', tone = 'dark' }) {
 function PrimaryButton({ as: Component = 'a', className = '', children, ...props }) {
   return (
     <Component
-      className={`inline-flex items-center justify-center rounded-md bg-[#ff6a3d] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#e85a2e] ${className}`}
+      className={`inline-flex items-center justify-center rounded-md bg-accent px-7 py-3.5 text-base font-semibold text-ink transition-colors hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${className}`}
       {...props}
     >
       {children}
@@ -475,7 +475,7 @@ function ContactIconLink({ href = '#', label, tooltip, children, onClick, extern
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
       onClick={onClick}
-      className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-white/12 text-[#dfe5df] transition-colors hover:border-[#ff6a3d]/70 hover:bg-white/5 hover:text-white"
+      className="group relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line/40 text-muted transition-colors hover:border-accent hover:bg-surface hover:text-ink"
     >
       {children}
       <span className="pointer-events-none absolute right-0 top-[calc(100%+10px)] z-50 w-max max-w-[220px] whitespace-normal rounded-md border border-white/10 bg-[#151716] px-3 py-2 text-xs font-medium leading-5 text-white opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
@@ -684,10 +684,10 @@ export default function LandingPage() {
 
 
   return (
-    <main className="bg-[#151716] text-[#151716]">
+    <main className="bg-canvas text-ink">
       <header
         id="header"
-        className="sticky top-0 z-50 border-b border-white/10 bg-[#151716]"
+        className="sticky top-0 z-50 border-b border-line/25 bg-canvas"
       >
         <Container className="relative">
           <div className="flex h-16 items-center justify-between gap-4">
@@ -696,7 +696,7 @@ export default function LandingPage() {
               className="flex shrink-0 items-center gap-2.5"
             >
               <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
-              <span className="text-xl font-bold text-white tracking-tight">DeStressToys</span>
+              <span className="text-xl font-bold text-ink tracking-tight">DeStressToys</span>
             </a>
 
             <nav className="hidden items-center gap-5 lg:gap-7 md:flex">
@@ -704,7 +704,7 @@ export default function LandingPage() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-[14px] font-medium text-[#7c847d] transition-colors hover:text-white"
+                  className="text-caption font-medium text-muted transition-colors hover:text-ink"
                 >
                   {link.label}
                 </a>
@@ -758,7 +758,7 @@ export default function LandingPage() {
               <a
                 href="#lead_form"
                 onClick={() => handleCtaClick('header', 'pricing')}
-                className="inline-flex items-center justify-center rounded-md bg-[#ff6a3d] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
+                className="inline-flex items-center justify-center rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
               >
                 Получить расчёт
               </a>
@@ -766,7 +766,7 @@ export default function LandingPage() {
 
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-white/15 text-white transition-colors hover:border-white/35 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-line/40 text-ink transition-colors hover:border-ink/60 md:hidden"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
               aria-label="Открыть навигацию"
@@ -783,36 +783,36 @@ export default function LandingPage() {
           {mobileMenuOpen ? (
             <div
               id="mobile-navigation"
-              className="absolute inset-x-5 top-[72px] rounded-[12px] border border-white/10 bg-[#151716] p-4 md:hidden"
+              className="absolute inset-x-gut-m top-[72px] rounded-[12px] border border-line/30 bg-surface p-4 md:hidden"
             >
               <nav className="flex flex-col gap-3">
                 {navLinks.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
-                    className="text-base font-medium text-white"
+                    className="text-base font-medium text-ink"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
                   </a>
                 ))}
-                <div className="mt-2 border-t border-white/10 pt-4">
-                  <p className="text-sm text-[#7c847d]">Связаться напрямую</p>
+                <div className="mt-2 border-t border-line/30 pt-4">
+                  <p className="text-caption text-muted">Связаться напрямую</p>
                   <div className="mt-3 flex flex-col gap-2">
-                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'mobile_menu')} className="text-base font-semibold text-white">
+                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'mobile_menu')} className="text-base font-semibold text-ink">
                       {CONTACT_PHONE}
                     </a>
-                    <a href="#" onClick={(event) => handleEmailCopy(event, 'mobile_menu')} className="text-base font-medium text-white">
+                    <a href="#" onClick={(event) => handleEmailCopy(event, 'mobile_menu')} className="text-base font-medium text-ink">
                       {CONTACT_EMAIL}
                     </a>
-                    <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'mobile_menu')} className="text-base font-medium text-white">
+                    <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'mobile_menu')} className="text-base font-medium text-ink">
                       Telegram
                     </a>
-                    <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'mobile_menu')} className="text-base font-medium text-white">
+                    <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'mobile_menu')} className="text-base font-medium text-ink">
                       MAX
                     </a>
                   </div>
-                  <p className="mt-2 text-sm text-[#7c847d]">Ответим с {RESPONSE_HOURS}</p>
+                  <p className="mt-2 text-caption text-muted">Ответим с {RESPONSE_HOURS}</p>
                 </div>
                 <PrimaryButton
                   href="#lead_form"
@@ -832,33 +832,48 @@ export default function LandingPage() {
 
       <StickyProductTab variant="antistress" />
 
-      <section id="hero" className="bg-[#151716] flex flex-col min-h-[85vh] md:min-h-screen">
-        <Container className="w-full flex-1 flex items-center py-14 md:py-16 xl:py-24">
-          <div className="grid w-full items-stretch gap-10 md:grid-cols-[1.2fr_0.95fr] md:gap-16">
+      <section id="hero" className="bg-canvas flex flex-col min-h-[85vh] md:min-h-screen">
+        <Container className="w-full flex-1 flex items-center py-sec-m md:py-sec-t">
+          <div className="grid w-full items-center gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-16">
             <div className="flex flex-col justify-center">
-              <SectionLabel>Антистресс из ПУ-пены · тираж от 500 шт</SectionLabel>
-              <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] text-white">
-                Антистресс-маскот из ПУ-пены для вашего бренда
+              <SectionLabel>Плюш и PU-антистресс</SectionLabel>
+              <h1 className="text-h1-m md:text-h1-t xl:text-h1-d font-bold text-ink">
+                Игрушки с логотипом, которые хочется оставить
               </h1>
-              <p className="mt-5 max-w-[520px] text-base sm:text-lg leading-7 sm:leading-8 text-[#7c847d]">
-                Маркетологи финтех, IT и фармы заказывают для стендов и промо-наборов. Кастомная форма, бархатистое покрытие. Тираж от 500 шт.
+              <p className="mt-6 max-w-measure text-body md:text-body-lg text-muted">
+                Плюшевые маскоты и PU-антистрессы для команд, клиентов и событий.
               </p>
 
               <div className="mt-8 md:mt-10">
-                <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('hero', 'pricing')}>Получить расчёт</PrimaryButton>
-                  <a
-                    href="#standard_forms"
-                    onClick={() => handleCtaClick('hero', 'standard_forms')}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
-                  >
-                    Стандартная форма — от 225 ₽/шт →
-                  </a>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать мой тираж</PrimaryButton>
+                  <span className="text-caption text-muted">
+                    или напишите в{' '}
+                    <a
+                      href={TELEGRAM_CONTACT_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => handleContactClick('telegram', 'hero')}
+                      className="text-ink underline underline-offset-4 hover:text-accent transition-colors"
+                    >
+                      Telegram
+                    </a>
+                    {' · '}
+                    <a
+                      href={MAX_CONTACT_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => handleContactClick('max', 'hero')}
+                      className="text-ink underline underline-offset-4 hover:text-accent transition-colors"
+                    >
+                      MAX
+                    </a>
+                  </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  {['Тираж от 500 шт', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
-                    <span key={i} className="text-sm text-[#7c847d] flex items-center gap-2">
-                      {i > 0 && <span className="w-1 h-1 rounded-full bg-[#7c847d] inline-block" />}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-6">
+                  {['Образец до запуска тиража', 'Концепт за 2 часа', 'Договор перед запуском'].map((p, i) => (
+                    <span key={i} className="text-caption text-muted flex items-center gap-2">
+                      {i > 0 && <span className="w-1 h-1 rounded-full bg-line inline-block" />}
                       {p}
                     </span>
                   ))}
@@ -866,17 +881,30 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Mobile toy strip */}
-            <div className="flex md:hidden items-end justify-center gap-6 pt-2 pb-6 relative">
-              <div className="absolute inset-0 rounded-full pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,106,61,0.15) 0%, transparent 70%)'}} />
-              <img src="/images/hero-stage/cat.webp"      alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.4s ease-in-out 0.6s infinite'}} />
-              <img src="/images/hero-stage/bear.webp"     alt="" fetchPriority="high" className="w-32 object-contain relative" style={{filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))', animation: 'stageFLoat 4.0s ease-in-out 0.2s infinite'}} />
-              <img src="/images/hero-stage/dinosaur.webp" alt="" fetchPriority="high" className="w-20 object-contain relative" style={{filter: 'drop-shadow(0 10px 18px rgba(0,0,0,0.5))', animation: 'stageFLoat 3.8s ease-in-out 0s infinite'}} />
-            </div>
-
-            <div className="hidden md:block w-full md:min-h-[600px] lg:min-h-[680px]">
-              <ProductStage />
-            </div>
+            {/* Один предмет крупно, без движения: остальные игрушки живут в галерее,
+                в hero они спорили друг с другом и с заголовком. */}
+            <figure className="relative m-0 flex flex-col items-center">
+              <div
+                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[80%] pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,106,61,0.16) 0%, transparent 70%)' }}
+                aria-hidden="true"
+              />
+              <img
+                src="/images/hero/hero-bear-780.webp"
+                srcSet="/images/hero/hero-bear-780.webp 780w, /images/hero/hero-bear-1024.webp 1024w"
+                sizes="(min-width: 768px) 44vw, 78vw"
+                width={1024}
+                height={1024}
+                alt="Медведь-маскот с логотипом на груди: концептуальная визуализация плотного ворсового плюша и вышитого знака"
+                fetchPriority="high"
+                decoding="async"
+                className="relative w-[78vw] max-w-[320px] md:w-full md:max-w-[520px] object-contain"
+                style={{ filter: 'drop-shadow(0 22px 28px rgba(21,23,22,0.18))' }}
+              />
+              <figcaption className="relative mt-4 text-xs leading-5 text-muted text-center">
+                Концепция изделия, не готовый образец
+              </figcaption>
+            </figure>
           </div>
         </Container>
       </section>
