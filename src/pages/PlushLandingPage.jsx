@@ -13,7 +13,9 @@ const stageItems = [
 
 function ProductStage() {
   return (
-    <div className="relative w-full h-full select-none" aria-hidden="true">
+    // overflow-hidden: игрушки позиционируются в % с фиксированной шириной в px
+    // и на 768 уезжали за правый край, давая горизонтальный скролл.
+    <div className="relative w-full h-full select-none overflow-hidden" aria-hidden="true">
       {/* Coral glow behind center bear */}
       <div
         className="absolute rounded-full pointer-events-none"
@@ -1793,12 +1795,15 @@ export default function LandingPage() {
         </Container>
       </footer>
       <CookieBanner />
-      {showStickyCta && cookiesOk && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+      {showStickyCta && (
+        <div
+          className="fixed left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+          style={{ bottom: 'var(--cookie-banner-h, 0px)' }}
+        >
           <a
             href="#lead_form"
             onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
-            className="block w-full rounded-md bg-[#9b7be8] py-3.5 text-center text-base font-semibold text-white"
+            className="block w-full rounded-md bg-[#9b7be8] py-3.5 text-center text-base font-semibold text-[#151716]"
           >
             Получить расчёт
           </a>

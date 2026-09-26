@@ -1144,14 +1144,14 @@ export default function LandingPage() {
 
           <div className="mt-8 -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
             {[
-              { img: '/стандартные формы PU/Морской котик.png', emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, котик-тюлень, кролик' },
-              { img: '/стандартные формы PU/Стакан.png', emoji: '🍔', category: 'Еда и напитки', examples: 'Стакан, гамбургер, авокадо, пончик' },
-              { img: '/стандартные формы PU/Автобус.png', emoji: '🚗', category: 'Транспорт', examples: 'Автобус, автомобиль, эвакуатор' },
-              { img: '/стандартные формы PU/Мяч.png', emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
-              { img: '/стандартные формы PU/Зубы.png', emoji: '💊', category: 'Медицина / Юмор', examples: 'Зубы, мозг, капсула, губы' },
-              { img: '/стандартные формы PU/Капля.png', emoji: '☁️', category: 'Природа / Жидкости', examples: 'Капля, облако, звезда, гриб' },
-              { img: '/стандартные формы PU/Микрофон.png', emoji: '🏠', category: 'Офис / Быт', examples: 'Микрофон, домик, дрель, флакон' },
-              { img: '/стандартные формы PU/Баклажан.png', emoji: '❤️', category: 'Овощи / Прочее', examples: 'Баклажан, перец, морковь, сердце' },
+              { img: '/images/forms/seal.webp', emoji: '🐻', category: 'Животные', examples: 'Медведь, котик, котик-тюлень, кролик' },
+              { img: '/images/forms/cup.webp', emoji: '🍔', category: 'Еда и напитки', examples: 'Стакан, гамбургер, авокадо, пончик' },
+              { img: '/images/forms/bus.webp', emoji: '🚗', category: 'Транспорт', examples: 'Автобус, автомобиль, эвакуатор' },
+              { img: '/images/forms/ball.webp', emoji: '⚽', category: 'Спорт', examples: 'Мяч, баскетбол, шлем, футболка' },
+              { img: '/images/forms/teeth.webp', emoji: '💊', category: 'Медицина / Юмор', examples: 'Зубы, мозг, капсула, губы' },
+              { img: '/images/forms/drop.webp', emoji: '☁️', category: 'Природа / Жидкости', examples: 'Капля, облако, звезда, гриб' },
+              { img: '/images/forms/mic.webp', emoji: '🏠', category: 'Офис / Быт', examples: 'Микрофон, домик, дрель, флакон' },
+              { img: '/images/forms/eggplant.webp', emoji: '❤️', category: 'Овощи / Прочее', examples: 'Баклажан, перец, морковь, сердце' },
             ].map((cat) => (
               <div
                 key={cat.category}
@@ -2024,12 +2024,15 @@ export default function LandingPage() {
         </Container>
       </footer>
       <CookieBanner />
-      {showStickyCta && cookiesOk && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+      {showStickyCta && (
+        <div
+          className="fixed left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+          style={{ bottom: 'var(--cookie-banner-h, 0px)' }}
+        >
           <a
             href="#lead_form"
             onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
-            className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-white"
+            className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-[#151716]"
           >
             Получить расчёт
           </a>
