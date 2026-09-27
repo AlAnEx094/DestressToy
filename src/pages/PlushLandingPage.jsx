@@ -694,7 +694,7 @@ export default function LandingPage() {
               href="#hero"
               className="flex shrink-0 items-center gap-2.5"
             >
-              <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+              <img src="/logo-bear-144.webp" alt="DeStressToys" width={36} height={36} className="h-9 w-auto" />
               <span className="text-xl font-bold text-white tracking-tight">DeStressToys</span>
             </a>
 
@@ -966,12 +966,17 @@ export default function LandingPage() {
             </article>
 
             <article className="overflow-hidden rounded-xl border border-white/[0.08] bg-white/5">
+              {/* Было quality-control.webp: кадр целиком занят чужими персонажами
+                  (розовые мишки с радугой на животе), кадрированием это не убрать.
+                  Ставим чистый кадр сборки из производственного ролика. */}
               <img
-                src="/images/production/quality-control.webp"
-                alt="Входной контроль качества на фабрике мягких игрушек — проверка перед отгрузкой"
+                src="/videos/process-sewing-poster.webp"
+                alt="Сборка мягкой игрушки на производстве — проверка перед отгрузкой"
                 className="aspect-[4/3] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                width={864}
+                height={486}
               />
               <div className="p-4">
                 <p className="mb-1 text-xs uppercase tracking-widest text-[#9b7be8]">
@@ -1748,7 +1753,7 @@ export default function LandingPage() {
           <div className="grid gap-8 md:grid-cols-[1.1fr_0.8fr_1.1fr] md:items-start">
             <div>
               <div className="flex items-center gap-2.5">
-                <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+                <img src="/logo-bear-144.webp" alt="DeStressToys" width={36} height={36} className="h-9 w-auto" />
                 <span className="text-xl font-bold tracking-tight text-white">DeStressToys</span>
               </div>
               <p className="mt-4 max-w-[320px] leading-6">

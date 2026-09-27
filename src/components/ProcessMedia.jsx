@@ -2,7 +2,23 @@ import { useEffect, useRef, useState } from 'react'
 
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
 
-export default function ProcessSewingMedia({ className = '', mediaClassName = '' }) {
+/**
+ * Ленивое производственное видео: постер вместо видео при prefers-reduced-motion,
+ * запуск только когда ролик виден, пауза при уходе из зоны видимости.
+ * Подпись всегда «Съёмка на производстве» — принадлежность фабрики не подтверждена
+ * (см. public/videos/README.md).
+ */
+export default function ProcessMedia({
+  src,
+  poster,
+  width,
+  height,
+  alt,
+  caption = 'Съёмка на производстве',
+  className = '',
+  mediaClassName = '',
+  captionClassName = '',
+}) {
   const videoRef = useRef(null)
   const [reducedMotion, setReducedMotion] = useState(() =>
     typeof window !== 'undefined' && window.matchMedia(reducedMotionQuery).matches,
@@ -38,29 +54,29 @@ export default function ProcessSewingMedia({ className = '', mediaClassName = ''
     <figure className={className}>
       {reducedMotion ? (
         <img
-          src="/videos/process-sewing-poster.webp"
-          width={864}
-          height={486}
-          alt="Сборка плюшевой игрушки на производстве"
+          src={poster}
+          width={width}
+          height={height}
+          alt={alt}
           className={mediaClassName}
           loading="lazy"
         />
       ) : (
         <video
           ref={videoRef}
-          src="/videos/process-sewing.mp4"
-          poster="/videos/process-sewing-poster.webp"
+          src={src}
+          poster={poster}
           muted
           playsInline
           loop
           preload="none"
-          width={864}
-          height={486}
-          aria-label="Сборка плюшевой игрушки на производстве"
+          width={width}
+          height={height}
+          aria-label={alt}
           className={mediaClassName}
         />
       )}
-      <figcaption>Съёмка на производстве</figcaption>
+      <figcaption className={captionClassName}>{caption}</figcaption>
     </figure>
   )
 }

@@ -23,7 +23,7 @@ export default function PrivacyPage() {
       <header className="border-b border-white/10 bg-[#151716] py-5">
         <Container className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+            <img src="/logo-bear-144.webp" alt="DeStressToys" width={36} height={36} className="h-9 w-auto" />
             <span className="text-xl font-bold tracking-tight text-white">DeStressToys</span>
           </Link>
           <Link

@@ -4,6 +4,7 @@ import CrossNav from '../components/CrossNav.jsx'
 import StickyProductTab from '../components/StickyProductTab.jsx'
 import CookieBanner from '../components/CookieBanner.jsx'
 import GalleryLightbox from '../components/GalleryLightbox.jsx'
+import ProcessMedia from '../components/ProcessMedia.jsx'
 
 const stageItems = [
   { src: '/images/hero-stage/bear.webp',    alt: 'Кастомный медведь-маскот с логотипом — мягкая игрушка на заказ для бренда', size: 250, x: 20, y: 26, z: 3, delay: '0.2s', float: '4.0s' },
@@ -617,7 +618,7 @@ export default function LandingPage() {
               href="#hero"
               className="flex shrink-0 items-center gap-2.5"
             >
-              <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+              <img src="/logo-bear-144.webp" alt="DeStressToys" width={36} height={36} className="h-9 w-auto" />
               <span className="text-xl font-bold text-ink tracking-tight">DeStressToys</span>
             </a>
 
@@ -837,42 +838,42 @@ export default function LandingPage() {
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <Link
               to="/plush"
-              className="group block overflow-hidden rounded-xl border border-line bg-surface text-ink hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              className="group block text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
               <figure className="m-0">
                 <img src="/images/gallery/plush_bear.webp" alt="Концепция плюшевого маскота с видимым ворсом" className="aspect-square w-full object-cover" loading="lazy" decoding="async" />
-                <figcaption className="px-6 pt-3 text-caption text-muted">Концепция изделия, не готовый образец</figcaption>
               </figure>
-              <div className="p-6">
+              <div className="pt-6">
                 <h3 className="text-h2-m font-bold">Плюш</h3>
                 <p className="mt-2 text-body text-muted">Маскот для подарков сотрудникам и клиентам.</p>
                 <p className="mt-4 text-body font-semibold">от 100 шт</p>
                 <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Посмотреть плюш</span>
+                <p className="mt-4 text-caption text-muted">Концепция изделия, не готовый образец</p>
               </div>
             </Link>
             <a
               href="#pricing"
-              className="group block overflow-hidden rounded-xl border border-line bg-surface text-ink hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              className="group block text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
               <figure className="m-0">
                 <img src="/images/gallery/white_bear.webp" alt="Концепция PU-антистресса с видимой поверхностью" className="aspect-square w-full object-cover" loading="lazy" decoding="async" />
-                <figcaption className="px-6 pt-3 text-caption text-muted">Концепция изделия, не готовый образец</figcaption>
               </figure>
-              <div className="p-6">
+              <div className="pt-6">
                 <h3 className="text-h2-m font-bold">PU-антистресс</h3>
                 <p className="mt-2 text-body text-muted">Антистресс для стендов и промо-наборов.</p>
                 <p className="mt-4 text-body font-semibold">от 1 000 шт</p>
                 <p className="mt-1 text-caption text-muted">индивидуальная форма — от 3 000 шт</p>
                 <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Подобрать PU-антистресс</span>
+                <p className="mt-4 text-caption text-muted">Концепция изделия, не готовый образец</p>
               </div>
             </a>
           </div>
           <p className="mt-4 text-caption text-muted">Нужен тираж меньше — рассчитаем отдельно</p>
           <div id="category_choice" className="mt-8 border-t border-line pt-6 scroll-mt-28">
             <p className="text-body font-semibold text-ink">Для расчёта выберите категорию</p>
-            <div className="mt-4 flex flex-wrap gap-4">
-              <a href="#lead_form" className="text-body font-semibold text-ink underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">PU-антистресс</a>
-              <Link to="/plush#lead_form" className="text-body font-semibold text-ink underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Плюшевый маскот</Link>
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+              <a href="#lead_form" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-6 py-3 text-body font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">PU-антистресс</a>
+              <Link to="/plush#lead_form" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-line/50 px-6 py-3 text-body font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Плюшевый маскот</Link>
             </div>
           </div>
         </Container>
@@ -1195,8 +1196,8 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="relative mt-8 md:mt-10">
-            <div className="grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-6">
+          <div className="relative mt-8 grid gap-8 md:mt-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-12">
+            <div className="grid grid-cols-2 gap-6 lg:grid-cols-2 lg:gap-6">
               {processSteps.map((step) => (
                 <article key={step.number} className="relative min-w-0">
                   <p className="text-[1.75rem] lg:text-[3rem] font-bold leading-none tracking-[-0.02em] text-[#ff6a3d]">
@@ -1211,6 +1212,18 @@ export default function LandingPage() {
                 </article>
               ))}
             </div>
+
+            {/* Шаг «Образец» словами не доказать — показываем сборку на производстве. */}
+            <ProcessMedia
+              src="/videos/process-sewing.mp4"
+              poster="/videos/process-sewing-poster.webp"
+              width={864}
+              height={486}
+              alt="Сборка плюшевой игрушки на производстве"
+              className="relative overflow-hidden rounded-xl border border-white/[0.08]"
+              mediaClassName="w-full h-auto"
+              captionClassName="absolute inset-x-0 bottom-0 bg-black/55 px-3 py-1.5 text-[11px] leading-4 text-white/85"
+            />
           </div>
         </Container>
       </section>
@@ -1485,7 +1498,7 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="texture" className="hidden md:block bg-[#151716] py-10 md:py-16 xl:py-24">
+      <section id="texture" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
             <div className="max-w-[540px]">
@@ -1533,9 +1546,27 @@ export default function LandingPage() {
               </p>
             </div>
 
+            {/* Видео сжатия доказывает «сжимается и возвращает форму» — две статичные
+                картинки этого показать не могут. Рядом остаётся текстура ворса плюша. */}
             <div className="grid grid-cols-2 gap-4 h-full min-h-[200px] md:min-h-[400px]">
-              <img src="/images/texture/texture-1.webp" alt="Бархатистое покрытие ПУ-антистресса крупным планом — материал и качество DeStressToys" className="w-full h-full object-cover rounded-xl" loading="lazy" />
-              <img src="/images/texture/texture-2.webp" alt="ПУ-антистресс сжимается и восстанавливает форму — свойства материала" className="w-full h-full object-cover rounded-xl" loading="lazy" />
+              <ProcessMedia
+                src="/videos/pu-squeeze.mp4"
+                poster="/videos/pu-squeeze-poster.webp"
+                width={540}
+                height={960}
+                alt="Рука сжимает ПУ-антистресс, пена возвращает форму"
+                className="relative h-full overflow-hidden rounded-xl"
+                mediaClassName="h-full w-full object-cover"
+                captionClassName="absolute inset-x-0 bottom-0 bg-black/55 px-3 py-1.5 text-[11px] leading-4 text-white/85"
+              />
+              <img
+                src="/images/texture/plush-texture-1.webp"
+                alt="Плюшевый ворс крупным планом — материал мягкой игрушки"
+                className="w-full h-full object-cover rounded-xl"
+                loading="lazy"
+                width={1200}
+                height={900}
+              />
             </div>
           </div>
         </Container>
@@ -1707,7 +1738,7 @@ export default function LandingPage() {
           <div className="grid gap-8 md:grid-cols-[1.1fr_0.8fr_1.1fr] md:items-start">
             <div>
               <div className="flex items-center gap-2.5">
-                <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
+                <img src="/logo-bear-144.webp" alt="DeStressToys" width={36} height={36} className="h-9 w-auto" />
                 <span className="text-body-lg font-bold text-ink">DeStressToys</span>
               </div>
               <p className="mt-4 max-w-[320px] leading-6">
