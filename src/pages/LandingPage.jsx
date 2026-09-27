@@ -405,7 +405,9 @@ export default function LandingPage() {
   const [formValues, setFormValues] = useState(formDefaults)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState(false)
-  const [showStickyCta, setShowStickyCta] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState({})
+  const [formHasFocus, setFormHasFocus] = useState(false)
+  const [formInView, setFormInView] = useState(false)
   const [cookiesOk, setCookiesOk] = useState(() => !!localStorage.getItem('cookies_ok'))
   const utmRef = useRef({})
 
@@ -420,24 +422,13 @@ export default function LandingPage() {
   }, [])
 
   useEffect(() => {
-    const ctaSection = document.getElementById('final_cta')
-    let ctaVisible = false
-
-    const observer = new IntersectionObserver(
-      ([entry]) => { ctaVisible = entry.isIntersecting },
-      { threshold: 0.05 }
-    )
-    if (ctaSection) observer.observe(ctaSection)
-
-    const onScroll = () => {
-      const scrolled = window.scrollY
-      setShowStickyCta(scrolled > window.innerHeight * 0.5 && !ctaVisible)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      observer.disconnect()
-    }
+    const form = document.getElementById('lead_form')
+    if (!form) return
+    const observer = new IntersectionObserver(([entry]) => {
+      setFormInView(entry.isIntersecting)
+    })
+    observer.observe(form)
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -495,6 +486,7 @@ export default function LandingPage() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
+    setFieldErrors((current) => ({ ...current, [name]: undefined }))
     setFormValues((current) => ({
       ...current,
       [name]: value,
@@ -503,6 +495,23 @@ export default function LandingPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const form = event.currentTarget
+    const errors = {}
+    if (!formValues.name.trim()) errors.name = 'Укажите имя.'
+    if (!formValues.company.trim()) errors.company = 'Укажите компанию.'
+    if (!formValues.email.trim()) errors.email = 'Укажите email.'
+    else if (!form.elements.email.validity.valid) errors.email = 'Проверьте адрес email.'
+    if (formValues.reference && !form.elements.reference.validity.valid) errors.reference = 'Укажите корректную ссылку.'
+    if (!form.elements.consent.checked) errors.consent = 'Подтвердите согласие на обработку данных.'
+    if (Object.keys(errors).length) {
+      setFieldErrors(errors)
+      const first = ['name', 'company', 'email', 'reference', 'consent'].find((field) => errors[field])
+      if (first === 'reference') form.querySelector('details').open = true
+      requestAnimationFrame(() => form.elements[first]?.focus())
+      return
+    }
+    setFieldErrors({})
+    setSubmitError(false)
     const leadId = createTrackingId('lead')
     const submittedAt = new Date().toISOString()
     const payload = {
@@ -1532,244 +1541,155 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="final_cta" className="bg-[#151716] py-10 md:py-16 xl:py-24">
+
+      <section id="final_cta" className="bg-canvas py-sec-m md:py-sec-t xl:py-sec-d">
         <Container>
-          <div className="grid gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
-            <div className="max-w-[420px]">
-              <SectionLabel>Связаться</SectionLabel>
-              <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-white">
-                Рассчитайте стоимость под ваш тираж
+          <div className="grid gap-10 md:grid-cols-2">
+            <div className="max-w-measure">
+              <h2 className="text-h2-m font-bold text-ink md:text-h2-t xl:text-h2-d">
+                Рассчитаем игрушку под вашу задачу
               </h2>
-              <p className="mt-6 text-lg leading-8 text-[#7c847d]">
-                Укажите тираж и задачу — пришлём ориентир по стоимости в течение 1 рабочего дня. Если удобнее, свяжитесь с нами напрямую.
+              <p className="mt-6 text-body-lg text-muted">
+                Расскажите о задаче и тираже. Мы уточним детали и подготовим расчёт.
               </p>
-
-              <ul className="mt-8 space-y-3 text-sm text-[#7c847d]">
-                {['Ответим с 8:00 до 18:00 по МСК', 'Файлы можно прислать позже', 'Договор перед запуском тиража'].map(
-                  (item) => (
-                    <li key={item} className="flex gap-3">
-                      <span className="text-[#ff6a3d]">✓</span>
-                      <span>{item}</span>
-                    </li>
-                  ),
-                )}
-              </ul>
-
-              <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] p-3">
-                <img
-                  src="/images/cta/cta-hero.webp"
-                  alt="Кастомная мягкая игрушка с логотипом на рабочем столе — корпоративный подарок партнёру"
-                  className="w-full h-[220px] object-cover rounded-lg"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-5 text-sm leading-7 text-[#7c847d]">
-                <p className="font-semibold text-white">Что будет после заявки</p>
-                <div className="mt-4 space-y-4">
+              <div className="mt-8 border-t border-line pt-6">
+                <p className="text-body font-semibold text-ink">Что будет после заявки</p>
+                <ol className="mt-4 space-y-4">
                   {afterRequestSteps.map((step, index) => (
-                    <div key={step.title} className="flex gap-3">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-xs font-bold text-[#ff6a3d]">
-                        {index + 1}
-                      </span>
-                      <div>
-                        <p className="font-medium text-white">{step.title}</p>
-                        <p className="mt-1 text-xs leading-5 text-[#7c847d]">{step.body}</p>
-                      </div>
-                    </div>
+                    <li key={step.title} className="flex gap-3 text-body text-muted">
+                      <span className="font-semibold text-accent-deep">{index + 1}.</span>
+                      <span><strong className="font-semibold text-ink">{step.title}.</strong> {step.body}</span>
+                    </li>
                   ))}
-                </div>
+                </ol>
               </div>
             </div>
 
-            <div id="lead_form" className="rounded-[12px] border border-white/10 bg-white/5 p-8 md:p-10">
-              <div className="mb-6 rounded-md border border-white/10 bg-white/[0.04] p-4">
-                <p className="text-sm font-medium text-white">Связаться напрямую</p>
-                <p className="mt-1 text-sm leading-6 text-[#7c847d]">
-                  Отвечаем с {RESPONSE_HOURS}. Для быстрых вопросов удобнее написать в мессенджер.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <a
-                    href={TELEGRAM_CONTACT_URL}
-                    target="_blank"
-                    rel="noreferrer"
+            <div id="lead_form" className="scroll-mt-24 border border-line bg-surface p-5 md:p-8">
+              <div className="mb-6 border-b border-line pb-6">
+                <p className="text-body font-semibold text-ink">Удобнее написать напрямую?</p>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer"
                     onClick={() => handleContactClick('telegram', 'form_contact')}
-                    className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#ff6a3d] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#e85a2e]"
-                  >
-                    Написать в Telegram
+                    className="inline-flex min-h-11 items-center justify-center border border-line px-4 text-caption font-semibold text-ink hover:bg-canvas focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                    Telegram
                   </a>
-                  <a
-                    href={MAX_CONTACT_URL}
-                    target="_blank"
-                    rel="noreferrer"
+                  <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer"
                     onClick={() => handleContactClick('max', 'form_contact')}
-                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:border-white/40"
-                  >
-                    Написать в MAX
+                    className="inline-flex min-h-11 items-center justify-center border border-line px-4 text-caption font-semibold text-ink hover:bg-canvas focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                    MAX
                   </a>
                 </div>
               </div>
 
-              {isSubmitted ? (
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold text-white">
-                    Заявка принята! Свяжемся в течение 1 рабочего дня.
-                  </h3>
-                  <p className="text-base leading-7 text-[#7c847d]">
-                    Мы получили ваши данные и подготовим концепт под задачу
-                    {formValues.company ? ` для ${formValues.company}` : ''}.
-                    Ответ придёт на {formValues.email || 'указанный email'}. Для срочного вопроса можно позвонить по номеру{' '}
-                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'success_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>.
-                  </p>
-                </div>
-              ) : submitError ? (
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold text-white">
-                    Не удалось отправить заявку
-                  </h3>
-                  <p className="text-base leading-7 text-[#7c847d]">
-                    Произошла техническая ошибка. Позвоните нам напрямую:{' '}
-                    <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'error_message')} className="text-[#ff6a3d] underline">{CONTACT_PHONE}</a>{' '}
-                    или напишите на{' '}
-                    <a href="mailto:info@destresstoys.ru" className="text-[#ff6a3d] underline">info@destresstoys.ru</a>.
-                  </p>
-                  <button
-                    onClick={() => setSubmitError(false)}
-                    className="text-sm text-[#7c847d] underline hover:text-white"
-                  >
-                    Попробовать снова
-                  </button>
-                </div>
-              ) : (
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-white">Имя</span>
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      value={formValues.name}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
-                      placeholder="Ваше имя"
-                    />
-                  </label>
+              <div role="status" aria-live="polite" aria-atomic="true">
+                {isSubmitted ? (
+                  <div className="space-y-4 text-body text-ink">
+                    <h3 className="text-body-lg font-semibold">Заявка принята</h3>
+                    <p>Мы получили данные, уточним детали задачи и подготовим расчёт.</p>
+                  </div>
+                ) : submitError ? (
+                  <div className="space-y-4 text-body text-ink">
+                    <h3 className="text-body-lg font-semibold">Не удалось отправить заявку</h3>
+                    <p>Произошла техническая ошибка. Проверьте соединение и попробуйте снова.</p>
+                    <button type="button" onClick={() => setSubmitError(false)}
+                      className="min-h-11 font-semibold underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                      Вернуться к форме
+                    </button>
+                  </div>
+                ) : null}
+              </div>
 
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-white">
-                      Компания
-                    </span>
-                    <input
-                      type="text"
-                      name="company"
-                      required
-                      value={formValues.company}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
-                      placeholder="Название компании"
-                    />
-                  </label>
+              {!isSubmitted && !submitError && (
+                <form className="space-y-5" onSubmit={handleSubmit} noValidate
+                  onFocusCapture={() => setFormHasFocus(true)}
+                  onBlurCapture={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) setFormHasFocus(false)
+                  }}>
+                  <div>
+                    <label htmlFor="lead-name" className="mb-2 block text-caption font-semibold text-ink">Имя</label>
+                    <input id="lead-name" type="text" name="name" required value={formValues.name} onChange={handleInputChange}
+                      aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? 'lead-name-error' : undefined}
+                      className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                      placeholder="Ваше имя" />
+                    {fieldErrors.name && <p id="lead-name-error" className="mt-1 text-caption text-accent-deep">{fieldErrors.name}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="lead-company" className="mb-2 block text-caption font-semibold text-ink">Компания</label>
+                    <input id="lead-company" type="text" name="company" required value={formValues.company} onChange={handleInputChange}
+                      aria-invalid={Boolean(fieldErrors.company)} aria-describedby={fieldErrors.company ? 'lead-company-error' : undefined}
+                      className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                      placeholder="Название компании" />
+                    {fieldErrors.company && <p id="lead-company-error" className="mt-1 text-caption text-accent-deep">{fieldErrors.company}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="lead-email" className="mb-2 block text-caption font-semibold text-ink">Email</label>
+                    <input id="lead-email" type="email" name="email" required value={formValues.email} onChange={handleInputChange}
+                      aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? 'lead-email-error' : undefined}
+                      className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                      placeholder="name@company.com" />
+                    {fieldErrors.email && <p id="lead-email-error" className="mt-1 text-caption text-accent-deep">{fieldErrors.email}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="lead-task" className="mb-2 block text-caption font-semibold text-ink">Опишите задачу</label>
+                    <textarea id="lead-task" name="task" rows="4" value={formValues.task} onChange={handleInputChange}
+                      className="w-full border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                      placeholder="Какая игрушка нужна и для чего?" />
+                  </div>
 
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-white">Email</span>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={formValues.email}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
-                      placeholder="name@company.com"
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-white">
-                      Опишите задачу
-                    </span>
-                    <textarea
-                      name="task"
-                      rows="4"
-                      value={formValues.task}
-                      onChange={handleInputChange}
-                      className="w-full rounded-md border border-[#d0c9bf] bg-white px-4 py-3 text-base text-[#151716] outline-none transition-all placeholder:text-[#7c847d] focus:border-[#ff6a3d] focus:ring-2 focus:ring-[#ff6a3d]/20"
-                      placeholder="Стенд, промо-набор или подарок клиентам? Укажите тираж и дату мероприятия."
-                    />
-                  </label>
-
-                  <details className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
-                    <summary className="cursor-pointer text-sm font-medium text-[#7c847d]">Файлы и детали заказа — необязательно</summary>
-                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <fieldset className="col-span-2">
-                        <legend className="block text-sm font-medium text-[#7c847d] mb-2">
-                          Как удобнее передать логотип или референсы?
-                        </legend>
-                        <div className="grid gap-2 sm:grid-cols-2">
+                  <details className="border border-line p-4">
+                    <summary className="cursor-pointer text-caption font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Файлы и детали заказа — необязательно</summary>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      <fieldset className="sm:col-span-2">
+                        <legend className="mb-2 text-caption font-semibold text-ink">Как удобнее передать логотип или референсы?</legend>
+                        <div className="grid gap-2">
                           {assetDeliveryOptions.map((option) => (
-                            <label
-                              key={option.value}
-                              className="flex min-h-10 cursor-pointer items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors hover:border-white/25"
-                            >
-                              <input
-                                type="radio"
-                                name="assetDelivery"
-                                value={option.value}
-                                checked={formValues.assetDelivery === option.value}
-                                onChange={handleInputChange}
-                                className="h-4 w-4 border-white/20 accent-[#ff6a3d]"
-                              />
+                            <label key={option.value} className="flex min-h-11 cursor-pointer items-center gap-2 text-body text-ink">
+                              <input type="radio" name="assetDelivery" value={option.value}
+                                checked={formValues.assetDelivery === option.value} onChange={handleInputChange}
+                                className="h-4 w-4 accent-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" />
                               <span>{option.label}</span>
                             </label>
                           ))}
                         </div>
-                        <p className="mt-2 text-xs leading-5 text-[#7c847d]">
-                          Если материалов пока нет, просто пропустите этот блок.
-                        </p>
+                        <p className="mt-2 text-caption text-muted">Если материалов пока нет, пропустите этот блок.</p>
                       </fieldset>
-
                       <div>
-                        <label htmlFor="quantity" className="block text-sm font-medium text-[#7c847d] mb-1.5">Примерный тираж</label>
-                        <input id="quantity" name="quantity" type="text" placeholder="200 / 500 / 1000"
-                          value={formValues.quantity}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                        <label htmlFor="quantity" className="mb-2 block text-caption font-semibold text-ink">Примерный тираж</label>
+                        <input id="quantity" name="quantity" type="text" value={formValues.quantity} onChange={handleInputChange}
+                          className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" />
                       </div>
                       <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-[#7c847d] mb-1.5">Телефон</label>
-                        <input id="phone" name="phone" type="tel" placeholder="+7"
-                          value={formValues.phone}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                        <label htmlFor="phone" className="mb-2 block text-caption font-semibold text-ink">Телефон</label>
+                        <input id="phone" name="phone" type="tel" value={formValues.phone} onChange={handleInputChange}
+                          className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" />
                       </div>
-                      <div className="col-span-2">
-                        <label htmlFor="reference" className="block text-sm font-medium text-[#7c847d] mb-1.5">Ссылка / референс</label>
-                        <input id="reference" name="reference" type="url" placeholder="Figma, Drive, сайт"
-                          value={formValues.reference}
-                          onChange={handleInputChange}
-                          className="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-[#7c847d] focus:border-[#ff6a3d] focus:outline-none transition-colors" />
+                      <div className="sm:col-span-2">
+                        <label htmlFor="reference" className="mb-2 block text-caption font-semibold text-ink">Ссылка / референс</label>
+                        <input id="reference" name="reference" type="url" value={formValues.reference} onChange={handleInputChange}
+                          aria-invalid={Boolean(fieldErrors.reference)} aria-describedby={fieldErrors.reference ? 'lead-reference-error' : undefined}
+                          className="w-full min-h-11 border border-line bg-canvas px-4 py-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" />
+                        {fieldErrors.reference && <p id="lead-reference-error" className="mt-1 text-caption text-accent-deep">{fieldErrors.reference}</p>}
                       </div>
                     </div>
                   </details>
 
-                  <label className="flex items-start gap-3 rounded-md bg-white/[0.04] px-4 py-3 text-sm text-[#7c847d] cursor-pointer">
-                    <input type="checkbox" name="consent" required
-                      className="mt-0.5 h-4 w-4 rounded border-white/20 accent-[#ff6a3d]" />
-                    <span>Я согласен на обработку персональных данных в соответствии с <Link to="/privacy" className="underline hover:text-white transition-colors">политикой конфиденциальности</Link></span>
-                  </label>
-
-                  <button
-                    type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-md bg-[#ff6a3d] px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-[#e85a2e]"
-                  >
-                    Получить расчёт стоимости
+                  <div>
+                    <label className="flex min-h-11 cursor-pointer items-start gap-3 text-caption text-muted">
+                      <input type="checkbox" name="consent" required
+                        onChange={() => setFieldErrors((current) => ({ ...current, consent: undefined }))}
+                        aria-invalid={Boolean(fieldErrors.consent)}
+                        aria-describedby={fieldErrors.consent ? 'lead-consent-error' : undefined}
+                        className="mt-1 h-4 w-4 shrink-0 accent-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink" />
+                      <span>Я согласен на обработку персональных данных в соответствии с <Link to="/privacy" className="underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">политикой конфиденциальности</Link></span>
+                    </label>
+                    {fieldErrors.consent && <p id="lead-consent-error" className="mt-1 text-caption text-accent-deep">{fieldErrors.consent}</p>}
+                  </div>
+                  <button type="submit"
+                    className="inline-flex min-h-11 w-full items-center justify-center bg-accent px-6 py-3 text-body font-semibold text-ink hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                    Получить расчёт
                   </button>
-
-                  <p className="text-xs leading-5 text-[#7c847d]">
-                    Нажимая кнопку, вы соглашаетесь с{' '}
-                    <Link className="underline" to="/privacy">
-                      политикой конфиденциальности
-                    </Link>
-                    .
-                  </p>
+                  <p className="text-caption text-muted">После отправки мы уточним детали задачи и подготовим расчёт.</p>
                 </form>
               )}
             </div>
@@ -1781,14 +1701,14 @@ export default function LandingPage() {
 
       <footer
         id="footer"
-        className="border-t border-white/10 bg-[#151716] py-10 text-sm text-[#7c847d]"
+        className="border-t border-line bg-surface pb-32 pt-10 text-caption text-muted md:pb-10"
       >
         <Container>
           <div className="grid gap-8 md:grid-cols-[1.1fr_0.8fr_1.1fr] md:items-start">
             <div>
               <div className="flex items-center gap-2.5">
                 <img src="/logo-bear.webp" alt="DeStressToys" className="h-9 w-auto" />
-                <span className="text-xl font-bold tracking-tight text-white">DeStressToys</span>
+                <span className="text-body-lg font-bold text-ink">DeStressToys</span>
               </div>
               <p className="mt-4 max-w-[320px] leading-6">
                 Брендированные мягкие игрушки и антистресс-объекты для корпоративных подарков, событий и промо-наборов.
@@ -1797,35 +1717,35 @@ export default function LandingPage() {
             </div>
 
             <nav className="flex flex-col gap-3">
-              <p className="font-semibold text-white">Разделы</p>
-              <a href="#gallery" className="transition-colors hover:text-white">Работы</a>
-              <a href="#pricing" className="transition-colors hover:text-white">Цены</a>
-              <a href="#process" className="transition-colors hover:text-white">Процесс</a>
-              <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
-              <Link className="transition-colors hover:text-white" to="/privacy">
+              <p className="font-semibold text-ink">Разделы</p>
+              <a href="#gallery" className="hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">Работы</a>
+              <a href="#pricing" className="hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">Цены</a>
+              <a href="#process" className="hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">Процесс</a>
+              <a href="#faq" className="hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">FAQ</a>
+              <Link className="hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink" to="/privacy">
                 Политика конфиденциальности
               </Link>
             </nav>
 
             <div>
-              <p className="font-semibold text-white">Контакты</p>
+              <p className="font-semibold text-ink">Контакты</p>
               <div className="mt-3 flex flex-col gap-2">
-                <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-base font-semibold text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={CONTACT_PHONE_HREF} onClick={() => handleContactClick('phone', 'footer')} className="text-body font-semibold text-ink hover:text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">
                   {CONTACT_PHONE}
                 </a>
-                <a href="#" onClick={(event) => handleEmailCopy(event, 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href="#" onClick={(event) => handleEmailCopy(event, 'footer')} className="text-body font-medium text-ink hover:text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">
                   {CONTACT_EMAIL}
                 </a>
-                <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('telegram', 'footer')} className="text-body font-medium text-ink hover:text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">
                   Telegram
                 </a>
-                <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-base font-medium text-white transition-colors hover:text-[#ff6a3d]">
+                <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer" onClick={() => handleContactClick('max', 'footer')} className="text-body font-medium text-ink hover:text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink">
                   MAX
                 </a>
                 <span>{RESPONSE_HOURS}</span>
                 <span>{COMPANY_CITY}</span>
               </div>
-              <div className="mt-5 border-t border-white/10 pt-4 leading-6">
+              <div className="mt-5 border-t border-line pt-4">
                 <p>{LEGAL_NAME}</p>
                 <p>{LEGAL_ID}</p>
               </div>
@@ -1834,18 +1754,30 @@ export default function LandingPage() {
         </Container>
       </footer>
       <CookieBanner />
-      {showStickyCta && (
+      {!mobileMenuOpen && !formHasFocus && !formInView && (
         <div
-          className="fixed left-0 right-0 z-50 md:hidden border-t border-[#e5e0d8] bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+          className="fixed inset-x-0 z-40 border-t border-line bg-surface md:hidden"
           style={{ bottom: 'var(--cookie-banner-h, 0px)' }}
         >
-          <a
-            href="#category_choice"
-            onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
-            className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-[#151716]"
-          >
-            Получить расчёт
-          </a>
+          <Container>
+            <div className="flex gap-2 py-3">
+              <a href="#category_choice" onClick={() => handleCtaClick('sticky_cta', 'category_choice')}
+                className="inline-flex min-h-11 flex-1 items-center justify-center bg-accent px-3 text-caption font-semibold text-ink hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                Рассчитать
+              </a>
+              <a href={TELEGRAM_CONTACT_URL} target="_blank" rel="noreferrer"
+                onClick={() => handleContactClick('telegram', 'sticky_cta')}
+                className="inline-flex min-h-11 items-center justify-center border border-line px-3 text-caption font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                Telegram
+              </a>
+              <a href={MAX_CONTACT_URL} target="_blank" rel="noreferrer"
+                onClick={() => handleContactClick('max', 'sticky_cta')}
+                className="inline-flex min-h-11 items-center justify-center border border-line px-3 text-caption font-semibold text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                MAX
+              </a>
+            </div>
+            <div aria-hidden="true" style={{ height: 'env(safe-area-inset-bottom)' }} />
+          </Container>
         </div>
       )}
     </main>
