@@ -144,93 +144,6 @@ const processSteps = [
   },
 ]
 
-const useCases = [
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    ),
-    title: 'Конференции и выставки',
-    body: 'Посетители подходят к стенду за маскотом. Объект уходит домой или на рабочий стол — и работает на бренд ещё месяцами после события.',
-  },
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
-        <line x1="12" y1="22" x2="12" y2="7"/>
-        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-      </svg>
-    ),
-    title: 'Промо-набор к запуску',
-    body: 'Вкладыш в press kit или раздатку к новому SKU. Тактильный объект выделяет материалы среди сотни одинаковых конвертов.',
-  },
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    ),
-    title: 'Активация на стенде',
-    body: 'Антистресс в руках посетителя — несколько минут прямого контакта с брендом. Причина задержаться у стенда.',
-  },
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-      </svg>
-    ),
-    title: 'Подарок клиентам',
-    body: 'Остаётся на рабочем столе, не в ящике. Бренд в зоне видимости каждый день — без дополнительных вложений.',
-  },
-]
-
-const productFormats = [
-  {
-    emoji: '🟠',
-    num: '01',
-    title: 'Антистресс-маскот',
-    body: 'Кастомная пресс-форма под персонажа или символ бренда. Сжимается и возвращает форму — антистресс-эффект.',
-    fit: 'Когда нужен уникальный объект, а не стандартный сувенир.',
-  },
-  {
-    emoji: '🎪',
-    num: '02',
-    title: 'Промо-раздатка',
-    body: 'Антистресс как материал для выставок, конференций и стендовых активаций. Раздаётся легко, остаётся надолго.',
-    fit: 'Для event-маркетинга с высокими охватами за один день.',
-  },
-  {
-    emoji: '🖥️',
-    num: '03',
-    title: 'Настольный объект',
-    body: 'Не выбрасывается — живёт на рабочем столе. Каждое касание — контакт с брендом.',
-    fit: 'Когда подарок должен работать месяцами, а не пропасть после мероприятия.',
-  },
-  {
-    emoji: '🎁',
-    num: '04',
-    title: 'Клиентский подарок',
-    body: 'Антистресс в брендированной упаковке как подарок ключевым клиентам или партнёрам.',
-    fit: 'Для финтеха, IT и фармы — индустрий, где важен тактильный контакт с брендом.',
-  },
-  {
-    emoji: '🚀',
-    num: '05',
-    title: 'Промо-набор к запуску',
-    body: 'Антистресс в форме продукта или символа кампании — работает как медиа без медиабюджета.',
-    fit: 'Для запуска продукта, ребрендинга или сезонной активации.',
-  },
-  {
-    emoji: '✦',
-    num: '06',
-    title: 'Стандартная форма с лого',
-    body: 'Готовая форма из 35+ вариантов с нанесением логотипа. Тираж от 200 шт, срок от 2 недель.',
-    fit: 'Когда нужна скорость и ограниченный бюджет.',
-  },
-]
-
 const reviews = [
   {
     name: 'Марина В.',
@@ -756,7 +669,7 @@ export default function LandingPage() {
 
             <div className="hidden md:block">
               <a
-                href="#lead_form"
+                href="#category_choice"
                 onClick={() => handleCtaClick('header', 'pricing')}
                 className="inline-flex items-center justify-center rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
               >
@@ -815,7 +728,7 @@ export default function LandingPage() {
                   <p className="mt-2 text-caption text-muted">Ответим с {RESPONSE_HOURS}</p>
                 </div>
                 <PrimaryButton
-                  href="#lead_form"
+                  href="#category_choice"
                   className="mt-2 w-full"
                   onClick={() => {
                     handleCtaClick('mobile_menu', 'pricing')
@@ -846,7 +759,7 @@ export default function LandingPage() {
 
               <div className="mt-8 md:mt-10">
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-                  <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать мой тираж</PrimaryButton>
+                  <PrimaryButton href="#category_choice" onClick={() => handleCtaClick('hero', 'pricing')}>Рассчитать мой тираж</PrimaryButton>
                   <span className="text-caption text-muted">
                     или напишите в{' '}
                     <a
@@ -905,6 +818,51 @@ export default function LandingPage() {
                 Концепция изделия, не готовый образец
               </figcaption>
             </figure>
+          </div>
+        </Container>
+      </section>
+
+      <section id="categories" className="bg-canvas py-sec-m md:py-sec-t xl:py-sec-d">
+        <Container>
+          <h2 className="text-h2-m md:text-h2-t xl:text-h2-d font-bold text-ink">Плюш или антистресс?</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <Link
+              to="/plush"
+              className="group block overflow-hidden rounded-xl border border-line bg-surface text-ink hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            >
+              <figure className="m-0">
+                <img src="/images/gallery/plush_bear.webp" alt="Концепция плюшевого маскота с видимым ворсом" className="aspect-square w-full object-cover" loading="lazy" decoding="async" />
+                <figcaption className="px-6 pt-3 text-caption text-muted">Концепция изделия, не готовый образец</figcaption>
+              </figure>
+              <div className="p-6">
+                <h3 className="text-h2-m font-bold">Плюш</h3>
+                <p className="mt-2 text-body text-muted">Маскот для подарков сотрудникам и клиентам.</p>
+                <p className="mt-4 text-body font-semibold">от 300 шт</p>
+                <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Посмотреть плюш</span>
+              </div>
+            </Link>
+            <a
+              href="#pricing"
+              className="group block overflow-hidden rounded-xl border border-line bg-surface text-ink hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            >
+              <figure className="m-0">
+                <img src="/images/gallery/white_bear.webp" alt="Концепция PU-антистресса с видимой поверхностью" className="aspect-square w-full object-cover" loading="lazy" decoding="async" />
+                <figcaption className="px-6 pt-3 text-caption text-muted">Концепция изделия, не готовый образец</figcaption>
+              </figure>
+              <div className="p-6">
+                <h3 className="text-h2-m font-bold">PU-антистресс</h3>
+                <p className="mt-2 text-body text-muted">Антистресс для стендов и промо-наборов.</p>
+                <p className="mt-4 text-body font-semibold">от 500 шт</p>
+                <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Подобрать PU-антистресс</span>
+              </div>
+            </a>
+          </div>
+          <div id="category_choice" className="mt-8 border-t border-line pt-6 scroll-mt-28">
+            <p className="text-body font-semibold text-ink">Для расчёта выберите категорию</p>
+            <div className="mt-4 flex flex-wrap gap-4">
+              <a href="#lead_form" className="text-body font-semibold text-ink underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">PU-антистресс</a>
+              <Link to="/plush#lead_form" className="text-body font-semibold text-ink underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">Плюшевый маскот</Link>
+            </div>
           </div>
         </Container>
       </section>
@@ -1046,86 +1004,6 @@ export default function LandingPage() {
                 </div>
               </article>
             ))}
-          </div>
-        </Container>
-      </section>
-
-      <section id="formats" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Форматы</SectionLabel>
-          <div className="max-w-[720px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Что можно изготовить под ваш бренд
-            </h2>
-            <p className="mt-4 text-base leading-7 text-[#5a6060]">
-              Начинаем не с материала, а с задачи: кому вручаете, где игрушка будет работать и какой образ должен остаться у клиента или сотрудника.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {productFormats.map((format) => (
-              <article
-                key={format.title}
-                className="group relative overflow-hidden rounded-xl border border-[#e5e0d8] bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
-              >
-                <span className="pointer-events-none absolute right-4 top-2 select-none text-[4rem] font-black leading-none text-[#f4efe8] transition-colors group-hover:text-[#ffe8df]">
-                  {format.num}
-                </span>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[#fff5f2] text-xl">
-                  {format.emoji}
-                </div>
-                <h3 className="text-lg font-bold leading-6 text-[#151716]">{format.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#5a6060]">{format.body}</p>
-                <p className="mt-4 inline-block rounded-full border border-[#ff6a3d]/30 px-3 py-1 text-xs leading-5 text-[#ff6a3d]">
-                  {format.fit}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-10 max-w-[720px]">
-            <h3 className="text-2xl font-bold leading-tight text-[#151716]">
-              Выберите формат под тираж и задачу
-            </h3>
-            <p className="mt-3 text-base leading-7 text-[#5a6060]">
-              Кастомная форма — для уникального маскота любой формы. Стандартная — для быстрого запуска с готовой формой и вашим логотипом.
-            </p>
-          </div>
-
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Антистресс · ПУ-пена</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Антистресс из ПУ-пены</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 500 шт · от 850 ₽/шт</p>
-              <ul className="mt-5 space-y-3">
-                {['Сжимается и возвращает форму — антистресс-эффект', 'Бархатистое покрытие, приятно держать', 'Любая форма: логотип, маскот, символ', 'Дольше остаётся в руках — больше касаний с брендом'].map((point) => (
-                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href="#pricing" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть цены →
-              </a>
-            </article>
-
-            <article className="rounded-xl border border-[#e5e0d8] bg-white p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#ff6a3d]">Стандарт · готовые формы</p>
-              <h3 className="mt-2 text-xl md:text-2xl font-bold leading-7 text-[#151716]">Стандартные формы</h3>
-              <p className="mt-1 text-sm text-[#7c847d]">Тираж от 200 шт · от 270 ₽/шт</p>
-              <ul className="mt-5 space-y-3">
-                {['35+ готовых форм — животные, еда, спорт, транспорт', 'Нанесение логотипа вашего бренда', 'Тираж от 200 шт — ниже, чем для кастомных', 'Срок от 2 недель — в 2 раза быстрее'].map((point) => (
-                  <li key={point} className="flex gap-3 text-sm leading-6 text-[#5a6060]">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff6a3d]" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href="#standard_forms" className="mt-6 inline-flex items-center text-sm font-semibold text-[#ff6a3d] hover:underline">
-                Смотреть формы →
-              </a>
-            </article>
           </div>
         </Container>
       </section>
@@ -1297,34 +1175,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <section id="use_cases" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Где используют</SectionLabel>
-          <div className="max-w-[720px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Антистресс работает там, где раздатка не работает
-            </h2>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 xl:grid-cols-4">
-            {useCases.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-[12px] border border-[#e5e0d8] bg-white p-5 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)]"
-              >
-                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-[10px] md:rounded-[12px] bg-[#ebe5dd] text-[#151716] ring-1 ring-inset ring-[#d0c9bf]">
-                  {item.icon}
-                </div>
-                <h3 className="mt-4 text-base md:text-2xl font-semibold leading-6 md:leading-8 text-[#151716]">
-                  {item.title}
-                </h3>
-                <p className="mt-2 md:mt-4 text-sm md:text-base leading-6 md:leading-7 text-[#5a6060]">{item.body}</p>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
       <section id="process" className="bg-[#151716] py-10 md:py-16 xl:py-24">
         <Container>
           <SectionLabel>Процесс</SectionLabel>
@@ -1349,48 +1199,6 @@ export default function LandingPage() {
                   </p>
                 </article>
               ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="brand_gifts" className="bg-[#f4efe8] py-10 md:py-16 xl:py-24">
-        <Container>
-          <div className="grid items-center gap-8 md:gap-10 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
-            <div className="order-2 md:order-1 max-w-[520px]">
-              <SectionLabel>Корпоративные подарки</SectionLabel>
-              <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-                Антистресс живёт на столе — не в ящике
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-[#5a6060]">
-                Финтех, IT и фарма заказывают маскоты для конференций и промо-наборов. Объект уходит с посетителем и продолжает работать на бренд месяцами — каждый раз, когда его берут в руки.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {['Конференции', 'Промо-наборы', 'Стенды', 'Клиентские подарки'].map(
-                  (tag) => (
-                    <span
-                      key={tag}
-                      className="rounded px-3.5 py-1.5 text-sm text-[#5a6060] ring-1 ring-inset ring-[#d0c9bf]"
-                    >
-                      {tag}
-                    </span>
-                  ),
-                )}
-              </div>
-
-              <PrimaryButton href="#lead_form" onClick={() => handleCtaClick('process', 'pricing')} className="mt-8">
-                Получить расчёт
-              </PrimaryButton>
-            </div>
-
-            <div className="order-1 md:order-2 min-h-[260px] md:min-h-[420px] flex items-center justify-center">
-              <img
-                src="/images/showcase_shelf.webp"
-                alt="Линейка кастомных мягких игрушек и бренд-маскотов DeStressToys для корпоративных подарков"
-                className="w-full max-h-[420px] rounded-xl object-contain"
-                loading="lazy"
-              />
             </div>
           </div>
         </Container>
@@ -2030,7 +1838,7 @@ export default function LandingPage() {
           style={{ bottom: 'var(--cookie-banner-h, 0px)' }}
         >
           <a
-            href="#lead_form"
+            href="#category_choice"
             onClick={() => handleCtaClick('sticky_cta', 'final_cta')}
             className="block w-full rounded-md bg-[#ff6a3d] py-3.5 text-center text-base font-semibold text-[#151716]"
           >
