@@ -56,7 +56,6 @@ const navLinks = [
   { label: 'Форматы', href: '#standard_forms' },
   { label: 'Цены', href: '#pricing' },
   { label: 'Процесс', href: '#process' },
-  { label: 'Отзывы', href: '#reviews' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -142,41 +141,6 @@ const processSteps = [
     number: '04',
     title: 'Доставка',
     body: 'Доставка из Китая в Россию: 25–30 дней. Итого от заявки до тиража в ваших руках — около 7 недель.',
-  },
-]
-
-const reviews = [
-  {
-    name: 'Марина В.',
-    role: 'Маркетолог, SaaS-компания',
-    city: 'Санкт-Петербург',
-    text: 'Заказывали маскота для стенда на конференции. По переписке быстро поняли, что можно упростить, а что лучше оставить. Игрушки забирали охотнее, чем бумажные материалы.',
-    qty: '250 шт',
-    type: 'Event-раздатка',
-  },
-  {
-    name: 'Виктор А.',
-    role: 'Маркетинг-директор, телеком',
-    city: 'Москва',
-    text: 'Заказывали 500 штук к выставке — маскот нашего тарифа в форме молнии. По форме точно, логотип чёткий. С первого образца немного не попали в Pantone — поправили на втором. Итогом доволен.',
-    qty: '500 шт',
-    type: 'Выставочная раздатка',
-  },
-  {
-    name: 'Алина Р.',
-    role: 'Ивент-менеджер, FMCG',
-    city: 'Краснодар',
-    text: 'Брали 700 антистрессов для промо-набора к запуску нового SKU. Сроки поджимали — отгрузили без задержек. На стенде разбирали быстро, посетители сами тянутся. Берём под следующий запуск.',
-    qty: '700 шт',
-    type: 'Промо-набор',
-  },
-  {
-    name: 'Ирина Н.',
-    role: 'Менеджер по маркетингу, производство',
-    city: 'Екатеринбург',
-    text: 'Нужен был подарок для постоянных клиентов, без ощущения дешёвой раздатки. Понравилось, что до расчёта проговорили ограничения по форме и не обещали невозможное.',
-    qty: '500 шт',
-    type: 'Подарки клиентам',
   },
 ]
 
@@ -1258,41 +1222,6 @@ export default function LandingPage() {
                 ))}
               </ul>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="reviews" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Отзывы</SectionLabel>
-          <div className="max-w-[680px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Что говорят клиенты
-            </h2>
-          </div>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {reviews.map((review) => (
-              <article key={review.name} className="rounded-xl border border-[#e5e0d8] bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]">
-                <p className="text-[#ff6a3d] text-base">{review.rating || '★★★★★'}</p>
-                <p className="mt-3 text-base leading-7 text-[#151716]">«{review.text}»</p>
-                <div className="mt-5 pt-4 border-t border-[#e5e0d8]">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ff6a3d]/15 text-sm font-bold text-[#ff6a3d]">
-                      {review.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-[#151716]">{review.name}</p>
-                      <p className="text-sm text-[#7c847d]">{review.role} · {review.city}</p>
-                    </div>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.qty}</span>
-                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.type}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
           </div>
         </Container>
       </section>

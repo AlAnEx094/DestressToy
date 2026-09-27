@@ -56,7 +56,6 @@ const navLinks = [
   { label: 'Форматы', href: '#formats' },
   { label: 'Цены', href: '#pricing' },
   { label: 'Процесс', href: '#process' },
-  { label: 'Отзывы', href: '#reviews' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -227,41 +226,6 @@ const productFormats = [
     title: 'Подарок клиентам',
     body: 'Плюш вместо ручек и кружек — тактильный объект с эмоциональной ценностью.',
     fit: 'Для брендов, где важна долгосрочная связь с клиентом.',
-  },
-]
-
-const reviews = [
-  {
-    name: 'Анна С.',
-    role: 'HR-менеджер, розничная сеть',
-    city: 'Москва',
-    text: 'Делали игрушки для подарков сотрудникам. Важно было, чтобы выглядело не как детский сувенир, а аккуратно и в фирменных цветах. Обсудили форму, поправили детали, итог приняли спокойно.',
-    qty: '300 шт',
-    type: 'Подарки сотрудникам',
-  },
-  {
-    name: 'Екатерина В.',
-    role: 'HR-директор, IT-компания',
-    city: 'Санкт-Петербург',
-    text: 'Заказали плюшевых мишек для онбординг-кита. 300 штук, три волны по 100. Сотрудники берут домой детям — нам это и нужно было, чтоб бренд жил вне офиса. Качество вышивки проверили на образце, всё держится.',
-    qty: '300 шт',
-    type: 'Онбординг',
-  },
-  {
-    name: 'Михаил С.',
-    role: 'Бренд-менеджер, ретейл-сеть',
-    city: 'Москва',
-    text: 'Делали партию к 10-летию сети — 200 зайцев с вышивкой логотипа, в крафт-коробке с лентой. Раздавали партнёрам. Несколько написали потом: дети уже не отдают.',
-    qty: '300 шт',
-    type: 'Корпоративный подарок',
-  },
-  {
-    name: 'Ирина Н.',
-    role: 'Менеджер по маркетингу, FMCG',
-    city: 'Екатеринбург',
-    text: 'Нужен был подарок для постоянных клиентов, без ощущения дешёвой раздатки. Понравилось, что до расчёта проговорили ограничения и не обещали невозможного.',
-    qty: '500 шт',
-    type: 'Подарки клиентам',
   },
 ]
 
@@ -1222,41 +1186,6 @@ export default function LandingPage() {
                 loading="lazy"
               />
             </div>
-          </div>
-        </Container>
-      </section>
-
-      <section id="reviews" className="bg-[#ebe5dd] py-10 md:py-16 xl:py-24">
-        <Container>
-          <SectionLabel>Отзывы</SectionLabel>
-          <div className="max-w-[680px]">
-            <h2 className="text-[1.75rem] md:text-[2.5rem] xl:text-[3rem] font-bold leading-[1.1] tracking-[-0.02em] text-[#151716]">
-              Что говорят клиенты
-            </h2>
-          </div>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {reviews.map((review) => (
-              <article key={review.name} className="rounded-xl border border-[#e5e0d8] bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_rgba(0,0,0,0.11)]">
-                <p className="text-[#9b7be8] text-base">{review.rating || '★★★★★'}</p>
-                <p className="mt-3 text-base leading-7 text-[#151716]">«{review.text}»</p>
-                <div className="mt-5 pt-4 border-t border-[#e5e0d8]">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#9b7be8]/15 text-sm font-bold text-[#9b7be8]">
-                      {review.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-[#151716]">{review.name}</p>
-                      <p className="text-sm text-[#7c847d]">{review.role} · {review.city}</p>
-                    </div>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.qty}</span>
-                    <span className="rounded-md bg-[#f4efe8] px-2.5 py-1 text-xs font-medium text-[#5a6060]">{review.type}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
           </div>
         </Container>
       </section>
