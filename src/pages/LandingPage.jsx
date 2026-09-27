@@ -182,7 +182,7 @@ const reviews = [
 const faqItems = [
   {
     q: 'Какой минимальный тираж?',
-    a: 'От 500 штук. При тираже от 1 000 шт доступны дополнительные скидки.',
+    a: 'ПУ-антистресс со стандартной формой — от 1 000 штук, с индивидуальной формой — от 3 000 штук. Меньший тираж рассчитаем отдельно.',
   },
   {
     q: 'Из чего делают объекты?',
@@ -206,7 +206,7 @@ const faqItems = [
   },
   {
     q: 'Где производятся игрушки?',
-    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Это позволяет делать тираж от 500 штук и выдерживать понятные производственные сроки.',
+    a: 'На фабрике в Китае. Китайские производители специализируются на производстве мягких игрушек — это их основная компетенция, а не побочный продукт. Для ПУ-антистресса ориентир — от 1 000 штук со стандартной формой и от 3 000 штук с индивидуальной. Меньший тираж рассчитаем отдельно.',
   },
 ]
 
@@ -837,7 +837,7 @@ export default function LandingPage() {
               <div className="p-6">
                 <h3 className="text-h2-m font-bold">Плюш</h3>
                 <p className="mt-2 text-body text-muted">Маскот для подарков сотрудникам и клиентам.</p>
-                <p className="mt-4 text-body font-semibold">от 300 шт</p>
+                <p className="mt-4 text-body font-semibold">от 100 шт</p>
                 <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Посмотреть плюш</span>
               </div>
             </Link>
@@ -852,11 +852,13 @@ export default function LandingPage() {
               <div className="p-6">
                 <h3 className="text-h2-m font-bold">PU-антистресс</h3>
                 <p className="mt-2 text-body text-muted">Антистресс для стендов и промо-наборов.</p>
-                <p className="mt-4 text-body font-semibold">от 500 шт</p>
+                <p className="mt-4 text-body font-semibold">от 1 000 шт</p>
+                <p className="mt-1 text-caption text-muted">индивидуальная форма — от 3 000 шт</p>
                 <span className="mt-4 inline-block text-body font-semibold underline underline-offset-4 group-hover:no-underline">Подобрать PU-антистресс</span>
               </div>
             </a>
           </div>
+          <p className="mt-4 text-caption text-muted">Нужен тираж меньше — рассчитаем отдельно</p>
           <div id="category_choice" className="mt-8 border-t border-line pt-6 scroll-mt-28">
             <p className="text-body font-semibold text-ink">Для расчёта выберите категорию</p>
             <div className="mt-4 flex flex-wrap gap-4">
@@ -1016,7 +1018,7 @@ export default function LandingPage() {
               Готовая форма с вашим логотипом — быстрее и доступнее
             </h2>
             <p className="mt-4 text-base leading-7 text-[#5a6060]">
-              Не нужна уникальная пресс-форма. Выберите из 35+ готовых форм и нанесите логотип вашего бренда. Тираж от 200 шт, срок от 2 недель — подходит для ограниченного бюджета или срочного запуска.
+              Не нужна уникальная пресс-форма. Выберите из 35+ готовых форм и нанесите логотип вашего бренда. Тираж от 1 000 шт, меньший рассчитаем отдельно. Срок от 2 недель — подходит для ограниченного бюджета или срочного запуска.
             </p>
           </div>
 
@@ -1282,7 +1284,7 @@ export default function LandingPage() {
 
           <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-6 xl:gap-4">
             {[
-              { title: 'Мин. тираж', value: 'от 500 шт' },
+              { title: 'Мин. тираж', value: 'от 1 000 шт' },
               { title: 'Расчёт', value: 'за 1 день' },
               { title: 'Договор', value: 'до старта' },
               { title: 'Производство', value: '~15 дней' },
